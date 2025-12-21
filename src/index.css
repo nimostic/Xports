@@ -1,9 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=BBH+Bartle&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+   themes: light --default;
+}
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #F40E08;
+  --color-secondary: #830402;
+}
 
-.body {
-  font-family: "BBH Bartle", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+@layer components {
+  .btn-angled {
+    clip-path: polygon(
+      10% 0%,
+      100% 0%,
+      100% 100%,
+      0% 100%,
+      0% 30%
+    );
+  }
 }
