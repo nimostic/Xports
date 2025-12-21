@@ -1,6 +1,7 @@
 import React, { use } from "react";
 import { AuthContext } from "../../Provider/AuthContext";
 import { useLocation, useNavigate } from "react-router";
+import axios from "axios";
 
 const SocialLogin = () => {
 
@@ -10,8 +11,18 @@ const SocialLogin = () => {
   const handleGoogleSignIn = () =>{
     signInGoogle()
     .then(res => {
-      console.log(res);
-      navigate(location.state || "/")
+      //send user info to database
+      const userInfo = {
+        email : res.user.email,
+        displayName : res.user.displayName,
+        photoURL : res.user.photoURL
+      }
+      // console.log(userInfo);
+      axios.post("http://localhost:3000/users",userInfo)
+      .then((res)=>{
+        console.log("user created in the database",res);
+        navigate(location.state || "/")
+      })
     })
     .catch (error =>{
       console.log(error);

@@ -5,6 +5,9 @@ import Login from '../Pages/Auth/Login';
 import Register from '../Pages/Auth/Register';
 import RootLayout from '../Layouts/RootLayout';
 import Home from '../Pages/Home/Home';
+import DashboardLayout from '../Layouts/DashboardLayout';
+import DashboardHome from '../Pages/Dashboard/DashboardHome';
+import CreateContest from '../Pages/Dashboard/CreateContest';
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +19,18 @@ export const router = createBrowserRouter([
         Component: Home
       }
     ]
+  },
+  {
+    path:"/dashboard",
+    Component: DashboardLayout,
+    children:[{
+      index: true,
+      Component:DashboardHome
+    },{
+      path:"create-contests",
+      Component:CreateContest
+    }
+  ]
   },
   {
     path:"/",

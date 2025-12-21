@@ -22,6 +22,11 @@ const Navbar = () => {
         </Link>
       </li>
       <li>
+        <Link className="hover:text-primary" to="/dashboard">
+         Dashboard
+        </Link>
+      </li>
+      <li>
         <Link className="hover:text-primary" to="/all-contests">
           All Contests
         </Link>
