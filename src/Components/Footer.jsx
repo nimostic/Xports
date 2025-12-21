@@ -93,7 +93,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs">
-            © {currentYear} <span className="text-primary font-medium text-sm">Contesto</span>. All Rights Reserved.
+            © {currentYear} <span className="text-primary font-medium text-sm">Xports</span>. All Rights Reserved.
           </p>
           
           {/* Social Icons */}

@@ -4,11 +4,18 @@ import AuthLayout from '../Layouts/AuthLayout';
 import Login from '../Pages/Auth/Login';
 import Register from '../Pages/Auth/Register';
 import RootLayout from '../Layouts/RootLayout';
+import Home from '../Pages/Home/Home';
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component:RootLayout,
+    children:[
+      {
+        index:true,
+        Component: Home
+      }
+    ]
   },
   {
     path:"/",

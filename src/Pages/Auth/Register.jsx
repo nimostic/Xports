@@ -40,6 +40,18 @@ const Register = () => {
 
         axios.post(image_API_URL, formData).then((res) => {
           console.log("after image uploaded", res);
+          const photoURL = res.data.data.url;
+          // create user in the database
+          const userInfo = {
+            email: data.email,
+            displayName: data.name,
+            photoURL: photoURL,
+          };
+          axios.post("http://localhost:3000/users", userInfo).then((res) => {
+            if (res.data.insertedId) {
+              console.log("user created in the database");
+            }
+          });
 
           const userProfile = {
             displayName: data.name,
@@ -231,7 +243,15 @@ const Register = () => {
             </button>
           </div>
         </form>
-        <h1 className="text-center">Already Have an Account?<span><Link to="/login" className="text-primary"> Login</Link></span></h1>
+        <h1 className="text-center">
+          Already Have an Account?
+          <span>
+            <Link to="/login" className="text-primary">
+              {" "}
+              Login
+            </Link>
+          </span>
+        </h1>
         <SocialLogin></SocialLogin>
       </div>
     </div>
