@@ -8,6 +8,7 @@ import Home from '../Pages/Home/Home';
 import DashboardLayout from '../Layouts/DashboardLayout';
 import DashboardHome from '../Pages/Dashboard/DashboardHome';
 import CreateContest from '../Pages/Dashboard/CreateContest';
+import AllContests from '../Pages/AllContests';
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
       {
         index:true,
         Component: Home
+      },
+      {
+        path:"all-contests",
+        Component:AllContests
       }
     ]
   },

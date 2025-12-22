@@ -1,25 +1,33 @@
-import React, { use } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { use, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { AuthContext } from "../../Provider/AuthContext";
-import AngledButton from "../../Components/AngledButton";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import { AuthContext } from "../Provider/AuthContext";
+import AngledButton from "../Components/AngledButton";
 
+const AllContests = () => {
+  //for pagination
+  const limit = 10;
+  const [currentPage, setCurrentPage] = useState(0);
 
-const PopularContests = () => {
   const { user } = use(AuthContext);
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
-  const { data: {contests = [], total = 0} = {} , isLoading } = useQuery({
-    queryKey: ["popular-contests"],
+  const { data: { contests = [], total = 0 } = {}, isLoading } = useQuery({
+    queryKey: ["contests", currentPage],
     queryFn: async () => {
-      const res = await axiosSecure.get("/contests");
+      const res = await axiosSecure.get(
+        `/contests?limit=${limit}&skip=${currentPage * limit}`
+      );
       return res.data;
     },
   });
-  console.log(contests[0]);
-  if (isLoading)
-    return <div className="text-center py-20 text-white">Loading...</div>;
+
+  const totalPages = Math.ceil(total / limit);
+  const pages = [...Array(totalPages).keys()];
+
+//   if (isLoading)
+//     return <span className="bg-black loading loading-spinner text-secondary"></span>;
 
   const handleDetailsClick = (id) => {
     if (!user) {
@@ -36,19 +44,18 @@ const PopularContests = () => {
         <div className="flex justify-between items-end mb-12">
           <div>
             <h2 className="text-4xl font-bold text-white uppercase tracking-tighter">
-              Popular <span className="text-primary">Contests</span>
+              All <span className="text-primary">Contests</span>
             </h2>
             <div className="h-1 w-20 bg-primary mt-2"></div>
           </div>
-          <Link to="/all-contests">
-            <AngledButton text="Show All" />
-          </Link>
+          <AngledButton text={contests.length}></AngledButton>
         </div>
-
+        {
+            isLoading && <span className="loading loading-spinner text-secondary"></span>
+        }
         {/* Contest Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {contests.slice(0,6).map((contest) => 
-        (
+          {contests.map((contest) => (
             <div
               key={contest._id}
               className="bg-[#111] border border-gray-800 rounded-2xl overflow-hidden hover:border-primary/50 transition-all group shadow-xl"
@@ -95,11 +102,47 @@ const PopularContests = () => {
                 </div>
               </div>
             </div>
-        ))}
-          </div>
+          ))}
+        </div>
+
+        {/* pagination button start  */}
+        <div className="flex justify-center flex-wrap gap-3 mt-12">
+          {/* Previous Button */}
+          <button
+            disabled={currentPage === 0}
+            onClick={() => setCurrentPage(currentPage - 1)}
+            className="btn btn-outline border-gray-700 text-white hover:bg-primary disabled:opacity-30"
+          >
+            Prev
+          </button>
+
+          {/* Numbered Buttons */}
+          {pages.map((page) => (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              className={`btn ${
+                currentPage === page
+                  ? "btn-primary"
+                  : "btn-outline border-gray-700 text-white"
+              }`}
+            >
+              {page + 1}
+            </button>
+          ))}
+
+          {/* Next Button */}
+          <button
+            disabled={currentPage === totalPages - 1}
+            onClick={() => setCurrentPage(currentPage + 1)}
+            className="btn btn-outline border-gray-700 text-white hover:bg-primary disabled:opacity-30"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </section>
   );
 };
 
-export default PopularContests;
+export default AllContests;
