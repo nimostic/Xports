@@ -7,17 +7,17 @@ const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
   const [paymentInfo, setPaymentInfo] = useState({});
   const sessionId = searchParams.get("session_id");
-  const [contestId,setContestId] = useState(null)
-  const axiosSecure = useAxiosSecure()
-  useEffect(()=>{
-    if(sessionId){
-        axiosSecure.get(`/checkout-session/${sessionId}`)
-        .then((res)=>{
-            setContestId(res.data.contestId)
-        })
+  const [contestId, setContestId] = useState(null);
+  const [transactionId, setTransactionId] = useState(null);
+  const axiosSecure = useAxiosSecure();
+  useEffect(() => {
+    if (sessionId) {
+      axiosSecure.get(`/checkout-session/${sessionId}`).then((res) => {
+        setContestId(res.data.contestId);
+        setTransactionId(res.data.transactionId);
+      });
     }
-  },[sessionId,axiosSecure])
-
+  }, [sessionId, axiosSecure]);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
@@ -45,9 +45,11 @@ const PaymentSuccess = () => {
           </div>
           <div>
             <p className="text-[10px] text-gray-500 uppercase font-bold">
-              Contest ID
+              transaction ID
             </p>
-            <p className="text-sm text-gray-300 font-mono">{contestId || "N/A"}</p>
+            <p className="text-sm text-gray-300 font-mono">
+              {transactionId || "N/A"}
+            </p>
           </div>
         </div>
 
