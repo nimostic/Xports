@@ -5,19 +5,18 @@ import { AuthContext } from "../../Provider/AuthContext";
 import AngledButton from "../../Components/AngledButton";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
-
 const PopularContests = () => {
   const { user } = use(AuthContext);
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
-  const { data: {contests = [], total = 0} = {} , isLoading } = useQuery({
+  const { data: { contests = [], total = 0 } = {}, isLoading } = useQuery({
     queryKey: ["popular-contests"],
     queryFn: async () => {
       const res = await axiosSecure.get("/contests");
       return res.data;
     },
   });
-  console.log(contests[0]);
+  // console.log(contests[0]);
   if (isLoading)
     return <div className="text-center py-20 text-white">Loading...</div>;
 
@@ -47,8 +46,7 @@ const PopularContests = () => {
 
         {/* Contest Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {contests.slice(0,6).map((contest) => 
-        (
+          {contests.slice(0, 6).map((contest) => (
             <div
               key={contest._id}
               className="bg-[#111] border border-gray-800 rounded-2xl overflow-hidden hover:border-primary/50 transition-all group shadow-xl"
@@ -95,8 +93,8 @@ const PopularContests = () => {
                 </div>
               </div>
             </div>
-        ))}
-          </div>
+          ))}
+        </div>
       </div>
     </section>
   );

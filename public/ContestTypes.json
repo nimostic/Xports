@@ -1,0 +1,10 @@
+[
+  { "id": 1, "name": "Business Strategy", "value": "business" },
+  { "id": 2, "name": "Medical Research", "value": "medical" },
+  { "id": 3, "name": "Creative Writing", "value": "writing" },
+  { "id": 4, "name": "Gaming & Esports", "value": "gaming" },
+  { "id": 5, "name": "Art & Design", "value": "design" },
+  { "id": 6, "name": "Photography", "value": "photography" },
+  { "id": 7, "name": "Software Development", "value": "coding" },
+  { "id": 8, "name": "Hackathon", "value": "hackathon" }
+]

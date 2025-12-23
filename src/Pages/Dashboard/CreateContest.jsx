@@ -7,7 +7,7 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Provider/AuthContext";
 import axios from "axios";
-
+import contestTypes from "../../../public/ContestTypes.json";
 const CreateContest = () => {
   const {
     register,
@@ -19,7 +19,7 @@ const CreateContest = () => {
 
   const { user } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
-
+  // console.log(contestType);
   const onSubmit = (data) => {
     const bannerImage = data.bannerImage[0];
 
@@ -34,63 +34,62 @@ const CreateContest = () => {
       import.meta.env.VITE_image_host_key
     }`;
 
-    axios.post(image_API_URL,formData)
-    .then((res)=>{
+    axios.post(image_API_URL, formData).then((res) => {
       // console.log(res.data.data.url);
       const photoURL = res.data.data.url;
 
       const contestData = {
-      ...data,
-      bannerImage : photoURL,
-      price: parseFloat(data.price),
-      prizeMoney: parseFloat(data.prizeMoney),
-      participantsCount: 0,
-      status: "pending",
-      contestOwner: user?.displayName,
-      ownerEmail: user?.email,
-    };
-    console.log(contestData);
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You want to create this contest?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#F40E08",
-      cancelButtonColor: "#111",
-      confirmButtonText: "Yes, Submit it!",
-      background: "#161616",
-      color: "#fff",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axiosSecure
-          .post("/contests", contestData)
-          .then((res) => {
-            if (res.data.insertedId || res.status === 200) {
+        ...data,
+        bannerImage: photoURL,
+        price: parseFloat(data.price),
+        prizeMoney: parseFloat(data.prizeMoney),
+        participantsCount: 0,
+        status: "pending",
+        contestOwner: user?.displayName,
+        ownerEmail: user?.email,
+        winnerName: "",
+        winnerPhoto: "",
+        winnerEmail: "",
+      };
+      console.log(contestData);
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You want to create this contest?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#F40E08",
+        cancelButtonColor: "#111",
+        confirmButtonText: "Yes, Submit it!",
+        background: "#161616",
+        color: "#fff",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosSecure
+            .post("/contests", contestData)
+            .then((res) => {
+              if (res.data.insertedId || res.status === 200) {
+                Swal.fire({
+                  title: "Success!",
+                  text: "Contest created successfully!",
+                  icon: "success",
+                  background: "#161616",
+                  color: "#fff",
+                });
+                reset();
+              }
+            })
+            .catch(() => {
               Swal.fire({
-                title: "Success!",
-                text: "Contest created successfully!",
-                icon: "success",
+                title: "Error",
+                text: "Submission failed!",
+                icon: "error",
                 background: "#161616",
                 color: "#fff",
               });
-              reset();
-            }
-          })
-          .catch((err) => {
-            Swal.fire({
-              title: "Error",
-              text: "Submission failed!",
-              icon: "error",
-              background: "#161616",
-              color: "#fff",
             });
-          });
-      }
+        }
+      });
     });
-
-    })
-
-    
   };
 
   return (
@@ -139,13 +138,11 @@ const CreateContest = () => {
               }`}
               {...register("contestType", { required: "Select a type" })}
             >
-              <option value="">Choose Category</option>
-              <option value="imageDesign">Image Design</option>
-              <option value="articleWriting">Article Writing</option>
-              <option value="gaming">Gaming</option>
-              <option value="businessIdea">Business Idea</option>
-              <option value="hackathon">Hackathon</option>
-              <option value="cp">CP</option>
+              {contestTypes.map((contestType) => (
+                <option key={contestType.id} value={contestType.value}>
+                  {contestType.name}
+                </option>
+              ))}
             </select>
             {errors.contestType && (
               <span className="text-primary text-[10px] font-bold uppercase ml-1">
