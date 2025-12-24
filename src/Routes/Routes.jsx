@@ -11,6 +11,7 @@ import CreateContest from "../Pages/Dashboard/CreateContest";
 import AllContests from "../Pages/AllContests";
 import ContestDetails from "../Pages/ContestDetails";
 import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
+import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancelled";
 
 export const router = createBrowserRouter([
   {
@@ -29,7 +30,6 @@ export const router = createBrowserRouter([
         path: "contest-details/:id",
         Component: ContestDetails,
       },
-
     ],
   },
   {
@@ -43,9 +43,14 @@ export const router = createBrowserRouter([
       {
         path: "create-contests",
         Component: CreateContest,
-      },{
-        path:"payment-success",
-        Component : PaymentSuccess
+      },
+      {
+        path: "payment-success",
+        Component: PaymentSuccess,
+      },
+      {
+        path: "payment-cancelled/:id",
+        Component: PaymentCancel
       },
     ],
   },
