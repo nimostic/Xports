@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "fir-template-4b1dd",
+    "prod": "fir-template-4b1dd"
+  },
+  "targets": {},
+  "etags": {}
+}
