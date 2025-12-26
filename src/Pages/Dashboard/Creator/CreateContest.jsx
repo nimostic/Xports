@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import AngledButton from "../../Components/AngledButton";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import AngledButton from "../../../Components/AngledButton";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
-import { AuthContext } from "../../Provider/AuthContext";
+import { AuthContext } from "../../../Provider/AuthContext";
 import axios from "axios";
-import contestTypes from "../../../public/ContestTypes.json";
+import contestTypes from "../../../../public/ContestTypes.json";
 const CreateContest = () => {
   const {
     register,

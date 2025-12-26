@@ -7,11 +7,12 @@ import RootLayout from "../Layouts/RootLayout";
 import Home from "../Pages/Home/Home";
 import DashboardLayout from "../Layouts/DashboardLayout";
 import DashboardHome from "../Pages/Dashboard/DashboardHome";
-import CreateContest from "../Pages/Dashboard/CreateContest";
 import AllContests from "../Pages/AllContests";
 import ContestDetails from "../Pages/ContestDetails";
 import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancelled";
+import ManageContests from "../Pages/Dashboard/Creator/ManageContests";
+import CreateContest from "../Pages/Dashboard/Creator/CreateContest";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
       {
         path: "create-contests",
         Component: CreateContest,
+      },
+      {
+        path: "manage-contests",
+        Component: ManageContests,
       },
       {
         path: "payment-success",
