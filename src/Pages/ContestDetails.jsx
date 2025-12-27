@@ -24,7 +24,7 @@ const ContestDetails = () => {
     enabled: !!user?.email && !!id,
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/submissions/check?email=${user?.email}&contestId=${id}`
+        `/submissions/check-registration?email=${user?.email}&contestId=${id}`
       );
       return res.data;
     },
@@ -32,7 +32,7 @@ const ContestDetails = () => {
 
   const isRegistered = registeredData?.registered;
   const submitted = registeredData?.status ==="submitted"
-  // console.log(registeredData)
+  // console.log(isRegistered)
 
   // details api
   const { data: contest = {}, isLoading } = useQuery({

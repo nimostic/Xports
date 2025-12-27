@@ -4,6 +4,7 @@ import SocialLogin from "./SocialLogin";
 import { AuthContext } from "../../Provider/AuthContext";
 import { Link, useLocation, useNavigate } from "react-router";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Login = () => {
 
@@ -25,7 +26,8 @@ const Login = () => {
       navigate(location?.state || "/")
     })
     .catch(error =>{
-      console.log(error);
+      // console.log(error);
+      toast.error(error.message)
     })
   };
 

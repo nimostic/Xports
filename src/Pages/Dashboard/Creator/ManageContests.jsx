@@ -6,6 +6,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loading from "../../../Components/Loading";
 import Swal from "sweetalert2";
 import UpdateContest from "./UpdateContest";
+import { Link } from "react-router";
 
 const ManageContests = () => {
   const { user } = use(AuthContext);
@@ -226,9 +227,9 @@ const ManageContests = () => {
 
                         {/* See Submissions Button */}
                         <td className="pr-8">
-                          <button className="btn btn-sm w-full bg-primary hover:bg-red-700 text-white border-none rounded-xl uppercase font-black text-[10px] tracking-tighter shadow-lg shadow-primary/20">
+                          <Link to={`/dashboard/submitted-tasks/${contest._id}`} className="btn btn-sm w-full bg-primary hover:bg-red-700 text-white border-none rounded-xl uppercase font-black text-[10px] tracking-tighter shadow-lg shadow-primary/20">
                             <FaEye /> View Work
-                          </button>
+                          </Link>
                         </td>
                       </tr>
                     ))}

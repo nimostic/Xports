@@ -95,6 +95,22 @@ const DashboardLayout = () => {
             </li>
             <li>
               <NavLink
+                to="/dashboard/pending-contest"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                    isActive
+                      ? "bg-[#F40E08] text-white shadow-[0_0_15px_rgba(244,14,8,0.4)]"
+                      : "hover:bg-white/5"
+                  }`
+                }
+              >
+                <FaUsers />Pending Contest
+              </NavLink>
+            </li>
+
+
+            <li>
+              <NavLink
                 to="/dashboard/manage-contests"
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${

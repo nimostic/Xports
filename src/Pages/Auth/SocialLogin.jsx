@@ -18,7 +18,7 @@ const SocialLogin = () => {
         photoURL : res.user.photoURL
       }
       // console.log(userInfo);
-      axios.post("http://localhost:3000/users",userInfo)
+      axios.post(`${import.meta.env.VITE_API_URL}/users`,userInfo)
       .then((res)=>{
         console.log("user created in the database",res);
         navigate(location.state || "/")

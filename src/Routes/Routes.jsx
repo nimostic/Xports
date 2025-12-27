@@ -13,6 +13,9 @@ import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancel from "../Pages/Dashboard/Payment/PaymentCancelled";
 import ManageContests from "../Pages/Dashboard/Creator/ManageContests";
 import CreateContest from "../Pages/Dashboard/Creator/CreateContest";
+import SubmittedTasks from "../Pages/Dashboard/Creator/SubmittedTasks";
+import AdminManageContests from "../Pages/Dashboard/Admin/PendingContests";
+import PendingContests from "../Pages/Dashboard/Admin/PendingContests";
 
 export const router = createBrowserRouter([
   {
@@ -42,12 +45,20 @@ export const router = createBrowserRouter([
         Component: DashboardHome,
       },
       {
+        path: "pending-contest",
+        Component: PendingContests,
+      },
+      {
         path: "create-contests",
         Component: CreateContest,
       },
       {
-        path: "manage-contests",
+        path: "manage-contests", //creator
         Component: ManageContests,
+      },
+      {
+        path: "submitted-tasks/:id",
+        Component: SubmittedTasks,
       },
       {
         path: "payment-success",

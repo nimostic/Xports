@@ -47,7 +47,7 @@ const Register = () => {
             displayName: data.name,
             photoURL: photoURL,
           };
-          axios.post("http://localhost:3000/users", userInfo).then((res) => {
+          axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo).then((res) => {
             if (res.data.insertedId) {
               console.log("user created in the database");
             }
@@ -65,12 +65,12 @@ const Register = () => {
             })
             .catch((error) => {
               console.log(error);
-              toast.error(error);
+              toast.error(error.message);
             });
         });
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error.message);
       });
   };
 
