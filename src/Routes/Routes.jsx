@@ -16,6 +16,7 @@ import CreateContest from "../Pages/Dashboard/Creator/CreateContest";
 import SubmittedTasks from "../Pages/Dashboard/Creator/SubmittedTasks";
 import AdminManageContests from "../Pages/Dashboard/Admin/PendingContests";
 import PendingContests from "../Pages/Dashboard/Admin/PendingContests";
+import ManageUsers from "../Pages/Dashboard/Admin/ManageUsers";
 
 export const router = createBrowserRouter([
   {
@@ -45,8 +46,12 @@ export const router = createBrowserRouter([
         Component: DashboardHome,
       },
       {
-        path: "pending-contest",
+        path: "pending-contests", //admin
         Component: PendingContests,
+      },
+      {
+        path: "manage-users", //admin
+        Component: ManageUsers,
       },
       {
         path: "create-contests",

@@ -1,10 +1,10 @@
 import React, { use } from "react";
 import { AuthContext } from "../../Provider/AuthContext";
 import { useLocation, useNavigate } from "react-router";
-import axios from "axios";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const SocialLogin = () => {
-
+const axiosSecure = useAxiosSecure()
   const {signInGoogle} = use(AuthContext);
   const location = useLocation()
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ const SocialLogin = () => {
         photoURL : res.user.photoURL
       }
       // console.log(userInfo);
-      axios.post(`${import.meta.env.VITE_API_URL}/users`,userInfo)
+      axiosSecure.post(`${import.meta.env.VITE_API_URL}/users`,userInfo)
       .then((res)=>{
         console.log("user created in the database",res);
         navigate(location.state || "/")

@@ -6,6 +6,7 @@ import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const Register = () => {
   const {
@@ -18,7 +19,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
+  const axiosSecure = useAxiosSecure()
   const handleRegistration = (data) => {
     console.log("Form Data:", data);
     const profileImg = data.photo[0];
@@ -47,7 +48,7 @@ const Register = () => {
             displayName: data.name,
             photoURL: photoURL,
           };
-          axios.post(`${import.meta.env.VITE_API_URL}/users`, userInfo).then((res) => {
+          axiosSecure.post(`${import.meta.env.VITE_API_URL}/users`, userInfo).then((res) => {
             if (res.data.insertedId) {
               console.log("user created in the database");
             }
