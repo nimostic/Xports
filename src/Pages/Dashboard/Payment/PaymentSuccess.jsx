@@ -1,49 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { CheckCircle, ArrowRight, Trophy } from "lucide-react";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
-
+import { AuthContext } from "../../../Provider/AuthContext";
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");
-  
+
   const [contestId, setContestId] = useState(null);
   const [transactionId, setTransactionId] = useState(null);
   const [paymentProcessed, setPaymentProcessed] = useState(false);
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-
+  const {user,loading} = use(AuthContext)
   useEffect(() => {
     if (!sessionId || paymentProcessed) return;
 
     const completePayment = async () => {
       try {
-        const res = await axiosSecure.post('/payment-success', { sessionId });
-        
+        const res = await axiosSecure.post("/payment-success", { sessionId });
+
         if (res.data.success) {
           if (res.data.message !== "Already processed") {
             toast.success("Registration Successful!");
           }
-          const sessionRes = await axiosSecure.get(`/checkout-session/${sessionId}`);
+          const sessionRes = await axiosSecure.get(
+            `/checkout-session/${sessionId}`
+          );
           setContestId(sessionRes.data.contestId);
           setTransactionId(sessionRes.data.transactionId);
           queryClient.invalidateQueries(["isRegistered"]);
-          setPaymentProcessed(true); 
+          setPaymentProcessed(true);
         }
       } catch (error) {
-        console.error("Payment Error:", error);
+        //console.error("Payment Error:", error);
         toast.error("Something went wrong!");
       }
     };
 
     completePayment();
   }, [sessionId, axiosSecure, queryClient, paymentProcessed]);
-
-
-
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">

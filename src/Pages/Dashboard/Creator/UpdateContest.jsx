@@ -5,8 +5,8 @@ import AngledButton from "../../../Components/AngledButton";
 import DatePicker from "react-datepicker";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { toast } from "react-toastify";
-const UpdateContest = ({ closeModal, refetch, selectedContest }) => { 
-  const axiosSecure = useAxiosSecure()
+const UpdateContest = ({ closeModal, refetch, selectedContest }) => {
+  const axiosSecure = useAxiosSecure();
   const {
     handleSubmit,
     register,
@@ -14,7 +14,7 @@ const UpdateContest = ({ closeModal, refetch, selectedContest }) => {
     control,
     reset,
   } = useForm();
-  console.log(selectedContest);
+  //console.log(selectedContest);
   //reset functionality through default vabe register("contestName")etc bose jasse
   useEffect(() => {
     if (selectedContest) {
@@ -33,28 +33,29 @@ const UpdateContest = ({ closeModal, refetch, selectedContest }) => {
   }, [selectedContest, reset]);
 
   const onSubmit = (data) => {
-    axiosSecure.patch(`/contests/${selectedContest._id}?email=${selectedContest.ownerEmail}`,data)
-    .then(res=>{
-      if (res.data.modifiedCount > 0) {
-        toast.success("Successfully updated!");
-        refetch();
-        closeModal()
-      } else {
-        toast.info("No changes made.");
-        closeModal()
-      }
-    })
+    axiosSecure
+      .patch(
+        `/contests/${selectedContest._id}?email=${selectedContest.ownerEmail}`,
+        data
+      )
+      .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          toast.success("Successfully updated!");
+          refetch();
+          closeModal();
+        } else {
+          toast.info("No changes made.");
+          closeModal();
+        }
+      });
   };
 
   return (
     <div className="modal modal-open modal-bottom sm:modal-middle overflow-y-auto">
       <div className="modal-box max-w-4xl bg-[#111111] border border-gray-800 p-6 md:p-10 shadow-2xl scrollbar-hide">
-        <form method="dialog">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-white hover:bg-primary">
+          <button onClick={closeModal} className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-white hover:bg-primary">
             ✕
           </button>
-        </form>
-
         <div className="mb-10 text-center md:text-left">
           <h1 className="text-primary text-4xl font-black uppercase tracking-tighter italic">
             Update <span className="text-white">Contest</span>

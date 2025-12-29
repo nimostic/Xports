@@ -19,7 +19,7 @@ const CreateContest = () => {
 
   const { user } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
-  // console.log(contestType);
+  // //console.log(contestType);
   const onSubmit = (data) => {
     const bannerImage = data.bannerImage[0];
 
@@ -35,7 +35,7 @@ const CreateContest = () => {
     }`;
 
     axios.post(image_API_URL, formData).then((res) => {
-      // console.log(res.data.data.url);
+      // //console.log(res.data.data.url);
       const photoURL = res.data.data.url;
 
       const contestData = {
@@ -51,7 +51,7 @@ const CreateContest = () => {
         winnerPhoto: "",
         winnerEmail: "",
       };
-      console.log(contestData);
+      //console.log(contestData);
       Swal.fire({
         title: "Are you sure?",
         text: "You want to create this contest?",

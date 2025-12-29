@@ -1,5 +1,6 @@
-import React from "react";
+import React, { use } from "react";
 import { Link, Outlet, NavLink } from "react-router";
+import Loading from "../Components/Loading";
 import {
   FaHome,
   FaTrophy,
@@ -10,7 +11,12 @@ import {
   FaBars,
 } from "react-icons/fa";
 import logo from "../../public/logo.svg";
+import useRole from "../Hooks/useRole";
+import { AuthContext } from "../Provider/AuthContext";
 const DashboardLayout = () => {
+  const [role] = useRole();
+  const { user } = use(AuthContext);
+
   return (
     <div className="drawer lg:drawer-open bg-[#0F0F0F]">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -47,8 +53,8 @@ const DashboardLayout = () => {
           {/* Sidebar Brand Logo */}
           <div className="p-8 border-b border-gray-800/50">
             <Link to="/" className="">
-            <img src={logo} alt="logo" />
-          </Link>
+              <img src={logo} alt="logo" />
+            </Link>
             <p className="text-[10px] uppercase tracking-[4px] text-gray-500 mt-1">
               Management Portal
             </p>
@@ -76,73 +82,78 @@ const DashboardLayout = () => {
             </li>
 
             {/* Admin Links*/}
-            <div className="text-xs font-bold text-gray-600 uppercase tracking-widest px-4 mb-2 mt-6">
-              Admin Admin
-            </div>
-            <li>
-              <NavLink
-                to="/dashboard/manage-users"
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                    isActive
-                      ? "bg-[#F40E08] text-white shadow-[0_0_15px_rgba(244,14,8,0.4)]"
-                      : "hover:bg-white/5"
-                  }`
-                }
-              >
-                <FaUsers /> Manage Users
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/dashboard/pending-contests"
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                    isActive
-                      ? "bg-[#F40E08] text-white shadow-[0_0_15px_rgba(244,14,8,0.4)]"
-                      : "hover:bg-white/5"
-                  }`
-                }
-              >
-                <FaUsers />Pending Contest
-              </NavLink>
-            </li>
-
-
-            <li>
-              <NavLink
-                to="/dashboard/manage-contests"
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                    isActive
-                      ? "bg-[#F40E08] text-white shadow-[0_0_15px_rgba(244,14,8,0.4)]"
-                      : "hover:bg-white/5"
-                  }`
-                }
-              >
-                <FaCogs /> Manage Contests
-              </NavLink>
-            </li>
-
+            {role === "admin" && (
+              <>
+                <div className="text-xs font-bold text-gray-600 uppercase tracking-widest px-4 mb-2 mt-6">
+                  Admin {user?.displayName}
+                </div>
+                <li>
+                  <NavLink
+                    to="/dashboard/manage-users"
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                        isActive
+                          ? "bg-[#F40E08] text-white shadow-[0_0_15px_rgba(244,14,8,0.4)]"
+                          : "hover:bg-white/5"
+                      }`
+                    }
+                  >
+                    <FaUsers /> Manage Users
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/pending-contests"
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                        isActive
+                          ? "bg-[#F40E08] text-white shadow-[0_0_15px_rgba(244,14,8,0.4)]"
+                          : "hover:bg-white/5"
+                      }`
+                    }
+                  >
+                    <FaUsers />
+                    Pending Contest
+                  </NavLink>
+                </li>
+              </>
+            )}
             {/* Creator Links */}
-            <div className="text-xs font-bold text-gray-600 uppercase tracking-widest px-4 mb-2 mt-6">
-              Creator
-            </div>
-            <li>
-              <NavLink
-                to="/dashboard/create-contests"
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                    isActive
-                      ? "bg-[#F40E08] text-white shadow-[0_0_15px_rgba(244,14,8,0.4)]"
-                      : "hover:bg-white/5"
-                  }`
-                }
-              >
-                <FaPlusSquare /> Create Contest
-              </NavLink>
-            </li>
-
+            {role === "creator" && (
+              <>
+                <div className="text-xs font-bold text-gray-600 uppercase tracking-widest px-4 mb-2 mt-6">
+                  Creator {user?.displayName}
+                </div>
+                <li>
+                  <NavLink
+                    to="/dashboard/create-contests"
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                        isActive
+                          ? "bg-[#F40E08] text-white shadow-[0_0_15px_rgba(244,14,8,0.4)]"
+                          : "hover:bg-white/5"
+                      }`
+                    }
+                  >
+                    <FaPlusSquare /> Create Contest
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/manage-contests"
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                        isActive
+                          ? "bg-[#F40E08] text-white shadow-[0_0_15px_rgba(244,14,8,0.4)]"
+                          : "hover:bg-white/5"
+                      }`
+                    }
+                  >
+                    <FaCogs /> Manage Contests
+                  </NavLink>
+                </li>
+              </>
+            )}
             {/* Shared/Back Link */}
             <div className="border-t border-gray-800 my-6"></div>
             <li>
@@ -159,16 +170,14 @@ const DashboardLayout = () => {
           <div className="mt-auto p-4 bg-[#111] border-t border-gray-800 flex items-center gap-3">
             <div className="avatar">
               <div className="w-10 rounded-full ring ring-[#F40E08] ring-offset-base-100 ring-offset-2">
-                <img src="https://i.ibb.co/ZYW3VTp/brown-brim.png" alt="user" />
+                <img src={user?.photoURL} alt="user" />
               </div>
             </div>
             <div>
               <p className="text-sm font-bold text-white leading-tight">
-                Admin User
+                {role} {user?.displayName}
               </p>
-              <p className="text-[10px] text-gray-500 italic">
-                admin@xports.com
-              </p>
+              <p className="text-[10px] text-gray-500 italic">{user?.email}</p>
             </div>
           </div>
         </div>

@@ -23,7 +23,7 @@ const AllContests = () => {
     queryKey: ["contests", currentPage, selectedType, searchText],
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/contests?limit=${limit}&skip=${currentPage * limit}&type=${selectedType}&searchText=${searchText}`
+        `/contests?limit=${limit}&skip=${currentPage * limit}&type=${selectedType}&searchText=${searchText}&status=confirmed`
       );
       return res.data;
     },

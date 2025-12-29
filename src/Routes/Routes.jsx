@@ -18,6 +18,8 @@ import AdminManageContests from "../Pages/Dashboard/Admin/PendingContests";
 import PendingContests from "../Pages/Dashboard/Admin/PendingContests";
 import ManageUsers from "../Pages/Dashboard/Admin/ManageUsers";
 import Profile from "../Pages/Dashboard/Common/Profile";
+import ServiceSection from "../Pages/ServiceSection";
+import FaqSection from "../Pages/FaqSection";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +37,14 @@ export const router = createBrowserRouter([
       {
         path: "contest-details/:id",
         Component: ContestDetails,
+      },
+      {
+        path: "our-service",
+        Component: ServiceSection,
+      },
+      {
+        path: "faq",
+        Component: FaqSection,
       },
     ],
   },

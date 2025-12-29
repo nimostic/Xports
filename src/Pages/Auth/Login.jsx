@@ -7,7 +7,6 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const Login = () => {
-
   const {
     register,
     handleSubmit,
@@ -16,19 +15,19 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const location = useLocation();
-  const {signInUser} = use(AuthContext)
+  const { signInUser } = use(AuthContext);
   const navigate = useNavigate();
 
   const handleSignUp = (data) => {
-    signInUser(data.email,data.password)
-    .then(result =>{
-      console.log(result)
-      navigate(location?.state || "/")
-    })
-    .catch(error =>{
-      // console.log(error);
-      toast.error(error.message)
-    })
+    signInUser(data.email, data.password)
+      .then((result) => {
+        // //console.log(result)
+        navigate(location?.state || "/");
+      })
+      .catch((error) => {
+        // //console.log(error);
+        toast.error(error.message);
+      });
   };
 
   const handleShowPassword = (e) => {
@@ -140,7 +139,16 @@ const Login = () => {
               Login
             </button>
           </div>
-          <p className="text-center">New to Program? <Link to="/register" state={location.state} className="text-primary">Register</Link></p>
+          <p className="text-center">
+            New to Program?{" "}
+            <Link
+              to="/register"
+              state={location.state}
+              className="text-primary"
+            >
+              Register
+            </Link>
+          </p>
         </form>
         <SocialLogin></SocialLogin>
       </div>

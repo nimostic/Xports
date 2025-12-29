@@ -19,14 +19,14 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
   const handleRegistration = (data) => {
-    console.log("Form Data:", data);
+    // //console.log("Form Data:", data);
     const profileImg = data.photo[0];
 
     registerUser(data.email, data.password)
       .then((result) => {
-        console.log(result.user);
+        //console.log(result.user);
 
         //1. store the image in form data
 
@@ -40,7 +40,7 @@ const Register = () => {
         }`;
 
         axios.post(image_API_URL, formData).then((res) => {
-          console.log("after image uploaded", res);
+          //console.log("after image uploaded", res);
           const photoURL = res.data.data.url;
           // create user in the database
           const userInfo = {
@@ -48,11 +48,13 @@ const Register = () => {
             displayName: data.name,
             photoURL: photoURL,
           };
-          axiosSecure.post(`${import.meta.env.VITE_API_URL}/users`, userInfo).then((res) => {
-            if (res.data.insertedId) {
-              console.log("user created in the database");
-            }
-          });
+          axiosSecure
+            .post(`${import.meta.env.VITE_API_URL}/users`, userInfo)
+            .then((res) => {
+              if (res.data.insertedId) {
+                //console.log("user created in the database");
+              }
+            });
 
           const userProfile = {
             displayName: data.name,
@@ -61,11 +63,11 @@ const Register = () => {
 
           updateUserProfile(userProfile)
             .then(() => {
-              console.log("user profile updated done");
+              //console.log("user profile updated done");
               navigate(location.state || "/");
             })
             .catch((error) => {
-              console.log(error);
+              //console.log(error);
               toast.error(error.message);
             });
         });

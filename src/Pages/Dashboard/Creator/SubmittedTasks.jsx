@@ -16,7 +16,7 @@ const SubmittedTasks = () => {
   const axiosSecure = useAxiosSecure();
   const { id } = useParams();
   // total submissionon by contest
-  console.log(id);
+  //console.log(id);
   const {
     data: submissions = [],
     isLoading,
@@ -28,7 +28,7 @@ const SubmittedTasks = () => {
       return res.data;
     },
   });
-  console.log(submissions);
+  //console.log(submissions);
 
   const handleWinner = (data) => {
     axiosSecure

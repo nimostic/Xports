@@ -17,7 +17,7 @@ const Profile = () => {
   const { user, loading } = use(AuthContext);
   const axiosSecure = useAxiosSecure();
   const [role, status, isRoleLoading] = useRole();
-
+  // console.log(role);
   // Handle Creator Application
   const handleApplyCreator = async () => {
     try {
@@ -29,9 +29,10 @@ const Profile = () => {
       }
     } catch (err) {
       toast.error("Failed to send application.");
+      console.log(err);
     }
   };
-  console.log(role);
+  //console.log(role);
   if (loading || isRoleLoading) return <Loading />;
 
   return (

@@ -24,10 +24,10 @@ const useAxiosSecure = () => {
         return response;
       },
       (error) => {
-        console.log(error);
+        // //console.log(error);
         const statusCode = error.status;
-        
-        if (statusCode === 401 || statusCode === 403) { 
+
+        if (statusCode === 401 || statusCode === 403) {
           logOut().then(() => {
             navigate("/login");
           });
@@ -36,11 +36,11 @@ const useAxiosSecure = () => {
       }
     );
 
-    return () =>{
-      axiosSecure.interceptors.request.eject(reqInterceptor)
-      axiosSecure.interceptors.response.eject(resInterceptor)
-    }
-  }, [user,logOut,navigate]);
+    return () => {
+      axiosSecure.interceptors.request.eject(reqInterceptor);
+      axiosSecure.interceptors.response.eject(resInterceptor);
+    };
+  }, [user, logOut, navigate]);
 
   return axiosSecure;
 };

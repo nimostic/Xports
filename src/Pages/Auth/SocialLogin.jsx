@@ -4,36 +4,39 @@ import { useLocation, useNavigate } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 const SocialLogin = () => {
-const axiosSecure = useAxiosSecure()
-  const {signInGoogle} = use(AuthContext);
-  const location = useLocation()
-  const navigate = useNavigate()
-  const handleGoogleSignIn = () =>{
+  const axiosSecure = useAxiosSecure();
+  const { signInGoogle } = use(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const handleGoogleSignIn = () => {
     signInGoogle()
-    .then(res => {
-      //send user info to database
-      const userInfo = {
-        email : res.user.email,
-        displayName : res.user.displayName,
-        photoURL : res.user.photoURL
-      }
-      // console.log(userInfo);
-      axiosSecure.post(`${import.meta.env.VITE_API_URL}/users`,userInfo)
-      .then((res)=>{
-        console.log("user created in the database",res);
-        navigate(location.state || "/")
+      .then((res) => {
+        //send user info to database
+        const userInfo = {
+          email: res.user.email,
+          displayName: res.user.displayName,
+          photoURL: res.user.photoURL,
+        };
+        // //console.log(userInfo);
+        axiosSecure
+          .post(`${import.meta.env.VITE_API_URL}/users`, userInfo)
+          .then((res) => {
+            //console.log("user created in the database",res);
+            navigate(location.state || "/");
+          });
       })
-    })
-    .catch (error =>{
-      console.log(error);
-    })
-  }
-
+      .catch((error) => {
+        //console.log(error);
+      });
+  };
 
   return (
     <div className="text-center space-y-2">
       <h1 className="font-semibold">Or</h1>
-      <button onClick={handleGoogleSignIn} className="btn bg-white text-black border-[#e5e5e5]">
+      <button
+        onClick={handleGoogleSignIn}
+        className="btn bg-white text-black border-[#e5e5e5]"
+      >
         <svg
           aria-label="Google logo"
           width="16"

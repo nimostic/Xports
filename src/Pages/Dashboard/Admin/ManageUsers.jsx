@@ -13,7 +13,11 @@ const ManageUsers = () => {
   const { user, loading } = useContext(AuthContext);
 
   // TanStack Query for Users
-  const { data: users = [], refetch, isLoading } = useQuery({
+  const {
+    data: users = [],
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["users", searchText],
     enabled: !loading && !!user?.email,
     queryFn: async () => {
@@ -24,7 +28,7 @@ const ManageUsers = () => {
 
   // Handle Role Update (Admin/Creator)
   const handleRoleUpdate = async (selectedUser, newRole) => {
-    console.log(selectedUser);
+    //console.log(selectedUser);
     const result = await Swal.fire({
       title: `Promote to ${newRole}?`,
       text: `Change ${selectedUser.displayName}'s role to ${newRole}?`,
@@ -38,7 +42,9 @@ const ManageUsers = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await axiosSecure.patch(`/users/role/${selectedUser._id}`, { role: newRole });
+        const res = await axiosSecure.patch(`/users/role/${selectedUser._id}`, {
+          role: newRole,
+        });
         if (res.data.modifiedCount > 0) {
           refetch();
           toast.success(`${selectedUser.displayName} is now a ${newRole}`);
@@ -75,7 +81,6 @@ const ManageUsers = () => {
   return (
     <div className="bg-[#0a0a0a] min-h-screen p-6 md:p-10 text-white font-sans">
       <div className="max-w-7xl mx-auto">
-        
         {/* Header & Search Section */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
           <div>
@@ -83,7 +88,8 @@ const ManageUsers = () => {
               User <span className="text-blue-500">Management</span>
             </h1>
             <p className="text-gray-500 text-xs uppercase tracking-[0.3em] font-bold mt-2">
-              Total Personnel: <span className="text-white">{users.length}</span>
+              Total Personnel:{" "}
+              <span className="text-white">{users.length}</span>
             </p>
           </div>
 
@@ -115,45 +121,64 @@ const ManageUsers = () => {
                 </thead>
                 <tbody className="divide-y divide-gray-800/30">
                   {users.map((u) => (
-                    <tr key={u._id} className="hover:bg-white/2 transition-colors group">
+                    <tr
+                      key={u._id}
+                      className="hover:bg-white/2 transition-colors group"
+                    >
                       <td className="py-5 pl-8">
                         <div className="flex items-center gap-4">
                           <div className="avatar">
                             <div className="w-11 h-11 rounded-xl ring-1 ring-gray-800 group-hover:ring-blue-500/50 transition-all">
-                              <img src={u.photoURL || "https://i.ibb.co/mR79Y9t/user.png"} alt="User" />
+                              <img
+                                src={
+                                  u.photoURL ||
+                                  "https://i.ibb.co/mR79Y9t/user.png"
+                                }
+                                alt="User"
+                              />
                             </div>
                           </div>
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="font-bold text-gray-200">{u.name}</span>
+                              <span className="font-bold text-gray-200">
+                                {u.name}
+                              </span>
                               {u.status === "pending_creator" && (
                                 <span className="px-2 py-0.5 bg-amber-500/10 text-amber-500 text-[8px] font-black rounded-full border border-amber-500/20 animate-pulse">
                                   REQUESTED
                                 </span>
                               )}
                             </div>
-                            <div className="text-[11px] text-gray-500">{u.email}</div>
+                            <div className="text-[11px] text-gray-500">
+                              {u.email}
+                            </div>
                           </div>
                         </div>
                       </td>
                       <td>
-                        <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${
-                          u.role === "admin" ? "bg-purple-500/5 text-purple-400 border-purple-500/20" :
-                          u.role === "creator" ? "bg-blue-500/5 text-blue-400 border-blue-500/20" :
-                          "bg-gray-500/5 text-gray-400 border-gray-500/20"
-                        }`}>
-                          {u.role || 'user'}
+                        <span
+                          className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${
+                            u.role === "admin"
+                              ? "bg-purple-500/5 text-purple-400 border-purple-500/20"
+                              : u.role === "creator"
+                              ? "bg-blue-500/5 text-blue-400 border-blue-500/20"
+                              : "bg-gray-500/5 text-gray-400 border-gray-500/20"
+                          }`}
+                        >
+                          {u.role || "user"}
                         </span>
                       </td>
                       <td className="text-center">
                         <div className="flex justify-center gap-2">
                           <button
                             onClick={() => handleRoleUpdate(u, "creator")}
-                            disabled={u.role === "creator" || u.role === "admin"}
+                            disabled={
+                              u.role === "creator" || u.role === "admin"
+                            }
                             className={`p-2.5 rounded-lg border transition-all disabled:opacity-10 ${
-                              u.status === "pending_creator" 
-                              ? "bg-amber-500 text-black border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
-                              : "bg-blue-500/10 text-blue-500 border-blue-500/10 hover:bg-blue-500 hover:text-white"
+                              u.status === "pending_creator"
+                                ? "bg-amber-500 text-black border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
+                                : "bg-blue-500/10 text-blue-500 border-blue-500/10 hover:bg-blue-500 hover:text-white"
                             }`}
                             title="Make Creator"
                           >
