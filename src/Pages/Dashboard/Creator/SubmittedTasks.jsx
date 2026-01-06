@@ -31,6 +31,7 @@ const SubmittedTasks = () => {
   //console.log(submissions);
 
   const handleWinner = (data) => {
+    console.log(data);
     axiosSecure
       .patch(`/declare-winner/${id}`, data)
       .then((res) => {
@@ -44,8 +45,8 @@ const SubmittedTasks = () => {
       });
   };
 
-  //   const hasWinner = demoSubmissions.some((s) => s.isWinner);
-  const hasWinner = false;
+    const hasWinner = submissions.some((s) => s.isWinner);
+ 
 
   return (
     <div className="bg-[#0a0a0a] min-h-screen p-6 text-white font-sans">
@@ -103,7 +104,7 @@ const SubmittedTasks = () => {
                       <td className="py-6 pl-8">
                         <div className="flex items-center gap-4">
                           <div className="w-10 h-10 rounded-full bg-linear-to-tr from-primary to-red-800 flex items-center justify-center font-bold text-white">
-                            {sub.participant?.Photo}
+                            <img src={sub.participantPhoto} alt="Participant Photo" />
                           </div>
                           <div>
                             <div className="font-bold text-base group-hover:text-primary transition-colors">

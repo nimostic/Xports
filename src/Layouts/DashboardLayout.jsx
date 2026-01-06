@@ -81,6 +81,22 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
 
+            <li>
+              <NavLink
+                to="/dashboard/my-contests"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                    isActive
+                      ? "bg-[#F40E08] text-white shadow-[0_0_15px_rgba(244,14,8,0.4)]"
+                      : "hover:bg-white/5"
+                  }`
+                }
+              >
+                <FaUsers />
+                Participated Contest
+              </NavLink>
+            </li>
+
             {/* Admin Links*/}
             {role === "admin" && (
               <>

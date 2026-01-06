@@ -20,6 +20,8 @@ import ManageUsers from "../Pages/Dashboard/Admin/ManageUsers";
 import Profile from "../Pages/Dashboard/Common/Profile";
 import ServiceSection from "../Pages/ServiceSection";
 import FaqSection from "../Pages/FaqSection";
+import ParticipateContest from "../Pages/Dashboard/User/ParticipateContest";
+import Participated from "../Pages/Dashboard/User/ParticipateContest";
 
 export const router = createBrowserRouter([
   {
@@ -57,8 +59,12 @@ export const router = createBrowserRouter([
         Component: DashboardHome,
       },
       {
-        path: "profile", //admin
+        path: "profile",
         Component: Profile,
+      },
+      {
+        path: "my-contests", //user
+        Component: Participated,
       },
       {
         path: "pending-contests", //admin

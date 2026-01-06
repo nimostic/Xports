@@ -19,7 +19,7 @@ const ContestDetails = () => {
   const { user } = use(AuthContext);
   const axiosSecure = useAxiosSecure();
   const { register, handleSubmit, reset } = useForm();
-  const [role, isRoleLoading] = useRole();
+  const [role] = useRole();
   const { data: registeredData = {} } = useQuery({
     queryKey: ["isRegistered", id, user?.email],
     enabled: !!user?.email && !!id,
@@ -33,7 +33,7 @@ const ContestDetails = () => {
 
   const isRegistered = registeredData?.registered;
   const submitted = registeredData?.status === "submitted";
-  // //console.log(isRegistered)
+  console.log(role);
 
   // details api
   const { data: contest = {}, isLoading } = useQuery({
@@ -55,6 +55,8 @@ const ContestDetails = () => {
       contestName: contest.contestName,
       description: contest.description,
       image: contest.bannerImage,
+      participantName: user?.displayName,
+      participantPhoto: user?.photoURL,
     };
 
     try {
@@ -79,6 +81,7 @@ const ContestDetails = () => {
       submissionLink: data.submissionLink,
       submittedAt: new Date(),
     };
+    console.log(submissionInfo);
 
     try {
       const res = await axiosSecure.post("submissions/task", submissionInfo);
@@ -93,7 +96,6 @@ const ContestDetails = () => {
         });
         setIsModalOpen(false);
         setTaskSubmitted(true);
-
         reset();
       }
     } catch (error) {
@@ -170,6 +172,71 @@ const ContestDetails = () => {
                 {contest.instruction}
               </p>
             </section>
+            {isEnded && (
+              <section className="bg-[#111] p-8 rounded-2xl border border-gray-800">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-black uppercase text-primary tracking-wider">
+                    Winner
+                  </h2>
+
+                  {contest?.winnerName && (
+                    <span className="px-3 py-1 text-[10px] font-bold uppercase rounded-full bg-green-500/10 text-green-500 tracking-widest">
+                      Contest Winner
+                    </span>
+                  )}
+                </div>
+
+                {contest?.winnerName ? (
+                  <div className="flex flex-col sm:flex-row items-center gap-6 bg-black/40 p-6 rounded-xl border border-gray-700">
+                    {/* Winner Image */}
+                    <div className="relative shrink-0">
+                      <img
+                        src={contest.winnerPhoto}
+                        alt={contest.winnerName}
+                        className="w-24 h-24 rounded-full object-cover border-2 border-primary"
+                      />
+                      <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-primary rounded-full flex items-center justify-center text-xs font-black text-white">
+                        🏆
+                      </div>
+                    </div>
+
+                    {/* Winner Info */}
+                    <div className="text-center sm:text-left">
+                      <h3 className="text-xl font-bold text-white">
+                        {contest.winnerName}
+                      </h3>
+
+                      <p className="text-gray-400 text-sm mt-1">
+                        Champion of{" "}
+                        <span className="text-primary font-semibold">
+                          {contest.contestName}
+                        </span>
+                      </p>
+
+                      <div className="mt-4 flex flex-wrap justify-center sm:justify-start gap-6 text-xs uppercase tracking-widest">
+                        <span className="text-gray-400">
+                          Prize:
+                          <span className="ml-1 text-green-500 font-bold">
+                            ${contest.prizeMoney}
+                          </span>
+                        </span>
+
+                        <span className="text-gray-400">
+                          Status:
+                          <span className="ml-1 text-primary font-bold">
+                            Finalized
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-12 text-gray-500 italic uppercase tracking-widest border border-dashed border-gray-700 rounded-xl">
+                    Winner not announced yet
+                  </div>
+                )}
+              </section>
+            )}
           </div>
 
           <div className="space-y-6">
@@ -204,8 +271,13 @@ const ContestDetails = () => {
                 </div>
               </div>
 
-              {role === "creator" ? (
-                <Link to={`/dashboard/submitted-tasks/${id}`}><AngledButton text="View Work" className="w-full"></AngledButton></Link>
+              {user?.email === contest?.ownerEmail ? (
+                <Link to={`/dashboard/submitted-tasks/${id}`}>
+                  <AngledButton
+                    text="View Work"
+                    className="w-full"
+                  ></AngledButton>
+                </Link>
               ) : (
                 <>
                   {!isRegistered ? (
