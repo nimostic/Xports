@@ -10,6 +10,8 @@ import {
   FaCogs,
   FaBars,
 } from "react-icons/fa";
+import { GrOverview } from "react-icons/gr";
+import { GiBullseye } from "react-icons/gi";
 import logo from "../../public/logo.svg";
 import useRole from "../Hooks/useRole";
 import { AuthContext } from "../Provider/AuthContext";
@@ -83,19 +85,37 @@ const DashboardLayout = () => {
 
             <li>
               <NavLink
-                to="/dashboard/my-contests"
+                to="/dashboard"
+                end
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                     isActive
                       ? "bg-[#F40E08] text-white shadow-[0_0_15px_rgba(244,14,8,0.4)]"
-                      : "hover:bg-white/5"
+                      : "hover:bg-white/5 text-gray-400"
                   }`
                 }
               >
-                <FaUsers />
-                Participated Contest
+                <GrOverview/> Overview
               </NavLink>
             </li>
+
+            {role === "user" && (
+              <li>
+                <NavLink
+                  to="/dashboard/my-contests"
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                      isActive
+                        ? "bg-[#F40E08] text-white shadow-[0_0_15px_rgba(244,14,8,0.4)]"
+                        : "hover:bg-white/5"
+                    }`
+                  }
+                >
+                  <GiBullseye />
+                  Participated Contest
+                </NavLink>
+              </li>
+            )}
 
             {/* Admin Links*/}
             {role === "admin" && (
@@ -128,7 +148,7 @@ const DashboardLayout = () => {
                       }`
                     }
                   >
-                    <FaUsers />
+                    <GiBullseye />
                     Pending Contest
                   </NavLink>
                 </li>

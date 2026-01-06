@@ -106,7 +106,7 @@ const Navbar = () => {
             </li>
             <div className="divider my-1"></div>
             <li>
-              <Link to="/profile">Profile</Link>
+              <Link to="/dashboard/profile">Profile</Link>
             </li>
             <li>
               <Link to="/dashboard">Dashboard</Link>

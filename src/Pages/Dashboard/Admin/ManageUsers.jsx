@@ -171,6 +171,14 @@ const ManageUsers = () => {
                       <td className="text-center">
                         <div className="flex justify-center gap-2">
                           <button
+                            onClick={() => handleRoleUpdate(u, "user")}
+                            disabled={u.role === "user" || u.role === "admin"}
+                            className={`p-2.5 rounded-lg border transition-all disabled:opacity-10 `}
+                            title="Make User"
+                          >
+                            <FaUserTie size={14} />
+                          </button>
+                          <button
                             onClick={() => handleRoleUpdate(u, "creator")}
                             disabled={
                               u.role === "creator" || u.role === "admin"

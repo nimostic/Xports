@@ -21,12 +21,10 @@ const Register = () => {
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const handleRegistration = (data) => {
-    // //console.log("Form Data:", data);
     const profileImg = data.photo[0];
 
     registerUser(data.email, data.password)
       .then((result) => {
-        //console.log(result.user);
 
         //1. store the image in form data
 
