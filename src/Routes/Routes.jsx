@@ -22,6 +22,7 @@ import ServiceSection from "../Pages/ServiceSection";
 import FaqSection from "../Pages/FaqSection";
 import ParticipateContest from "../Pages/Dashboard/User/ParticipateContest";
 import Participated from "../Pages/Dashboard/User/ParticipateContest";
+import ErrorPage from "../Pages/ErrorPage";
 
 export const router = createBrowserRouter([
   {
@@ -110,4 +111,8 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path:"*",
+    Component:ErrorPage
+  }
 ]);

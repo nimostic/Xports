@@ -1,26 +1,17 @@
 import React, { use } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../../Provider/AuthContext";
 import AngledButton from "../../Components/AngledButton";
-import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Loading from "../../Components/Loading";
 import Aos from "aos";
 import "aos/dist/aos.css";
 
-const PopularContests = () => {
+const PopularContests = ({contests,isLoading}) => {
   Aos.init();
 
   const { user } = use(AuthContext);
   const navigate = useNavigate();
-  const axiosSecure = useAxiosSecure();
-  const { data: { contests = [], total = 0 } = {}, isLoading } = useQuery({
-    queryKey: ["popular-contests"],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/contests?status=confirmed");
-      return res.data;
-    },
-  });
+
 
   const handleDetailsClick = (id) => {
     if (!user) {
@@ -36,10 +27,10 @@ const PopularContests = () => {
         {/* Section Header */}
         <div className="flex justify-between items-end mb-12 ">
           <div>
-            <h2 className="text-4xl font-bold text-white uppercase tracking-tighter">
+            <h2 className="text-4xl text-white font-black uppercase italic tracking-tighter leading-none">
               Popular <span className="text-primary">Contests</span>
             </h2>
-            <div className="h-1 w-20 bg-primary mt-2"></div>
+            <div className="h-2 w-20 bg-primary mt-4 rounded-full"></div>
           </div>
           <Link to="/all-contests">
             <AngledButton text="Show All" />

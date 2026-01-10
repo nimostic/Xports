@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../Hooks/useAxios";
 
-const WinnerSection = () => {
+const WinnerSection = ({ total }) => {
   const axiosInstance = useAxios();
   const { data: winners = [] } = useQuery({
     queryKey: ["winners"],
@@ -16,14 +16,7 @@ const WinnerSection = () => {
 
   const prizeMoney = winners.reduce((a, c) => a + c.prizeMoney, 0);
 
-  const { data: { contests = [], total = 0 } = {} } = useQuery({
-    queryKey: ["contests"],
-    queryFn: async () => {
-      const res = await axiosInstance.get(`/contests?status=confirmed`);
-      return res.data;
-    },
-  });
-  const { data: participations = []} = useQuery({
+  const { data: participations = [] } = useQuery({
     queryKey: ["participations"],
     queryFn: async () => {
       const res = await axiosInstance.get(`/participate`);
@@ -31,25 +24,19 @@ const WinnerSection = () => {
     },
   });
 
-  const successRate = ((winners.length / participations.length) * 100).toFixed(1)
-
+  const successRate = ((winners.length / participations.length) * 100).toFixed(
+    1
+  );
 
   return (
-    <section className="py-24 bg-[#050505] relative overflow-hidden">
+    <section className="py-8 md:py-20 bg-[#050505] relative overflow-hidden">
       {/* Background Glows */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10"></div>
       <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-primary/10 rounded-full blur-[100px] -z-10"></div>
 
       <div className="container mx-auto px-4">
         {/* Header Part */}
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="flex justify-center items-center gap-2 text-primary font-black uppercase tracking-widest text-sm mb-4"
-          >
-            <FaCrown /> Hall of Fame
-          </motion.div>
+        <div className="text-center mb-10">
           <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-white">
             Where Champions <span className="text-primary">Rise</span>
           </h2>
@@ -73,7 +60,11 @@ const WinnerSection = () => {
               value: `$${prizeMoney}+`,
             },
             { icon: <FaMedal />, label: "Contests Hosted", value: `${total}+` },
-            { icon: <FaCrown />, label: "Success Rate", value: `${successRate}%` },
+            {
+              icon: <FaCrown />,
+              label: "Success Rate",
+              value: `${successRate}%`,
+            },
           ].map((stat, idx) => (
             <div
               key={idx}
@@ -91,8 +82,15 @@ const WinnerSection = () => {
         </div>
 
         {/* Recent Winners Cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="flex justify-center items-center gap-2 text-primary font-black uppercase tracking-widest text-sm mb-8"
+        >
+          <FaCrown /> Recent Winners
+        </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {winners.slice(0, 3).map((winner, index) => (
+          {winners.slice(0, 6).map((winner, index) => (
             <motion.div
               key={winner._id}
               initial={{ opacity: 0, scale: 0.9 }}
