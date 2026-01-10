@@ -51,6 +51,9 @@ const AllContests = () => {
   const handleTypeChange = (type) => {
     setSelectedType(type);
     setCurrentPage(0); // Reset pagination on filter change
+    setSearchText(""); 
+    
+    navigate("/all-contests", { replace: true });
   };
 
   const handleSearch = (e) => {
