@@ -17,7 +17,7 @@ const PendingContests = () => {
   } = useQuery({
     queryKey: ["contests", searchText],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/contests?searchText=${searchText}`);
+      const res = await axiosSecure.get(`/contests?search=${searchText}`);
       return res.data;
     },
   });

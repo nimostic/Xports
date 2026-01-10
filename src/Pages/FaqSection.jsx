@@ -1,3 +1,4 @@
+import Aos from 'aos';
 import React from 'react';
 
 const faqs = [
@@ -20,9 +21,10 @@ const faqs = [
 ];
 
 const FaqSection = () => {
+    Aos.init()
     return (
         <section className="py-20 bg-[#0a0a0a]">
-            <div className="max-w-4xl mx-auto px-6">
+            <div data-aos="fade-left" className="max-w-4xl mx-auto px-6">
                 <div className="text-center mb-16">
                     <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white">
                         Common <span className="text-blue-500">Questions</span>

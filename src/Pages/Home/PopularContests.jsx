@@ -5,8 +5,12 @@ import { AuthContext } from "../../Provider/AuthContext";
 import AngledButton from "../../Components/AngledButton";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Loading from "../../Components/Loading";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const PopularContests = () => {
+  Aos.init();
+
   const { user } = use(AuthContext);
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
@@ -18,7 +22,6 @@ const PopularContests = () => {
     },
   });
 
-
   const handleDetailsClick = (id) => {
     if (!user) {
       navigate("/login");
@@ -29,9 +32,9 @@ const PopularContests = () => {
 
   return (
     <section className="py-20 bg-[#0a0a0a]">
-      <div className="container mx-auto px-4">
+      <div data-aos="zoom-in-out" className="container mx-auto px-4 ">
         {/* Section Header */}
-        <div className="flex justify-between items-end mb-12">
+        <div className="flex justify-between items-end mb-12 ">
           <div>
             <h2 className="text-4xl font-bold text-white uppercase tracking-tighter">
               Popular <span className="text-primary">Contests</span>

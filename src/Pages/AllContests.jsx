@@ -6,14 +6,23 @@ import AngledButton from "../Components/AngledButton";
 import contestTypes from "../../public/ContestTypes.json";
 import Loading from "../Components/Loading";
 import { FaSearch, FaUsers } from "react-icons/fa";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import Aos from "aos";
 
 const AllContests = () => {
-  const limit = 10;
-  const [currentPage, setCurrentPage] = useState(0);
-  const [selectedType, setSelectedType] = useState("All");
-  const [searchText, setSearchText] = useState("");
 
+  Aos.init()
+
+  const limit = 10;
+  //banner er jonno
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchFromURL = queryParams.get("search") || "";
+  // console.log(searchFromURL);
+
+  const [searchText, setSearchText] = useState(searchFromURL) || '';
+  const [selectedType, setSelectedType] = useState("All");
+  const [currentPage, setCurrentPage] = useState(0);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
@@ -23,7 +32,9 @@ const AllContests = () => {
     queryKey: ["contests", currentPage, selectedType, searchText],
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/contests?limit=${limit}&skip=${currentPage * limit}&type=${selectedType}&searchText=${searchText}&status=confirmed`
+        `/contests?limit=${limit}&skip=${
+          currentPage * limit
+        }&type=${selectedType}&search=${searchText}&status=confirmed`
       );
       return res.data;
     },
@@ -49,8 +60,7 @@ const AllContests = () => {
 
   return (
     <section className="py-20 bg-[#0a0a0a] min-h-screen text-white">
-      <div className="container mx-auto px-4">
-        
+      <div data-aos ='fade-up' className="container mx-auto px-4">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
           <div className="text-center md:text-left">
@@ -59,7 +69,7 @@ const AllContests = () => {
             </h2>
             <div className="h-1.5 w-24 bg-primary mt-3 rounded-full mx-auto md:mx-0"></div>
           </div>
-          
+
           {/* Search Input */}
           <div className="relative group w-full md:w-96">
             <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-primary transition-colors" />
@@ -78,7 +88,9 @@ const AllContests = () => {
           <button
             onClick={() => handleTypeChange("All")}
             className={`px-8 py-3 rounded-xl border transition-all duration-300 font-black uppercase text-[10px] tracking-[0.2em] ${
-              selectedType === "All" ? "bg-primary border-primary text-black" : "border-gray-800 text-gray-400 hover:border-primary/50"
+              selectedType === "All"
+                ? "bg-primary border-primary text-black"
+                : "border-gray-800 text-gray-400 hover:border-primary/50"
             }`}
           >
             All
@@ -88,7 +100,9 @@ const AllContests = () => {
               key={type.id}
               onClick={() => handleTypeChange(type.value)}
               className={`px-8 py-3 rounded-xl border transition-all duration-300 font-black uppercase text-[10px] tracking-[0.2em] ${
-                selectedType === type.value ? "bg-primary border-primary text-black" : "border-gray-800 text-gray-400 hover:border-primary/50"
+                selectedType === type.value
+                  ? "bg-primary border-primary text-black"
+                  : "border-gray-800 text-gray-400 hover:border-primary/50"
               }`}
             >
               {type.name}
@@ -174,7 +188,9 @@ const AllContests = () => {
                 key={page}
                 onClick={() => setCurrentPage(page)}
                 className={`w-12 h-12 rounded-full font-bold transition-all ${
-                  currentPage === page ? "bg-primary text-black scale-110 shadow-lg shadow-primary/20" : "bg-[#111] text-gray-500 hover:text-white"
+                  currentPage === page
+                    ? "bg-primary text-black scale-110 shadow-lg shadow-primary/20"
+                    : "bg-[#111] text-gray-500 hover:text-white"
                 }`}
               >
                 {page + 1}

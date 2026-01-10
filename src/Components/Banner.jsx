@@ -1,10 +1,21 @@
 import React from "react";
-import { Typewriter } from 'react-simple-typewriter'; // Import korun
+import { Typewriter } from "react-simple-typewriter";
 import bannerPic from "../../public/banner.png";
 import heroPic from "../../public/hero-1.png";
 import AngledButton from "./AngledButton";
+import { useNavigate } from "react-router";
 
 const Banner = () => {
+  const navigate = useNavigate()
+
+  const handleSearch= (e)=>{
+    e.preventDefault();
+    const text = e.target.search.value
+    // console.log(e.target.search.value);
+    if(text){
+      navigate(`/all-contests?search=${text}`)
+    }
+  }
   return (
     <div
       className="hero min-h-[600px] lg:min-h-screen bg-cover bg-center relative"
@@ -27,9 +38,8 @@ const Banner = () => {
           <h1 className="text-4xl lg:text-6xl font-black uppercase tracking-tighter leading-none mb-4 min-h-[120px]">
             Win Big with <br />
             <span className="text-primary drop-shadow-[2px_2px_0px_white]">
-              {/* Typewriter Effect Ekhane */}
               <Typewriter
-                words={['Xports', 'Innovation', 'Victory']}
+                words={["Xports", "Innovation", "Victory"]}
                 loop={0} // 0 mane infinite loop
                 cursor
                 cursorStyle="_"
@@ -39,23 +49,27 @@ const Banner = () => {
               />
             </span>
           </h1>
-          
+
           <p className="max-w-xl text-gray-200 text-lg mb-8 font-medium">
-            Explore hundreds of creative contests, showcase your skills, and win amazing prizes.
+            Explore hundreds of creative contests, showcase your skills, and win
+            amazing prizes.
           </p>
 
           {/* Search Bar */}
           <div className="relative max-w-md mx-auto lg:mx-0">
-            <input
-              type="text"
-              placeholder="Search contest types..."
-              className="w-full px-6 py-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-primary shadow-xl"
-            />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2">
-              <button className="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-full font-bold transition-colors">
-                Search
-              </button>
-            </div>
+            <form onSubmit={handleSearch}>
+              <input
+                type="text"
+                name="search"
+                placeholder="Search contest types..."
+                className="w-full px-6 py-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-primary shadow-xl"
+              />
+              <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                <button type="submit" className=" bg-primary hover:bg-secondary text-white px-6 py-2 rounded-full font-bold transition-colors">
+                  Search
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

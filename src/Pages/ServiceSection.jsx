@@ -1,3 +1,4 @@
+import Aos from "aos";
 import React from "react";
 import { FaTrophy, FaShieldAlt, FaRocket, FaUsers } from "react-icons/fa";
 
@@ -25,9 +26,10 @@ const services = [
 ];
 
 const ServiceSection = () => {
+  Aos.init()
   return (
     <section className="py-22 bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto px-6">
+      <div data-aos="fade-right" className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white">
             Our <span className="text-red-600">Services</span>
