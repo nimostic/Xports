@@ -1,4 +1,3 @@
-// Components/FullPageLoader.jsx
 import Lottie from 'lottie-react';
 import loadingAnim from '../../public/gaming.json';
 

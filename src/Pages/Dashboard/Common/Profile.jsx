@@ -51,15 +51,15 @@ const Profile = () => {
   })
   const {data:participateData={}} = useQuery({
     enabled:!!user?.email,
-    queryKey:["participateData",user?.email],
+    queryKey:["participateData",user.email],
     queryFn: async ()=>{
       const res = await axiosSecure.get(`/participate?email=${user.email}`)
       return res.data
     }
   })
 
-  console.log(wonData.length);
-  console.log(participateData.length);
+  // console.log(wonData.length);
+  // console.log(participateData.length);
 
 
   const updatedDetails = async (data) => {
@@ -90,7 +90,7 @@ const Profile = () => {
       reset();
       setImagePreview(null);
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       toast.error("Failed to update profile");
     } finally {
       setIsUpdating(false);

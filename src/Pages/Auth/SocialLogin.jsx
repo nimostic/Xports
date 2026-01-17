@@ -3,7 +3,7 @@ import { AuthContext } from "../../Provider/AuthContext";
 import { useLocation, useNavigate } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
-const SocialLogin = () => {
+const SocialLogin = ({from}) => {
   const axiosSecure = useAxiosSecure();
   const { signInGoogle } = use(AuthContext);
   const location = useLocation();
@@ -21,8 +21,7 @@ const SocialLogin = () => {
         axiosSecure
           .post(`${import.meta.env.VITE_API_URL}/users`, userInfo)
           .then((res) => {
-            //console.log("user created in the database",res);
-            navigate(location.state || "/");
+            navigate(from || "/");
           });
       })
       .catch((error) => {

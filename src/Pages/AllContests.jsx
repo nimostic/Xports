@@ -2,25 +2,23 @@ import React, { useState, useContext } from "react";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../Provider/AuthContext";
-import AngledButton from "../Components/AngledButton";
 import contestTypes from "../../public/ContestTypes.json";
 import Loading from "../Components/Loading";
 import { FaSearch, FaUsers } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router";
+import { Link, Navigate, useLocation, useNavigate } from "react-router";
 import Aos from "aos";
 
 const AllContests = () => {
-
-  Aos.init()
+  Aos.init();
 
   const limit = 10;
   //banner er jonno
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchFromURL = queryParams.get("search") || "";
-  // console.log(searchFromURL);
+  console.log(location);
 
-  const [searchText, setSearchText] = useState(searchFromURL) || '';
+  const [searchText, setSearchText] = useState(searchFromURL) || "";
   const [selectedType, setSelectedType] = useState("All");
   const [currentPage, setCurrentPage] = useState(0);
   const { user } = useContext(AuthContext);
@@ -43,16 +41,10 @@ const AllContests = () => {
   const totalPages = Math.ceil(total / limit);
   const pages = [...Array(totalPages).keys()];
 
-  // Handlers
-  const handleDetailsClick = (id) => {
-    user ? navigate(`/contest-details/${id}`) : navigate("/login");
-  };
-
   const handleTypeChange = (type) => {
     setSelectedType(type);
     setCurrentPage(0); // Reset pagination on filter change
-    setSearchText(""); 
-    
+    setSearchText("");
     navigate("/all-contests", { replace: true });
   };
 
@@ -63,7 +55,7 @@ const AllContests = () => {
 
   return (
     <section className="py-20 bg-[#0a0a0a] min-h-screen text-white">
-      <div data-aos ='fade-up' className="container mx-auto px-4">
+      <div data-aos="fade-up" className="container mx-auto px-4">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
           <div className="text-center md:text-left">
@@ -162,12 +154,14 @@ const AllContests = () => {
                   </p>
 
                   <div className="mt-auto">
-                    <button
-                      onClick={() => handleDetailsClick(contest._id)}
-                      className="w-full bg-[#1a1a1a] group-hover:bg-primary text-white group-hover:text-black font-black py-4 rounded-2xl border border-gray-800 group-hover:border-primary transition-all duration-500 uppercase text-xs tracking-widest italic"
+                    <Link
+                      to={`/contest-details/${contest._id}`}
+                      state={location.pathname}
                     >
-                      View Details
-                    </button>
+                      <button className="w-full bg-white/5 hover:bg-primary text-white font-bold py-3 rounded-xl border border-white/10 hover:border-primary transition-all duration-300">
+                        View Details
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>

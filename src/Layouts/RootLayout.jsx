@@ -11,7 +11,7 @@ const RootLayout = () => {
     const handleLoad = () => {
       setTimeout(() => {
         setIsLoading(false);
-      }, 1500);
+      }, 1000);
     };
 
     if (document.readyState === "complete") {

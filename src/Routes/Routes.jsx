@@ -23,6 +23,10 @@ import FaqSection from "../Pages/FaqSection";
 import ParticipateContest from "../Pages/Dashboard/User/ParticipateContest";
 import Participated from "../Pages/Dashboard/User/ParticipateContest";
 import ErrorPage from "../Pages/ErrorPage";
+import PrivateRoutes from "./PrivateRoutes";
+import ContactUs from "../Pages/ContactUs";
+import PrivacyPolicy from "../Pages/PrivacyPolicy";
+import TermsConditions from "../Pages/TermsConditions";
 
 export const router = createBrowserRouter([
   {
@@ -39,11 +43,27 @@ export const router = createBrowserRouter([
       },
       {
         path: "contest-details/:id",
-        Component: ContestDetails,
+        element: (
+          <PrivateRoutes>
+            <ContestDetails></ContestDetails>
+          </PrivateRoutes>
+        ),
       },
       {
         path: "our-service",
         Component: ServiceSection,
+      },
+      {
+        path: "contact",
+        Component: ContactUs,
+      },
+      {
+        path: "privacy",
+        Component: PrivacyPolicy,
+      },
+      {
+        path: "terms",
+        Component: TermsConditions,
       },
       {
         path: "faq",
@@ -53,7 +73,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    Component: DashboardLayout,
+    element: (
+      <PrivateRoutes>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoutes>
+    ),
     children: [
       {
         index: true,
@@ -93,7 +117,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "payment-cancelled/:id",
-        Component: PaymentCancel
+        Component: PaymentCancel,
       },
     ],
   },
@@ -112,7 +136,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path:"*",
-    Component:ErrorPage
-  }
+    path: "*",
+    Component: ErrorPage,
+  },
 ]);

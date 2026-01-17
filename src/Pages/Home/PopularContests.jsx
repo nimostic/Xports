@@ -6,12 +6,11 @@ import Loading from "../../Components/Loading";
 import Aos from "aos";
 import "aos/dist/aos.css";
 
-const PopularContests = ({contests,isLoading}) => {
+const PopularContests = ({ contests, isLoading }) => {
   Aos.init();
 
   const { user } = use(AuthContext);
   const navigate = useNavigate();
-
 
   const handleDetailsClick = (id) => {
     if (!user) {
@@ -79,13 +78,15 @@ const PopularContests = ({contests,isLoading}) => {
                     {contest.description?.slice(0, 100)}...
                   </p>
 
-                  <div className="flex items-center justify-between mt-auto">
-                    <button
-                      onClick={() => handleDetailsClick(contest._id)}
-                      className="w-full bg-white/5 hover:bg-primary text-white font-bold py-3 rounded-xl border border-white/10 hover:border-primary transition-all duration-300"
+                  <div className="mt-auto">
+                    <Link
+                      to={`/contest-details/${contest._id}`}
+                      state={location.pathname}
                     >
-                      Details
-                    </button>
+                      <button className="w-full bg-white/5 hover:bg-primary text-white font-bold py-3 rounded-xl border border-white/10 hover:border-primary transition-all duration-300">
+                        View Details
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>

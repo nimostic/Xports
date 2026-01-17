@@ -30,10 +30,9 @@ const ContestDetails = () => {
       return res.data;
     },
   });
-
   const isRegistered = registeredData?.registered;
   const submitted = registeredData?.status === "submitted";
-  console.log(role);
+  // console.log(role);
 
   // details api
   const { data: contest = {}, isLoading } = useQuery({
@@ -44,10 +43,12 @@ const ContestDetails = () => {
       return res.data[0] || res.data;
     },
   });
-
+  const isAdminOrCreator = role === "admin" || role === "creator";
   const handlePayment = async () => {
     if (!user) return navigate("/login");
-
+    if (isAdminOrCreator) {
+      return toast.error("Admins and Creators cannot participate!");
+    }
     const submitInfo = {
       price: contest.price,
       contestId: contest._id,
@@ -81,7 +82,7 @@ const ContestDetails = () => {
       submissionLink: data.submissionLink,
       submittedAt: new Date(),
     };
-    console.log(submissionInfo);
+    // console.log(submissionInfo);
 
     try {
       const res = await axiosSecure.post("submissions/task", submissionInfo);
@@ -280,18 +281,21 @@ const ContestDetails = () => {
                 </Link>
               ) : (
                 <>
+                  {/* Registration Button Logic */}
                   {!isRegistered ? (
                     <button
-                      disabled={isEnded}
+                      disabled={isEnded || isAdminOrCreator}
                       onClick={handlePayment}
                       className={`w-full py-4 rounded-xl font-black uppercase tracking-widest transition-all ${
-                        isEnded
+                        isEnded || isAdminOrCreator
                           ? "bg-gray-800 text-gray-600 cursor-not-allowed"
-                          : "bg-primary hover:bg-red-700 text-white"
+                          : "bg-primary hover:bg-red-700 text-white shadow-lg"
                       }`}
                     >
                       {isEnded
                         ? "Registration Closed"
+                        : isAdminOrCreator
+                        ? "Participation Not Allowed"
                         : `Register Now ($${contest.price})`}
                     </button>
                   ) : (
