@@ -16,7 +16,7 @@ const AllContests = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const searchFromURL = queryParams.get("search") || "";
-  console.log(location);
+  // console.log(location);
 
   const [searchText, setSearchText] = useState(searchFromURL) || "";
   const [selectedType, setSelectedType] = useState("All");
