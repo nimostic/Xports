@@ -111,7 +111,7 @@ const Profile = () => {
   };
 
   if (loading || isRoleLoading) return <Loading />;
-
+<title>Profile</title>
   return (
     <div className="bg-[#0a0a0a] min-h-screen p-4 md:p-10 text-white selection:bg-blue-500/30">
       <div className="max-w-6xl mx-auto">
