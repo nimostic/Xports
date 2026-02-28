@@ -27,6 +27,7 @@ import PrivateRoutes from "./PrivateRoutes";
 import ContactUs from "../Pages/ContactUs";
 import PrivacyPolicy from "../Pages/PrivacyPolicy";
 import TermsConditions from "../Pages/TermsConditions";
+import PastArenas from "../Pages/PastArenas";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: "all-contests",
         Component: AllContests,
+      },
+      {
+        path: "past-arenas",
+        Component: PastArenas,
       },
       {
         path: "contest-details/:id",

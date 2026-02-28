@@ -31,7 +31,7 @@ const ContactUs = () => {
       <div className="max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10">
         {/* Info Side */}
         <div className="space-y-6">
-          <h1 className="text-4xl uppercase italic text-primary tracking-tighter">
+          <h1 className="text-4xl font-black uppercase italic text-primary tracking-tighter">
             Get in Touch
           </h1>
           <p className="text-gray-400 text-lg">

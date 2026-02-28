@@ -1,16 +1,16 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import { AuthContext } from "../Provider/AuthContext";
 import contestTypes from "../../public/ContestTypes.json";
 import Loading from "../Components/Loading";
 import { FaSearch } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router";
 import Aos from "aos";
+import "aos/dist/aos.css";
 
 const AllContests = () => {
   useEffect(() => {
-    Aos.init();
+    Aos.init({ duration: 1000 });
   }, []);
 
   const limit = 10;
@@ -26,14 +26,14 @@ const AllContests = () => {
   const [selectedType, setSelectedType] = useState("All");
   const [currentPage, setCurrentPage] = useState(0);
 
-  // Tanstack Query
+  // Tanstack Query - Status added as confirmed,completed
   const { data: { contests = [], total = 0 } = {}, isLoading } = useQuery({
     queryKey: ["contests", currentPage, selectedType, searchText],
     queryFn: async () => {
       const res = await axiosSecure.get(
         `/contests?limit=${limit}&skip=${
           currentPage * limit
-        }&type=${selectedType}&search=${searchText}&status=confirmed`,
+        }&type=${selectedType}&search=${searchText}&status=confirmed,completed`
       );
       return res.data;
     },
@@ -57,6 +57,7 @@ const AllContests = () => {
   return (
     <section className="py-24 bg-base-100 text-base-content transition-colors duration-500 min-h-screen">
       <div data-aos="fade-up" className="container mx-auto px-4">
+        
         {/* Section Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
           <div className="text-center md:text-left">
@@ -66,7 +67,7 @@ const AllContests = () => {
             <div className="h-1.5 w-24 bg-primary mt-3 rounded-full mx-auto md:mx-0"></div>
           </div>
 
-          {/* Search Input - Dynamic Border & BG */}
+          {/* Search Input */}
           <div className="relative group w-full md:w-96">
             <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40 group-focus-within:text-primary transition-colors" />
             <input
@@ -74,7 +75,7 @@ const AllContests = () => {
               value={searchText}
               onChange={handleSearch}
               placeholder="Find your next challenge..."
-              className="input w-full bg-base-200 border-base-300 focus:border-primary pl-12 h-14 rounded-2xl transition-all shadow-lg outline-none"
+              className="input w-full bg-base-200 border-base-300 focus:border-primary pl-12 h-14 rounded-2xl transition-all shadow-lg outline-none font-medium"
             />
           </div>
         </div>
@@ -83,10 +84,10 @@ const AllContests = () => {
         <div className="flex justify-center flex-wrap gap-3 mb-16">
           <button
             onClick={() => handleTypeChange("All")}
-            className={`px-8 py-3 rounded-xl border transition-all duration-300 uppercase text-[10px] font-bold tracking-[0.2em] ${
+            className={`px-8 py-3 rounded-xl border transition-all duration-300 uppercase text-[10px] font-black tracking-[0.2em] italic ${
               selectedType === "All"
-                ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
-                : "border-base-300 text-base-content/60 hover:border-primary/50 bg-base-100"
+                ? "bg-primary border-primary text-white shadow-xl shadow-primary/20"
+                : "border-base-300 text-base-content/60 hover:border-primary/50 bg-base-200/50"
             }`}
           >
             All
@@ -95,10 +96,10 @@ const AllContests = () => {
             <button
               key={type.id}
               onClick={() => handleTypeChange(type.value)}
-              className={`px-8 py-3 rounded-xl border transition-all duration-300 uppercase text-[10px] font-bold tracking-[0.2em] ${
+              className={`px-8 py-3 rounded-xl border transition-all duration-300 uppercase text-[10px] font-black tracking-[0.2em] italic ${
                 selectedType === type.value
-                  ? "bg-primary border-primary text-white shadow-lg shadow-primary/20"
-                  : "border-base-300 text-base-content/60 hover:border-primary/50 bg-base-100"
+                  ? "bg-primary border-primary text-white shadow-xl shadow-primary/20"
+                  : "border-base-300 text-base-content/60 hover:border-primary/50 bg-base-200/50"
               }`}
             >
               {type.name}
@@ -110,11 +111,11 @@ const AllContests = () => {
         {isLoading ? (
           <Loading />
         ) : contests.length === 0 ? (
-          <div className="text-center py-32 border-2 border-dashed border-base-300 rounded-4xl bg-base-200/30">
-            <h3 className="text-2xl text-base-content/40 uppercase italic font-bold tracking-widest">
+          <div className="text-center py-32 border-2 border-dashed border-base-300 rounded-[3rem] bg-base-200/30">
+            <h3 className="text-2xl text-base-content/40 uppercase italic font-black tracking-widest">
               No contests found!
             </h3>
-            <p className="text-base-content/30 mt-2">
+            <p className="text-base-content/30 mt-2 font-bold uppercase text-xs tracking-widest">
               Try a different category or search term.
             </p>
           </div>
@@ -123,39 +124,52 @@ const AllContests = () => {
             {contests.map((contest) => (
               <div
                 key={contest._id}
-                className="bg-base-100 border border-base-300 rounded-2xl overflow-hidden hover:border-primary/50 transition-all group shadow-xl flex flex-col"
+                className="bg-base-200/40 border border-base-300 dark:border-white/5 rounded-[2.5rem] overflow-hidden hover:border-primary/50 transition-all group shadow-2xl flex flex-col"
               >
                 {/* Image Container */}
-                <div className="relative h-56 overflow-hidden">
+                <div className="relative h-60 overflow-hidden">
                   <img
                     src={contest.bannerImage}
                     alt={contest.contestName}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
+                  
+                  {/* LEFT SIDE: Status Badge (Confirmed/Completed) */}
+                  <div className="absolute top-5 left-5">
+                    {contest.status === "completed" ? (
+                      <span className="bg-neutral/80 backdrop-blur-md text-neutral-content px-4 py-1.5 rounded-full text-[9px] font-black uppercase italic tracking-[0.2em] border border-white/10">
+                        Finished
+                      </span>
+                    ) : (
+                      <span className="bg-green-600/90 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-[9px] font-black uppercase italic tracking-[0.2em] border border-white/20 animate-pulse">
+                        Live Now
+                      </span>
+                    )}
+                  </div>
 
-                  <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                  {/* RIGHT SIDE: Type Badge */}
+                  <div className="absolute top-5 right-5 bg-primary/90 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-[9px] font-black uppercase italic tracking-[0.2em]">
                     {contest.contestType}
                   </div>
                 </div>
 
                 {/* Card Body */}
-                <div className="p-6 flex flex-col grow">
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-xl font-bold text-base-content leading-tight group-hover:text-primary transition-colors">
+                <div className="p-8 flex flex-col grow">
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-2xl font-black text-base-content uppercase italic tracking-tighter leading-none group-hover:text-primary transition-colors">
                       {contest.contestName}
                     </h3>
-                    <div className="text-right">
-                      <span className="block text-primary font-black text-xl">
+                    <div className="text-right shrink-0">
+                      <span className="block text-primary font-black text-2xl leading-none italic">
                         {contest.participantsCount || 0}
                       </span>
-
-                      <span className="text-[10px] text-base-content/80 uppercase font-bold tracking-widest">
+                      <span className="text-[9px] text-base-content/40 uppercase font-black tracking-widest italic">
                         Participants
                       </span>
                     </div>
                   </div>
 
-                  <p className="text-base-content/70 text-sm mb-6 line-clamp-3">
+                  <p className="text-base-content/60 text-sm mb-8 line-clamp-2 font-medium">
                     {contest.description}
                   </p>
 
@@ -164,8 +178,12 @@ const AllContests = () => {
                       to={`/contest-details/${contest._id}`}
                       state={location.pathname}
                     >
-                      <button className="w-full bg-base-200 hover:bg-primary text-base-content hover:text-white font-bold py-3 rounded-xl border border-base-300 hover:border-primary transition-all duration-300 active:scale-95 shadow-sm">
-                        View Details
+                      <button className={`w-full h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] transition-all italic shadow-md active:scale-95 ${
+                        contest.status === "completed"
+                        ? "bg-base-300 text-base-content/40 border border-base-content/5"
+                        : "bg-base-100 hover:bg-primary text-base-content hover:text-white border border-base-300 hover:border-primary"
+                      }`}>
+                        {contest.status === "completed" ? "View Leaderboard" : "Join Contest"}
                       </button>
                     </Link>
                   </div>
@@ -177,11 +195,11 @@ const AllContests = () => {
 
         {/* Pagination Section */}
         {!isLoading && totalPages > 1 && (
-          <div className="flex justify-center items-center gap-3 mt-24">
+          <div className="flex justify-center items-center gap-4 mt-24">
             <button
               disabled={currentPage === 0}
               onClick={() => setCurrentPage(currentPage - 1)}
-              className="btn btn-circle bg-base-200 border-base-300 text-base-content hover:bg-primary hover:text-white disabled:opacity-30"
+              className="w-12 h-12 rounded-full flex items-center justify-center bg-base-200 border border-base-300 text-base-content hover:bg-primary hover:text-white disabled:opacity-20 transition-all font-black"
             >
               ❮
             </button>
@@ -190,10 +208,10 @@ const AllContests = () => {
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`w-12 h-12 rounded-full font-black transition-all ${
+                className={`w-12 h-12 rounded-full font-black italic transition-all ${
                   currentPage === page
-                    ? "bg-primary text-white scale-110 shadow-xl shadow-primary/30"
-                    : "bg-base-200 text-base-content/60 hover:bg-base-300"
+                    ? "bg-primary text-white scale-125 shadow-2xl shadow-primary/40"
+                    : "bg-base-200 text-base-content/40 hover:bg-base-300"
                 }`}
               >
                 {page + 1}
@@ -203,7 +221,7 @@ const AllContests = () => {
             <button
               disabled={currentPage === totalPages - 1}
               onClick={() => setCurrentPage(currentPage + 1)}
-              className="btn btn-circle bg-base-200 border-base-300 text-base-content hover:bg-primary hover:text-white disabled:opacity-30"
+              className="w-12 h-12 rounded-full flex items-center justify-center bg-base-200 border border-base-300 text-base-content hover:bg-primary hover:text-white disabled:opacity-20 transition-all font-black"
             >
               ❯
             </button>

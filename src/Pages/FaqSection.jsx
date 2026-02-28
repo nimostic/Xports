@@ -30,7 +30,7 @@ const FaqSection = () => {
     <section className="py-20 bg-base-100">
       <div data-aos="fade-left" className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl text-base-content italic uppercase tracking-tighter">
+          <h2 className="text-4xl font-black text-base-content italic uppercase tracking-tighter">
             Common <span className="text-blue-500">Questions</span>
           </h2>
           <p className="text-gray-500 mt-4 uppercase text-xs font-bold tracking-[0.2em]">

@@ -30,7 +30,7 @@ const Navbar = () => {
 
   const links = (
     <>
-      {["Home", "Dashboard", "All Contests", "Our Service", "FAQ"].map(
+      {["Home", "Dashboard", "All Contests","Past Arenas" ,"Our Service", "FAQ"].map(
         (item) => (
           <li key={item}>
             <NavLink

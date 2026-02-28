@@ -31,7 +31,7 @@ const ServiceSection = () => {
     <section className="py-22 bg-base-100">
       <div data-aos="fade-right" className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl text-base-content italic uppercase tracking-tighter">
+          <h2 className="text-4xl font-black text-base-content italic uppercase tracking-tighter">
             Our <span className="text-red-600">Services</span>
           </h2>
           <p className="text-gray-500 mt-4 max-w-xl mx-auto uppercase text-xs font-bold tracking-[0.2em]">
