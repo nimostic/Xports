@@ -93,7 +93,7 @@ const PendingContests = () => {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
           <div className="text-center md:text-left">
-            <h1 className="text-3xl md:text-4xl text-base-content italic uppercase tracking-tighter leading-none">
+            <h1 className="text2xl font-black md:text-3xl lg:text-4xl italic uppercase tracking-tighter">
               Manage <span className="text-primary text-stroke">Contests</span>
             </h1>
             <div className="flex items-center gap-3 mt-2 justify-center md:justify-start">

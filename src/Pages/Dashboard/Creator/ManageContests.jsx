@@ -13,11 +13,8 @@ const ManageContests = () => {
   const axiosSecure = useAxiosSecure();
   const [selectedContest, setSelectedContest] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const {
-    data: myContests = [],
-    isLoading,
-    refetch,
-  } = useQuery({
+
+  const { data: myContests = [], isLoading, refetch } = useQuery({
     queryKey: ["myContests", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
@@ -25,223 +22,172 @@ const ManageContests = () => {
       return res.data;
     },
   });
-  const confirmedCount = myContests.filter(
-    (c) => c.status === "confirmed",
-  ).length;
+
+  const confirmedCount = myContests.filter((c) => c.status === "confirmed").length;
 
   const handleDeleteContest = (id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You want to Delete this contest?",
+      title: "EXTERMINATE?",
+      text: "This contest will be removed from the arena!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#F40E08",
       cancelButtonColor: "#111",
-      confirmButtonText: "Yes, Delete it!",
-      background: "#161616",
+      confirmButtonText: "YES, DELETE",
+      background: "#0a0a0a",
       color: "#fff",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure
-          .delete(`/contests/${id}?email=${user.email}`)
-          .then((res) => {
-            if (res.data.deletedCount || res.status === 200) {
-              refetch();
-              Swal.fire({
-                title: "Success!",
-                text: "Contest deleted successfully!",
-                icon: "success",
-                background: "#161616",
-                color: "#fff",
-              });
-            }
-          })
-          .catch(() => {
-            Swal.fire({
-              title: "Error",
-              text: "Deletion failed!",
-              icon: "error",
-              background: "#161616",
-              color: "#fff",
-            });
-          });
+        axiosSecure.delete(`/contests/${id}?email=${user.email}`).then((res) => {
+          if (res.data.deletedCount || res.status === 200) {
+            refetch();
+            Swal.fire({ title: "DELETED", icon: "success", background: "#0a0a0a", color: "#fff" });
+          }
+        });
       }
     });
   };
 
   const handleEditContest = (contest) => {
     setSelectedContest(contest);
-    // modalRef.current.showModal();
     setIsOpen(true);
   };
+
   return (
-    <div className="bg-base-100 min-h-screen p-6 text-base-content">
+    <div className="bg-base-100 min-h-screen p-4 md:p-10 text-base-content">
       {isLoading ? (
-        <Loading></Loading>
+        <Loading />
       ) : (
-        <>
-          <div className="max-w-7xl mx-auto">
-            {/* Header Section */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
-              <div>
-                <h1 className="text-4xl text-base-content italic uppercase tracking-tighter">
-                  My Created <span className="text-primary">Contests</span>
-                </h1>
-                <p className="text-gray-500 text-sm mt-1">
-                  Manage and track your hosted competitions
-                </p>
-              </div>
-              <div className="bg-base-100 border border-gray-800 px-6 py-3 rounded-2xl flex gap-8">
-                <div className="text-center">
-                  <p className="text-xs text-gray-500 uppercase font-bold">
-                    Total Hosted
-                  </p>
-                  <p className="text-xl font-mono font-bold text-primary">
-                    {myContests.length}
-                  </p>
-                </div>
-                <div className="text-center border-l border-gray-800 pl-8">
-                  <p className="text-xs text-gray-500 uppercase font-bold">
-                    Confirmed
-                  </p>
-                  <p className="text-xl font-mono font-bold text-green-500">
-                    {confirmedCount ? `${confirmedCount}` : "None"}
-                  </p>
-                </div>
-              </div>
+        <div className="max-w-7xl mx-auto">
+          {/* Header & Stats Section */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 gap-8">
+            <div className="text-center lg:text-left">
+              <h1 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter leading-none">
+                My <span className="text-primary">Arenas</span>
+              </h1>
+              <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] opacity-40 mt-4 italic">
+                Tournament Command Center
+              </p>
             </div>
 
-            {/* Table Structure */}
-            <div className="bg-[#111] rounded-3xl border border-gray-800 overflow-hidden shadow-2xl">
-              <div className="overflow-x-auto">
-                <table className="table w-full">
-                  {/* Table Head */}
-                  <thead className="bg-[#161616] border-b border-gray-800">
-                    <tr className="text-gray-400 uppercase text-[11px] tracking-widest">
-                      <th className="py-6 pl-8">Contest Details</th>
-                      <th>Status</th>
-                      <th>Stats</th>
-                      <th>Financials</th>
-                      <th className="text-center">Control</th>
-                      <th className="pr-8">Submissions</th>
-                    </tr>
-                  </thead>
-
-                  {/* Table Body */}
-                  <tbody className="divide-y divide-gray-800/50">
-                    {myContests.map((contest) => (
-                      <tr
-                        key={contest._id}
-                        className="hover:bg-white/2 transition-all group"
-                      >
-                        {/* Contest Name & Type */}
-                        <td className="py-6 pl-8">
-                          <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                              <img
-                                src={contest.bannerImage}
-                                alt={contest.contestName.charAt(0)}
-                              />
-                            </div>
-                            <div>
-                              <div className="font-bold text-lg group-hover:text-primary transition-colors cursor-pointer">
-                                {contest.contestName}
-                              </div>
-                              <div className="text-xs text-gray-500 font-medium">
-                                {contest.contestType}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-
-                        {/* Status Badge */}
-                        <td>
-                          <div
-                            className={`badge badge-md border-none rounded-lg font-bold text-[10px] uppercase px-3 py-3 ${
-                              contest.status === "confirmed"
-                                ? "bg-green-500/10 text-green-500"
-                                : contest.status === "rejected"
-                                  ? "bg-red-500/10 text-red-500"
-                                  : "bg-yellow-500/10 text-yellow-500"
-                            }`}
-                          >
-                            {contest.status}
-                          </div>
-                        </td>
-
-                        {/* Stats (Participants) */}
-                        <td>
-                          <div className="flex items-center gap-2 text-gray-300">
-                            <FaUsers className="text-gray-600" />
-                            <span className="font-mono font-bold text-lg">
-                              {contest.participantsCount}
-                            </span>
-                          </div>
-                        </td>
-
-                        {/* Financials (Fee & Prize) */}
-                        <td>
-                          <div className="space-y-1">
-                            <div className="text-xs text-gray-500">
-                              Fee:{" "}
-                              <span className="text-base-content">
-                                ${contest.price}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-1 text-xs font-bold text-green-500">
-                              <FaTrophy size={10} /> Prize: $
-                              {contest.prizeMoney}
-                            </div>
-                          </div>
-                        </td>
-
-                        {/* Control (Edit/Delete - Conditional) */}
-                        <td className="text-center">
-                          <div className="flex justify-center gap-2">
-                            {contest.status === "pending" ? (
-                              <>
-                                <button
-                                  onClick={() => handleEditContest(contest)}
-                                  className="btn btn-square btn-sm bg-blue-600/10 hover:bg-blue-600 border-none text-blue-500 hover:text-base-content transition-all"
-                                >
-                                  {/* Edit button */}
-                                  <FaEdit size={14} />
-                                </button>
-                                <button
-                                  onClick={() =>
-                                    handleDeleteContest(contest._id)
-                                  }
-                                  className="btn btn-square btn-sm bg-red-600/10 hover:bg-red-700 border-none text-red-500 hover:text-base-content transition-all"
-                                >
-                                  {/* delete button  */}
-                                  <FaTrash size={14} />
-                                </button>
-                              </>
-                            ) : (
-                              <div className="text-[10px] text-gray-600 italic font-medium uppercase tracking-tighter">
-                                Action Disabled
-                              </div>
-                            )}
-                          </div>
-                        </td>
-
-                        {/* See Submissions Button */}
-                        <td className="pr-8">
-                          <Link
-                            to={`/dashboard/submitted-tasks/${contest._id}`}
-                            className="btn btn-sm w-full bg-primary hover:bg-red-700 text-base-content border-none rounded-xl uppercase  text-[10px] tracking-tighter shadow-lg shadow-primary/20"
-                          >
-                            <FaEye /> View Work
-                          </Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            {/* Stats Cards */}
+            <div className="flex flex-wrap justify-center gap-4">
+              <div className="bg-base-200/50 backdrop-blur-sm border border-white/5 px-8 py-4 rounded-2xl text-center min-w-[140px]">
+                <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-1 italic">Total Hosted</p>
+                <p className="text-2xl font-black italic text-primary">{myContests.length}</p>
+              </div>
+              <div className="bg-base-200/50 backdrop-blur-sm border border-white/5 px-8 py-4 rounded-2xl text-center min-w-[140px]">
+                <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-1 italic">Confirmed</p>
+                <p className="text-2xl font-black italic text-green-500">{confirmedCount || "00"}</p>
               </div>
             </div>
           </div>
-        </>
+
+          {/* Responsive Table Wrapper */}
+          <div className="bg-base-200/30 backdrop-blur-md rounded-[2rem] border border-white/5 overflow-hidden shadow-2xl shadow-black/50">
+            <div className="overflow-x-auto overflow-y-hidden">
+              <table className="table w-full border-collapse">
+                {/* Table Head */}
+                <thead className="bg-black/40">
+                  <tr className="text-white/40 uppercase text-[10px] tracking-[0.2em] italic border-b border-white/5">
+                    <th className="py-6 pl-8">Arena Details</th>
+                    <th>Status</th>
+                    <th>Squad</th>
+                    <th>Economy</th>
+                    <th className="text-center">Action</th>
+                    <th className="pr-8 text-right">Intel</th>
+                  </tr>
+                </thead>
+
+                {/* Table Body */}
+                <tbody className="divide-y divide-white/5">
+                  {myContests.map((contest) => (
+                    <tr key={contest._id} className="hover:bg-white/[0.02] transition-all group">
+                      {/* Image & Name */}
+                      <td className="py-6 pl-8">
+                        <div className="flex items-center gap-4">
+                          <div className="w-14 h-14 rounded-2xl overflow-hidden border border-white/10 group-hover:border-primary/50 transition-colors">
+                            <img src={contest.bannerImage} alt="banner" className="w-full h-full object-cover" />
+                          </div>
+                          <div>
+                            <div className="font-black italic text-base uppercase tracking-tighter group-hover:text-primary transition-colors leading-none mb-1">
+                              {contest.contestName}
+                            </div>
+                            <div className="text-[10px] font-bold uppercase tracking-widest opacity-30 italic">
+                              {contest.contestType}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Status */}
+                      <td>
+                        <span className={`text-[10px] font-black uppercase italic px-3 py-1 rounded-lg border ${
+                          contest.status === "confirmed" ? "text-green-500 border-green-500/20 bg-green-500/5" :
+                          contest.status === "rejected" ? "text-red-500 border-red-500/20 bg-red-500/5" :
+                          "text-yellow-500 border-yellow-500/20 bg-yellow-500/5"
+                        }`}>
+                          {contest.status}
+                        </span>
+                      </td>
+
+                      {/* Participants */}
+                      <td>
+                        <div className="flex items-center gap-2">
+                          <FaUsers className="opacity-20" size={12} />
+                          <span className="font-black italic text-lg">{contest.participantsCount}</span>
+                        </div>
+                      </td>
+
+                      {/* Financials */}
+                      <td>
+                        <div className="space-y-1">
+                          <div className="text-[10px] font-bold opacity-40 uppercase italic">Fee: ${contest.price}</div>
+                          <div className="text-[11px] font-black text-green-500 uppercase italic flex items-center gap-1">
+                            <FaTrophy size={10}/> ${contest.prizeMoney}
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Controls */}
+                      <td>
+                        <div className="flex justify-center gap-2">
+                          {contest.status === "pending" ? (
+                            <>
+                              <button onClick={() => handleEditContest(contest)} className="p-3 bg-blue-500/10 text-blue-500 rounded-xl hover:bg-blue-500 hover:text-white transition-all">
+                                <FaEdit size={14} />
+                              </button>
+                              <button onClick={() => handleDeleteContest(contest._id)} className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all">
+                                <FaTrash size={14} />
+                              </button>
+                            </>
+                          ) : (
+                            <span className="text-[9px] font-black opacity-20 uppercase italic tracking-widest">Locked</span>
+                          )}
+                        </div>
+                      </td>
+
+                      {/* View Button */}
+                      <td className="pr-8 text-right">
+                        <Link
+                          to={`/dashboard/submitted-tasks/${contest._id}`}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-[10px] font-black uppercase italic tracking-widest rounded-xl hover:bg-red-700 transition-all shadow-lg shadow-primary/20"
+                        >
+                          <FaEye /> View
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {myContests.length === 0 && (
+              <div className="py-20 text-center opacity-20 font-black italic uppercase tracking-[0.5em]">
+                No Arenas Initialized
+              </div>
+            )}
+          </div>
+        </div>
       )}
 
       {isOpen && (
@@ -249,7 +195,7 @@ const ManageContests = () => {
           closeModal={() => setIsOpen(false)}
           selectedContest={selectedContest}
           refetch={refetch}
-        ></UpdateContest>
+        />
       )}
     </div>
   );

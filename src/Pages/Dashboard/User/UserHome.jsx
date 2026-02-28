@@ -50,7 +50,6 @@ const UserHome = () => {
     { name: "Lost", value: lostCount },
   ];
 
-  // Data Map
   const activityMap = participatedContests.reduce((acc, curr) => {
     const dateSource = curr.paidAt || curr.deadline;
     const month = new Date(dateSource).toLocaleString("default", {
@@ -65,10 +64,12 @@ const UserHome = () => {
     participations: activityMap[month],
   }));
 
-  const COLORS = ["#C80909", "#2a2a2a"];
+  // Theme-based Colors
+  const COLORS = ["#C80909", "#cbd5e1"]; // Won: Red, Lost: Grayish
 
   return (
-    <div className="space-y-6 custom-fade-in">
+    <div className="space-y-8 custom-fade-in p-2">
+      {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[
           {
@@ -76,118 +77,137 @@ const UserHome = () => {
             val: totalParticipated,
             color: "text-base-content",
           },
-          { label: "Contests Won", val: winCount, color: "text-blue-500" },
+          { label: "Contests Won", val: winCount, color: "text-red-600" },
           {
             label: "Win Ratio",
-            val: `${
-              totalParticipated > 0
-                ? ((winCount / totalParticipated) * 100).toFixed(0)
-                : 0
-            }%`,
+            val: `${winPercentage}%`,
             color: "text-base-content",
           },
         ].map((stat, i) => (
           <div
             key={i}
-            className="bg-[#111] p-6 rounded-3xl border border-white/5 flex flex-col items-center md:items-start"
+            className="bg-base-300 p-8 rounded-4xl border border-white/5 flex items-center justify-between group shadow-2xl"
           >
-            <p className="text-[10px] text-gray-500 text-base-content uppercase tracking-widest">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-base-content/40 italic">
               {stat.label}
             </p>
             <h2
-              className={`text-4xl text-base-content italic mt-2 ${stat.color}`}
+              className={`text-5xl font-black italic mt-3 tracking-tighter ${stat.color}`}
             >
               {stat.val}
             </h2>
           </div>
         ))}
       </div>
+
+      {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Win Rate Donut */}
-        <div className="bg-[#0b0b0b] p-6 rounded-4xl border border-white/5 h-80">
-          <h3 className="text-[10px] text-base-content uppercase tracking-widest text-gray-500 mb-4">
+        <div className="bg-base-200 dark:bg-[#0b0b0b] p-8 rounded-[2.5rem] border border-base-300 dark:border-white/5 h-[400px] shadow-sm">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-base-content/40 mb-8 italic">
             Performance Ratio
           </h3>
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={pieData}
-                innerRadius={60}
-                outerRadius={80}
-                dataKey="value"
-                paddingAngle={5}
-                stroke="none"
-              >
-                {pieData.map((_, i) => (
-                  <Cell key={i} fill={COLORS[i]} />
-                ))}
-              </Pie>
-              <text
-                x="50%"
-                y="50%"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill="#C80909"
-                fontSize={20}
-                fontWeight="900"
-              >
-                Win {winPercentage}%
-              </text>
-              <Tooltip
-                contentStyle={{
-                  background: "#000",
-                  border: "1px solid #C80909",
-                  borderRadius: "10px",
-                }}
-                itemStyle={{ color: "#fff" }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  innerRadius={70}
+                  outerRadius={95}
+                  dataKey="value"
+                  paddingAngle={8}
+                  stroke="none"
+                >
+                  {pieData.map((_, i) => (
+                    <Cell key={i} fill={COLORS[i]} className="outline-none" />
+                  ))}
+                </Pie>
+                <text
+                  x="50%"
+                  y="50%"
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fill="currentColor"
+                  className="text-2xl font-black italic text-base-content"
+                >
+                  {winPercentage}%
+                </text>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "var(--fallback-b1,oklch(var(--b1)))",
+                    border: "1px solid #C80909",
+                    borderRadius: "15px",
+                    fontSize: "12px",
+                    fontWeight: "bold"
+                  }}
+                  itemStyle={{ color: "var(--fallback-bc,oklch(var(--bc)))" }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex justify-center gap-6 mt-4">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-[#C80909]"></span>
+              <span className="text-[10px] font-bold uppercase opacity-60">Won</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-slate-300"></span>
+              <span className="text-[10px] font-bold uppercase opacity-60">Lost</span>
+            </div>
+          </div>
         </div>
 
         {/* Activity Line Chart */}
-        <div className="bg-[#0b0b0b] p-6 rounded-4xl border border-white/5 h-80">
-          <h3 className="text-[10px] text-base-content uppercase tracking-widest text-gray-500 mb-4">
+        <div className="bg-base-200 dark:bg-[#0b0b0b] p-8 rounded-[2.5rem] border border-base-300 dark:border-white/5 h-[400px] shadow-sm">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-base-content/40 mb-8 italic">
             Participation History
           </h3>
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={lineData}>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                stroke="#1f1f1f"
-                vertical={false}
-              />
-              <XAxis
-                dataKey="month"
-                stroke="#555"
-                fontSize={10}
-                axisLine={false}
-                tickLine={false}
-              />
-              <YAxis
-                stroke="#555"
-                fontSize={10}
-                axisLine={false}
-                tickLine={false}
-              />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "#000",
-                  border: "1px solid #C80909",
-                  borderRadius: "8px",
-                }}
-                itemStyle={{ color: "#fff" }}
-              />
-              <Line
-                type="monotone"
-                dataKey="participations"
-                stroke="#C80909"
-                strokeWidth={4}
-                dot={{ r: 5, fill: "#C80909", strokeWidth: 0 }}
-                activeDot={{ r: 8 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={lineData}>
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="currentColor"
+                  className="opacity-5"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="month"
+                  stroke="currentColor"
+                  className="opacity-40"
+                  fontSize={10}
+                  fontWeight="bold"
+                  axisLine={false}
+                  tickLine={false}
+                  dy={15}
+                />
+                <YAxis
+                  stroke="currentColor"
+                  className="opacity-40"
+                  fontSize={10}
+                  fontWeight="bold"
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "var(--fallback-b1,oklch(var(--b1)))",
+                    border: "1px solid #C80909",
+                    borderRadius: "12px",
+                    color: "inherit"
+                  }}
+                />
+                <Line
+                  type="stepAfter"
+                  dataKey="participations"
+                  stroke="#C80909"
+                  strokeWidth={4}
+                  dot={{ r: 6, fill: "#C80909", strokeWidth: 0 }}
+                  activeDot={{ r: 10, stroke: "#C80909", strokeWidth: 2, fill: "#fff" }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
     </div>

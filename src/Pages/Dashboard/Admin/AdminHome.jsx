@@ -66,7 +66,7 @@ const AdminHome = () => {
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-6">
         <div>
-          <h1 className="text-2xl md:text-3xl lg:text-4xl text-base-content italic uppercase tracking-tighter">
+          <h1 className="text-2xl font-black md:text-3xl lg:text-4xl text-base-content italic uppercase tracking-tighter">
             System <span className="text-[#C80909]">Overview</span>
           </h1>
           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">

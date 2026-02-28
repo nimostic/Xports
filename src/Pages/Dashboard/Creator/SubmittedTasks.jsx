@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FaTrophy,
-  FaUserAlt,
-  FaEnvelope,
-  FaExternalLinkAlt,
-  FaArrowLeft,
-} from "react-icons/fa";
+import { FaTrophy, FaExternalLinkAlt, FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 import { Link, useParams } from "react-router";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
@@ -15,29 +9,20 @@ import Loading from "../../../Components/Loading";
 const SubmittedTasks = () => {
   const axiosSecure = useAxiosSecure();
   const { id } = useParams();
-  // total submissionon by contest
-  //console.log(id);
-  const {
-    data: submissions = [],
-    isLoading,
-    refetch,
-  } = useQuery({
+
+  const { data: submissions = [], isLoading, refetch } = useQuery({
     queryKey: ["submissions", id],
     queryFn: async () => {
       const res = await axiosSecure.get(`/contests/${id}/submissions`);
       return res.data;
     },
   });
-  //console.log(submissions);
 
   const handleWinner = (data) => {
-    console.log(data);
     axiosSecure
       .patch(`/declare-winner/${id}`, data)
-      .then((res) => {
-        toast.success(
-          `${data.participantName} has been declared as WINNER🥳🎉🎊`,
-        );
+      .then(() => {
+        toast.success(`${data.participantName} IS THE CHAMPION! 🏆`);
         refetch();
       })
       .catch((err) => {
@@ -48,105 +33,113 @@ const SubmittedTasks = () => {
   const hasWinner = submissions.some((s) => s.isWinner);
 
   return (
-    <div className="bg-[#0a0a0a] min-h-screen p-6 text-base-content font-sans">
+    <div className="bg-base-100 min-h-screen p-4 md:p-10 text-base-content">
       {isLoading ? (
-        <Loading></Loading>
+        <Loading />
       ) : (
         <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-end mb-10">
-            <div>
+          {/* Header Section */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+            <div className="space-y-4">
               <Link
                 to="/dashboard/manage-contests"
-                className="flex items-center gap-2 text-gray-500 hover:text-primary transition-colors mb-4 text-sm font-bold uppercase tracking-widest"
+                className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/30 hover:text-primary transition-all group"
               >
-                <FaArrowLeft /> Back to Contests
+                <FaArrowLeft className="group-hover:-translate-x-1 transition-transform" /> 
+                Return to Arena
               </Link>
-              <h1 className="text-5xl text-base-content italic uppercase tracking-tighter">
-                Submitted <span className="text-primary">Tasks</span>
+              <h1 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter leading-none">
+                Mission <span className="text-primary">Intel</span>
               </h1>
-              <p className="text-gray-500 text-sm mt-2 uppercase tracking-widest">
-                Contest:{" "}
-                <span className="text-gray-300 font-bold">
-                  UI/UX Design Challenge 2024
-                </span>
-              </p>
+              <div className="flex items-center gap-3">
+                <div className="h-1 w-12 bg-primary rounded-full"></div>
+                <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 italic">
+                   Reviewing Submissions
+                </p>
+              </div>
             </div>
 
-            <div className="hidden md:block bg-[#111] border border-gray-800 p-4 rounded-2xl">
-              <p className="text-[10px] text-gray-500 uppercase font-bold mb-1 tracking-widest">
-                Total Submissions
+            {/* Stats Badge */}
+            <div className="bg-base-200/50 backdrop-blur-md border border-white/5 p-6 rounded-[2rem] min-w-[200px] text-center md:text-left">
+              <p className="text-[9px] text-white/40 uppercase font-black mb-1 tracking-[0.3em] italic">
+                Total Candidates
               </p>
-              <p className="text-3xl font-mono text-base-content text-primary">
-                {submissions.length}
+              <p className="text-4xl font-black italic text-primary leading-none">
+                {submissions.length.toString().padStart(2, '0')}
               </p>
             </div>
           </div>
 
-          {/* tabl;e */}
-          <div className="bg-[#111] rounded-3xl border border-gray-800 overflow-hidden shadow-2xl">
+          {/* Submissions Table */}
+          <div className="bg-base-200/30 backdrop-blur-xl rounded-[2.5rem] border border-white/5 overflow-hidden shadow-2xl shadow-black/50">
             <div className="overflow-x-auto">
-              <table className="table w-full">
-                <thead className="bg-[#161616] border-b border-gray-800">
-                  <tr className="text-gray-400 uppercase text-[11px] tracking-widest">
-                    <th className="py-6 pl-8">Participant Info</th>
-                    <th>Submission Link</th>
-                    <th className="text-center">Action / Status</th>
+              <table className="table w-full border-collapse">
+                <thead className="bg-black/40 border-b border-white/5">
+                  <tr className="text-white/40 uppercase text-[10px] tracking-[0.2em] italic">
+                    <th className="py-7 pl-10 text-left font-black">Candidate</th>
+                    <th className="text-left font-black">Intel Link</th>
+                    <th className="text-center font-black pr-10">Status / Command</th>
                   </tr>
                 </thead>
 
-                <tbody className="divide-y divide-gray-800/50">
+                <tbody className="divide-y divide-white/5">
                   {submissions.map((sub) => (
-                    <tr
-                      key={sub._id}
-                      className="hover:bg-white/2 transition-all group"
-                    >
-                      <td className="py-6 pl-8">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full bg-linear-to-tr from-primary to-red-800 flex items-center justify-center font-bold text-base-content">
+                    <tr key={sub._id} className="hover:bg-white/[0.02] transition-all group">
+                      {/* Participant Info */}
+                      <td className="py-6 pl-10">
+                        <div className="flex items-center gap-5">
+                          <div className="relative">
                             <img
                               src={sub.participantPhoto}
-                              alt="Participant Photo"
+                              alt="Avatar"
+                              className="w-12 h-12 rounded-2xl object-cover ring-2 ring-white/5 group-hover:ring-primary/40 transition-all"
                             />
+                            {sub.isWinner && (
+                                <div className="absolute -top-2 -right-2 bg-yellow-500 text-black p-1 rounded-lg shadow-lg animate-bounce">
+                                    <FaTrophy size={10} />
+                                </div>
+                            )}
                           </div>
                           <div>
-                            <div className="font-bold text-base group-hover:text-primary transition-colors">
+                            <div className="font-black italic text-base uppercase tracking-tighter group-hover:text-primary transition-colors leading-none mb-1">
                               {sub.participantName}
                             </div>
-                            <div className="text-xs text-gray-500 font-medium lowercase">
+                            <div className="text-[10px] font-bold uppercase tracking-widest opacity-30 italic">
                               {sub.participantEmail}
                             </div>
                           </div>
                         </div>
                       </td>
 
-                      {/* task link */}
+                      {/* Link Section */}
                       <td>
                         <a
                           href={sub.submissionLink}
                           target="_blank"
-                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1a1a1a] border border-gray-800 text-blue-400 hover:bg-blue-600 hover:text-base-content transition-all text-xs font-bold uppercase tracking-tighter"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-all text-[10px] font-black uppercase italic tracking-widest"
                         >
                           <FaExternalLinkAlt size={10} /> Preview Work
                         </a>
                       </td>
 
-                      {/* declare winner */}
-                      <td className="text-center">
+                      {/* Action Section */}
+                      <td className="text-center pr-10">
                         {sub.isWinner ? (
-                          <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-500 border border-green-500/20 py-2 px-5 rounded-full text-base-content uppercase text-[10px] shadow-[0_0_15px_rgba(34,197,94,0.1)]">
-                            <FaTrophy /> Champion Selected
+                          <div className="inline-flex items-center gap-2 bg-green-500 text-black py-2 px-6 rounded-xl font-black uppercase text-[10px] italic shadow-[0_0_20px_rgba(34,197,94,0.3)]">
+                            <FaCheckCircle /> Champion Declared
                           </div>
                         ) : (
                           <button
                             disabled={hasWinner}
                             onClick={() => handleWinner(sub)}
-                            className={`btn btn-sm px-6 rounded-xl text-base-content uppercase text-[10px] tracking-tighter transition-all ${
+                            className={`px-6 py-3 rounded-xl font-black uppercase text-[10px] tracking-widest transition-all italic ${
                               hasWinner
-                                ? "btn-disabled bg-gray-900 text-gray-700 border-none"
-                                : "bg-primary text-base-content border-none hover:bg-red-700 shadow-lg shadow-primary/20"
+                                ? "bg-white/5 text-white/10 cursor-not-allowed border border-white/5"
+                                : "bg-primary text-white hover:bg-red-700 shadow-lg shadow-primary/20 hover:-translate-y-0.5"
                             }`}
                           >
-                            Declare Winner
+                            {hasWinner ? "Locked" : "Promote to Winner"}
                           </button>
                         )}
                       </td>
@@ -155,10 +148,16 @@ const SubmittedTasks = () => {
                 </tbody>
               </table>
             </div>
+            
+            {submissions.length === 0 && (
+              <div className="py-24 text-center">
+                 <p className="text-[10px] font-black opacity-20 uppercase tracking-[0.5em] italic">No missions submitted yet</p>
+              </div>
+            )}
           </div>
-          <p className="mt-6 text-center text-gray-600 text-[10px] uppercase tracking-[0.2em] font-medium">
-            Warning: You can only select{" "}
-            <span className="text-primary">one winner</span> per contest.
+
+          <p className="mt-8 text-center text-white/20 text-[9px] uppercase tracking-[0.3em] font-black italic">
+            Note: Selection of <span className="text-primary/50">one champion</span> is final and cannot be reversed.
           </p>
         </div>
       )}

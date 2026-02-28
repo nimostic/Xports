@@ -76,7 +76,7 @@ const handleRoleUpdate = async (selectedUser, newRole) => {
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
           <div className="text-center md:text-left">
-            <h1 className="text-3xl md:text-4xl italic uppercase tracking-tighter">
+            <h1 className="text2xl font-black md:text-3xl lg:text-4xl italic uppercase tracking-tighter">
               User <span className="text-primary">Management</span>
             </h1>
             <p className="text-base-content/50 text-[10px] uppercase tracking-[0.4em] font-bold mt-2">

@@ -219,7 +219,7 @@ const Profile = () => {
 
             {/* Creator Application */}
             {role === "user" && (
-              <div className="relative bg-[#111] rounded-[2.5rem] p-10 border border-blue-500/20 shadow-[0_0_100px_rgba(37,99,235,0.05)] overflow-hidden">
+              <div className="relative bg-base-100 rounded-[2.5rem] p-10 border border-blue-500/20 shadow-[0_0_100px_rgba(37,99,235,0.05)] overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 blur-[100px]"></div>
 
                 <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
@@ -283,7 +283,7 @@ const Profile = () => {
         ref={modalRef}
         className="modal modal-bottom sm:modal-middle backdrop-blur-md"
       >
-        <div className="modal-box bg-[#0f0f0f] border border-white/10 rounded-[2.5rem] p-0 overflow-hidden max-w-md shadow-2xl">
+        <div className="modal-box bg-base-100 border border-white/10 rounded-[2.5rem] p-0 overflow-hidden max-w-md shadow-2xl">
           <div className="bg-blue-600 p-8 flex justify-between items-center relative">
             <h3 className="text-2xl text-base-content italic uppercase tracking-tighter">
               Identity Settings
