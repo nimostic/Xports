@@ -25,7 +25,7 @@ const ContestDetails = () => {
     enabled: !!user?.email && !!id,
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/submissions/check-registration?email=${user?.email}&contestId=${id}`
+        `/submissions/check-registration?email=${user?.email}&contestId=${id}`,
       );
       return res.data;
     },
@@ -63,7 +63,7 @@ const ContestDetails = () => {
     try {
       const res = await axiosSecure.post(
         "/create-checkout-session",
-        submitInfo
+        submitInfo,
       );
       if (res.data?.url) {
         window.location.assign(res.data.url);
@@ -120,7 +120,7 @@ const ContestDetails = () => {
       } else {
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
-          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
         );
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
@@ -134,7 +134,7 @@ const ContestDetails = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="bg-[#0a0a0a] min-h-screen py-12 text-white">
+    <div className="bg-[#0a0a0a] min-h-screen py-12 text-base-content">
       <div className="max-w-6xl mx-auto px-4">
         {/* Banner */}
         <div className="relative h-[400px] rounded-3xl overflow-hidden border border-gray-800 mb-10">
@@ -148,7 +148,7 @@ const ContestDetails = () => {
             <span className="bg-primary px-4 py-1 rounded-full text-xs font-bold mb-4 inline-block tracking-widest uppercase">
               {contest.contestType}
             </span>
-            <h1 className="text-5xl font-black uppercase italic tracking-tighter">
+            <h1 className="text-5xl text-base-content uppercase italic tracking-tighter">
               {contest.contestName}
             </h1>
           </div>
@@ -169,14 +169,14 @@ const ContestDetails = () => {
               <h2 className="text-2xl font-bold mb-4 text-primary uppercase">
                 Task Instructions
               </h2>
-              <p className="text-gray-300 bg-black/50 p-6 rounded-xl border border-dashed border-gray-700">
+              <p className="text-gray-300 bg-base-100/50 p-6 rounded-xl border border-dashed border-gray-700">
                 {contest.instruction}
               </p>
             </section>
             {isEnded && (
               <section className="bg-[#111] p-8 rounded-2xl border border-gray-800">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-black uppercase text-primary tracking-wider">
+                  <h2 className="text-2xl text-base-content uppercase text-primary tracking-wider">
                     Winner
                   </h2>
 
@@ -188,7 +188,7 @@ const ContestDetails = () => {
                 </div>
 
                 {contest?.winnerName ? (
-                  <div className="flex flex-col sm:flex-row items-center gap-6 bg-black/40 p-6 rounded-xl border border-gray-700">
+                  <div className="flex flex-col sm:flex-row items-center gap-6 bg-base-100/40 p-6 rounded-xl border border-gray-700">
                     {/* Winner Image */}
                     <div className="relative shrink-0">
                       <img
@@ -196,14 +196,14 @@ const ContestDetails = () => {
                         alt={contest.winnerName}
                         className="w-24 h-24 rounded-full object-cover border-2 border-primary"
                       />
-                      <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-primary rounded-full flex items-center justify-center text-xs font-black text-white">
+                      <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-primary rounded-full flex items-center justify-center text-xs text-base-content text-base-content">
                         🏆
                       </div>
                     </div>
 
                     {/* Winner Info */}
                     <div className="text-center sm:text-left">
-                      <h3 className="text-xl font-bold text-white">
+                      <h3 className="text-xl font-bold text-base-content">
                         {contest.winnerName}
                       </h3>
 
@@ -256,13 +256,13 @@ const ContestDetails = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="bg-black p-4 rounded-xl border border-gray-800 text-center">
+                <div className="bg-base-100 p-4 rounded-xl border border-gray-800 text-center">
                   <p className="text-gray-500 text-[10px] uppercase font-bold">
                     Prize
                   </p>
                   <p className="text-xl font-bold">${contest.prizeMoney}</p>
                 </div>
-                <div className="bg-black p-4 rounded-xl border border-gray-800 text-center">
+                <div className="bg-base-100 p-4 rounded-xl border border-gray-800 text-center">
                   <p className="text-gray-500 text-[10px] uppercase font-bold">
                     Participants
                   </p>
@@ -286,23 +286,23 @@ const ContestDetails = () => {
                     <button
                       disabled={isEnded || isAdminOrCreator}
                       onClick={handlePayment}
-                      className={`w-full py-4 rounded-xl font-black uppercase tracking-widest transition-all ${
+                      className={`w-full py-4 rounded-xl text-base-content uppercase tracking-widest transition-all ${
                         isEnded || isAdminOrCreator
                           ? "bg-gray-800 text-gray-600 cursor-not-allowed"
-                          : "bg-primary hover:bg-red-700 text-white shadow-lg"
+                          : "bg-primary hover:bg-red-700 text-base-content shadow-lg"
                       }`}
                     >
                       {isEnded
                         ? "Registration Closed"
                         : isAdminOrCreator
-                        ? "Participation Not Allowed"
-                        : `Register Now ($${contest.price})`}
+                          ? "Participation Not Allowed"
+                          : `Register Now ($${contest.price})`}
                     </button>
                   ) : (
                     <button
                       onClick={() => setIsModalOpen(true)}
                       disabled={taskSubmitted || submitted}
-                      className={`w-full py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest transition-all shadow-lg shadow-blue-900/20`}
+                      className={`w-full py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-base-content text-base-content uppercase tracking-widest transition-all shadow-lg shadow-blue-900/20`}
                     >
                       {taskSubmitted || submitted ? "Submitted" : "Submit Task"}
                     </button>
@@ -318,13 +318,13 @@ const ContestDetails = () => {
       {isModalOpen && (
         <dialog className="modal modal-open">
           <div className="modal-box bg-[#111] border border-gray-700">
-            <h3 className="font-black text-2xl uppercase italic text-primary">
+            <h3 className="text-base-content text-2xl uppercase italic text-primary">
               Submit Your Work
             </h3>
             <form onSubmit={handleSubmit(onTaskSubmit)} className="mt-4">
               <textarea
                 {...register("submissionLink", { required: true })}
-                className="textarea textarea-bordered w-full h-32 bg-black border-gray-700 text-white focus:border-primary"
+                className="textarea textarea-bordered w-full h-32 bg-base-100 border-gray-700 text-base-content focus:border-primary"
                 placeholder="Paste your links (Drive/GitHub) here..."
               ></textarea>
               <div className="modal-action">
@@ -337,7 +337,7 @@ const ContestDetails = () => {
                 </button>
                 <button
                   type="submit"
-                  className="btn bg-primary hover:bg-red-700 text-white border-none uppercase"
+                  className="btn bg-primary hover:bg-red-700 text-base-content border-none uppercase"
                 >
                   Submit Task
                 </button>

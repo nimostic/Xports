@@ -5,6 +5,14 @@ import WinnerSection from "./WinnerSection";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import TopPerformers from "./TopPerformers";
+import Categories from "./Categories";
+import Partners from "./Partners";
+import HowItWorks from "./HowItWorks";
+import Services from "./Services";
+import Newsletter from "./Newsletter";
+import Testimonials from "./Testimonials";
+import CTA from "./CTA";
+
 
 const Home = () => {
   const axiosSecure = useAxiosSecure();
@@ -19,9 +27,16 @@ const Home = () => {
   return (
     <>
       <Banner></Banner>
+      <Partners></Partners>
+      <Categories></Categories>
       <PopularContests contests={contests} isLoading={isLoading}></PopularContests>
       <WinnerSection total={total}></WinnerSection>
       <TopPerformers></TopPerformers>
+      <HowItWorks></HowItWorks>
+      <Services></Services>
+      <Testimonials></Testimonials>
+      <CTA></CTA>
+      <Newsletter></Newsletter>
     </>
   );
 };

@@ -3,7 +3,7 @@ import { AuthContext } from "../../Provider/AuthContext";
 import { useLocation, useNavigate } from "react-router";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
-const SocialLogin = ({from}) => {
+const SocialLogin = ({ from }) => {
   const axiosSecure = useAxiosSecure();
   const { signInGoogle } = use(AuthContext);
   const location = useLocation();
@@ -31,10 +31,9 @@ const SocialLogin = ({from}) => {
 
   return (
     <div className="text-center space-y-2">
-      <h1 className="font-semibold">Or</h1>
       <button
         onClick={handleGoogleSignIn}
-        className="btn bg-white text-black border-[#e5e5e5]"
+        className="btn bg-base-100 text-base-content border-[#e5e5e5]"
       >
         <svg
           aria-label="Google logo"

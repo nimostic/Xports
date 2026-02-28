@@ -62,12 +62,11 @@ const AdminHome = () => {
   const growthData = stats.growth || [];
 
   return (
-    <div className="space-y-6 md:space-y-8 p-4 md:p-6 lg:p-8 bg-black min-h-screen text-white custom-fade-in">
-      
+    <div className="space-y-6 md:space-y-8 p-4 md:p-6 lg:p-8 bg-base-100 min-h-screen text-base-content custom-fade-in">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-6">
         <div>
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-black italic uppercase tracking-tighter">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl text-base-content italic uppercase tracking-tighter">
             System <span className="text-[#C80909]">Overview</span>
           </h1>
           <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">
@@ -75,9 +74,9 @@ const AdminHome = () => {
           </p>
         </div>
         <div className="hidden sm:block">
-           <span className="px-3 py-1 bg-[#C80909]/10 text-[#C80909] text-[10px] font-bold rounded-full border border-[#C80909]/20">
-             ADMIN PANEL
-           </span>
+          <span className="px-3 py-1 bg-[#C80909]/10 text-[#C80909] text-[10px] font-bold rounded-full border border-[#C80909]/20">
+            ADMIN PANEL
+          </span>
         </div>
       </div>
 
@@ -85,12 +84,12 @@ const AdminHome = () => {
         {systemStats.map((item, i) => (
           <div
             key={i}
-            className={`bg-[#0b0b0b] p-5 md:p-6 rounded-3xl md:rounded-4xl border-l-4 ${item.color} border border-white/5 transition-transform hover:scale-[1.02] duration-300`}
+            className={`bg-base-300 p-5 md:p-6 rounded-3xl md:rounded-4xl ${item.color} border border-white/5 transition-transform hover:scale-[1.02] duration-300  group shadow-2xl`}
           >
-            <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-gray-500">
+            <p className="text-[9px] md:text-[10px] uppercase tracking-widest text-gray-500">
               {item.label}
             </p>
-            <h2 className="text-3xl md:text-4xl font-black italic mt-1 md:mt-2">
+            <h2 className="text-3xl md:text-4xl text-base-content italic mt-1 md:mt-2">
               {item.val}
             </h2>
             <p className="text-[8px] md:text-[9px] text-gray-600 mt-1 uppercase font-bold tracking-tight">
@@ -102,10 +101,9 @@ const AdminHome = () => {
 
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-        
         {/* User Distribution Chart */}
-        <div className="bg-[#0b0b0b] p-4 md:p-8 rounded-4xl md:rounded-[2.5rem] border border-white/5 h-[350px] md:h-[400px]">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-6 border-l-2 border-[#C80909] pl-3">
+        <div className="bg-base-300 p-4 md:p-8 rounded-4xl md:rounded-[2.5rem] border border-white/5 h-[350px] md:h-[400px]">
+          <h3 className="text-[10px]  uppercase tracking-widest text-gray-500 mb-6 border-l-2 border-[#C80909] pl-3">
             User Roles
           </h3>
           <ResponsiveContainer width="100%" height="90%">
@@ -127,58 +125,78 @@ const AdminHome = () => {
                   backgroundColor: "#000",
                   border: "1px solid #C80909",
                   borderRadius: "12px",
-                  fontSize: "12px"
+                  fontSize: "12px",
                 }}
                 itemStyle={{ color: "#fff" }}
               />
-              <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '10px', textTransform: 'uppercase', fontWeight: 'bold' }} />
+              <Legend
+                verticalAlign="bottom"
+                height={36}
+                iconType="circle"
+                wrapperStyle={{
+                  fontSize: "10px",
+                  textTransform: "uppercase",
+                  fontWeight: "bold",
+                }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>
 
         {/* Platform Growth Chart */}
-        <div className="bg-[#0b0b0b] p-4 md:p-8 rounded-4xl md:rounded-[2.5rem] border border-white/5 h-[350px] md:h-[400px]">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-6 border-l-2 border-[#C80909] pl-3">
+        <div className="bg-base-300 p-4 md:p-8 rounded-4xl md:rounded-[2.5rem] border border-base-300 h-[350px] md:h-[400px]">
+          <h3 className="text-[10px] uppercase tracking-widest text-base-content/50 mb-6 border-l-2 border-[#C80909] pl-3 font-bold">
             Platform Growth
           </h3>
           <ResponsiveContainer width="100%" height="90%">
-            <BarChart data={growthData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+            <BarChart
+              data={growthData}
+              margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+            >
               <CartesianGrid
                 strokeDasharray="3 3"
-                stroke="#1a1a1a"
+                stroke="currentColor"
+                className="text-base-content/10"
                 vertical={false}
               />
               <XAxis
                 dataKey="month"
-                stroke="#444"
+                stroke="currentColor"
+                className="text-base-content/40"
                 fontSize={10}
                 axisLine={false}
                 tickLine={false}
+                tick={{ dy: 10 }}
               />
               <YAxis
-                stroke="#444"
+                stroke="currentColor"
+                className="text-base-content/40"
                 fontSize={10}
                 axisLine={false}
                 tickLine={false}
               />
               <Tooltip
-                cursor={{ fill: "rgba(200, 9, 9, 0.05)" }}
+                cursor={{
+                  fill: "currentColor",
+                  className: "text-base-content/5",
+                }}
                 contentStyle={{
-                  backgroundColor: "#000",
+                  backgroundColor: "var(--fallback-b1,oklch(var(--b1)))",
                   border: "1px solid #C80909",
                   borderRadius: "12px",
+                  color: "var(--fallback-bc,oklch(var(--bc)))",
                 }}
+                itemStyle={{ color: "#C80909", fontWeight: "bold" }}
               />
               <Bar
                 dataKey="users"
                 fill="#C80909"
-                radius={[4, 4, 0, 0]}
-                barSize={window.innerWidth < 768 ? 25 : 40}
+                radius={[6, 6, 0, 0]}
+                barSize={window.innerWidth < 768 ? 20 : 35}
               />
             </BarChart>
           </ResponsiveContainer>
         </div>
-
       </div>
     </div>
   );

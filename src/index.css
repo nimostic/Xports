@@ -1,13 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 @plugin "daisyui" {
-   themes: light --default;
+   themes: dark --default,light;
+}
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: true;
+  --color-primary: #F40E08;
+  --color-base-100: #000000;
 }
 @plugin "daisyui/theme" {
   name: "light";
-  default: true;
   --color-primary: #F40E08;
-  --color-secondary: #830402;
+  --color-base-100: #ffffff;
 }
 
 body {

@@ -95,8 +95,8 @@ const CreateContest = () => {
   return (
     <div className="max-w-4xl mx-auto bg-[#111111] p-6 md:p-10 rounded-xl border border-gray-800 shadow-2xl my-10">
       <div className="mb-10 text-center md:text-left">
-        <h1 className="text-primary text-4xl font-black uppercase tracking-tighter italic">
-          Create New <span className="text-white">Contest</span>
+        <h1 className="text-primary text-4xl text-base-content uppercase tracking-tighter italic">
+          Create New <span className="text-base-content">Contest</span>
         </h1>
         <p className="text-gray-500 text-sm mt-2 uppercase tracking-widest">
           Fill in the details to launch your tournament
@@ -113,7 +113,7 @@ const CreateContest = () => {
             <input
               type="text"
               placeholder="Enter tournament name"
-              className={`input input-bordered w-full bg-[#0a0a0a] border-gray-700 text-white focus:outline-none focus:border-primary transition-all ${
+              className={`input input-bordered w-full bg-[#0a0a0a] border-gray-700 text-base-content focus:outline-none focus:border-primary transition-all ${
                 errors.contestName && "border-primary"
               }`}
               {...register("contestName", {
@@ -133,7 +133,7 @@ const CreateContest = () => {
               Contest Type
             </label>
             <select
-              className={`select select-bordered w-full bg-[#0a0a0a] border-gray-700 text-white focus:outline-none focus:border-primary transition-all ${
+              className={`select select-bordered w-full bg-[#0a0a0a] border-gray-700 text-base-content focus:outline-none focus:border-primary transition-all ${
                 errors.contestType && "border-primary"
               }`}
               {...register("contestType", { required: "Select a type" })}
@@ -159,7 +159,7 @@ const CreateContest = () => {
             <input
               type="file"
               placeholder="Enter Contest Bannner"
-              className={`input input-bordered w-full bg-[#0a0a0a] border-gray-700 text-white focus:outline-none focus:border-primary transition-all ${
+              className={`input input-bordered w-full bg-[#0a0a0a] border-gray-700 text-base-content focus:outline-none focus:border-primary transition-all ${
                 errors.bannerImage && "border-primary"
               }`}
               {...register("bannerImage", { required: "Image is required" })}
@@ -183,7 +183,7 @@ const CreateContest = () => {
               render={({ field }) => (
                 <DatePicker
                   placeholderText="Pick a date"
-                  className="input input-bordered bg-[#0a0a0a] border-gray-700 text-white focus:outline-none focus:border-primary w-full"
+                  className="input input-bordered bg-[#0a0a0a] border-gray-700 text-base-content focus:outline-none focus:border-primary w-full"
                   selected={field.value}
                   onChange={(date) => field.onChange(date)}
                   minDate={new Date()}
@@ -207,7 +207,7 @@ const CreateContest = () => {
               type="number"
               step="any"
               placeholder="0.00"
-              className={`input input-bordered w-full bg-[#0a0a0a] border-gray-700 text-white focus:outline-none focus:border-primary transition-all ${
+              className={`input input-bordered w-full bg-[#0a0a0a] border-gray-700 text-base-content focus:outline-none focus:border-primary transition-all ${
                 errors.price && "border-primary"
               }`}
               {...register("price", {
@@ -232,7 +232,7 @@ const CreateContest = () => {
               type="number"
               step="any"
               placeholder="500.00"
-              className={`input input-bordered w-full bg-[#0a0a0a] border-gray-700 text-white focus:outline-none focus:border-primary transition-all ${
+              className={`input input-bordered w-full bg-[#0a0a0a] border-gray-700 text-base-content focus:outline-none focus:border-primary transition-all ${
                 errors.prizeMoney && "border-primary"
               }`}
               {...register("prizeMoney", {
@@ -254,7 +254,7 @@ const CreateContest = () => {
               Submission Instructions
             </label>
             <textarea
-              className={`textarea textarea-bordered w-full bg-[#0a0a0a] border-gray-700 text-white focus:outline-none focus:border-primary h-28 transition-all ${
+              className={`textarea textarea-bordered w-full bg-[#0a0a0a] border-gray-700 text-base-content focus:outline-none focus:border-primary h-28 transition-all ${
                 errors.instruction && "border-primary"
               }`}
               placeholder="Describe what participants need to submit..."
@@ -275,7 +275,7 @@ const CreateContest = () => {
               Contest Overview
             </label>
             <textarea
-              className={`textarea textarea-bordered w-full bg-[#0a0a0a] border-gray-700 text-white focus:outline-none focus:border-primary h-20 transition-all ${
+              className={`textarea textarea-bordered w-full bg-[#0a0a0a] border-gray-700 text-base-content focus:outline-none focus:border-primary h-20 transition-all ${
                 errors.description && "border-primary"
               }`}
               placeholder="Short summary of the contest..."

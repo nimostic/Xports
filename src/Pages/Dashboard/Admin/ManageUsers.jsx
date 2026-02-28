@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { FaTrashAlt, FaUserShield, FaSearch, FaUserTie } from "react-icons/fa";
+import React, { useState, useContext, useEffect } from "react";
+import { FaTrashAlt, FaUserShield, FaSearch, FaUserTie, FaUser } from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
@@ -10,102 +10,88 @@ import { toast } from "react-toastify";
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
   const [searchText, setSearchText] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const { user: currentUser, loading } = useContext(AuthContext);
 
-  // TanStack Query for Users
-  const {
-    data: users = [],
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ["users", searchText],
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedSearch(searchText);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [searchText]);
+
+  const { data: users = [], refetch, isLoading } = useQuery({
+    queryKey: ["users", debouncedSearch],
     enabled: !loading && !!currentUser?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users?searchText=${searchText}`);
+      const res = await axiosSecure.get(`/users?searchText=${debouncedSearch}`);
       return res.data;
     },
   });
 
-  // Handle Role Update (Admin/Creator/User)
-  const handleRoleUpdate = async (selectedUser, newRole) => {
-    // console.log(selectedUser);
-    if (selectedUser.email === currentUser.email) {
-      return toast.error("You cannot change your own role!");
+const handleRoleUpdate = async (selectedUser, newRole) => {
+  if (selectedUser.email === currentUser.email) {
+    return toast.error("Self-promotion/demotion is not allowed!");
+  }
+
+  const result = await Swal.fire({
+    title: `Promote to ${newRole.toUpperCase()}?`,
+    text: `Confirm role change for ${selectedUser.displayName}`,
+    icon: "question",
+    showCancelButton: true,
+    
+    
+    confirmButtonColor: "oklch(var(--p))", 
+    cancelButtonColor: "oklch(var(--n))",  
+    
+    
+    background: "oklch(var(--b1))",        
+    color: "oklch(var(--bc))",             
+    
+    customClass: {
+      popup: 'rounded-[2rem] border border-base-300 shadow-2xl', 
+      confirmButton: 'font-black uppercase italic tracking-tighter px-6 py-3 rounded-xl',
+      cancelButton: 'font-black uppercase italic tracking-tighter px-6 py-3 rounded-xl'
     }
+  });
 
-    const result = await Swal.fire({
-      title: `Update to ${newRole}?`,
-      text: `Change ${selectedUser.displayName}'s role to ${newRole}?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#8b5cf6",
-      cancelButtonColor: "#1a1a1a",
-      background: "#111",
-      color: "#fff",
-    });
-
-    if (result.isConfirmed) {
-      try {
-        const res = await axiosSecure.patch(`/users/role/${selectedUser._id}`, {
-          role: newRole,
-        });
-        if (res.data.modifiedCount > 0) {
-          refetch();
-          toast.success(`${selectedUser.displayName} is now a ${newRole}`);
-        }
-      } catch (err) {
-        toast.error(err.response?.data?.message || "Update failed");
-      }
-    }
-  };
-
-  // Handle Delete User
-  const handleDeleteUser = async (selectedUser) => {
-    if (selectedUser.email === currentUser.email) {
-      return toast.error("You cannot delete yourself!");
-    }
-    const result = await Swal.fire({
-      title: "Remove User?",
-      text: "This user will be permanently deleted!",
-      icon: "error",
-      showCancelButton: true,
-      confirmButtonColor: "#ef4444",
-      background: "#111",
-      color: "#fff",
-    });
-
-    if (result.isConfirmed) {
-      try {
-        await axiosSecure.delete(`/users/${selectedUser._id}`);
+  if (result.isConfirmed) {
+    try {
+      const res = await axiosSecure.patch(`/users/role/${selectedUser._id}`, {
+        role: newRole,
+      });
+      if (res.data.modifiedCount > 0) {
         refetch();
-        toast.success("User deleted");
-      } catch (err) {
-        toast.error("Delete failed");
+        toast.success(`${selectedUser.displayName} is now a ${newRole}`);
       }
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Role update failed");
     }
-  };
+  }
+};
 
   return (
-    <div className="bg-[#0a0a0a] min-h-screen p-6 md:p-10 text-white font-sans">
+    <div className="bg-base-100 min-h-screen p-4 md:p-8 lg:p-10 text-base-content transition-colors duration-500">
       <div className="max-w-7xl mx-auto">
-        {/* Header & Search Section */}
+        {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
-          <div>
-            <h1 className="text-4xl font-black italic uppercase tracking-tighter">
-              User <span className="text-blue-500">Management</span>
+          <div className="text-center md:text-left">
+            <h1 className="text-3xl md:text-4xl italic uppercase tracking-tighter">
+              User <span className="text-primary">Management</span>
             </h1>
-            <p className="text-gray-500 text-xs uppercase tracking-[0.3em] font-bold mt-2">
-              Total Personnel: <span className="text-white">{users.length}</span>
+            <p className="text-base-content/50 text-[10px] uppercase tracking-[0.4em] font-bold mt-2">
+              System Personnel: <span className="text-primary">{users.length}</span>
             </p>
           </div>
 
-          <div className="relative group w-full md:w-80">
-            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-500" />
+          {/* Search Bar */}
+          <div className="relative group w-full md:w-96">
+            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/30 group-focus-within:text-primary transition-colors" />
             <input
               type="text"
               onChange={(e) => setSearchText(e.target.value)}
-              placeholder="Search by name or email..."
-              className="input w-full bg-[#111] border-gray-800 focus:border-blue-500 pl-12 h-12 rounded-xl outline-none transition-all"
+              placeholder="Search by name/email..."
+              className="input w-full bg-base-200 border-base-300 focus:border-primary pl-12 h-14 rounded-2xl outline-none shadow-2xl"
             />
           </div>
         </div>
@@ -113,93 +99,88 @@ const ManageUsers = () => {
         {/* Table Section */}
         {isLoading ? (
           <Loading />
+        ) : users.length === 0 ? (
+          <div className="text-center py-20 bg-base-200 rounded-2xl border-2 border-dashed border-base-300 group shadow-2xl">
+             <FaUser className="mx-auto text-5xl text-base-content/10 mb-4" />
+             <p className="text-base-content/40 font-bold uppercase tracking-widest">No users found</p>
+          </div>
         ) : (
-          <div className="bg-[#111] rounded-3xl border border-gray-800/50 overflow-hidden shadow-2xl">
+          <div className="bg-base-200 rounded-2xl border border-base-300 overflow-hidden shadow-2xl">
             <div className="overflow-x-auto">
-              <table className="table w-full">
-                <thead>
-                  <tr className="bg-[#161616] border-b border-gray-800 text-gray-400 uppercase text-[10px] tracking-[0.2em]">
-                    <th className="py-6 pl-8">User Info</th>
-                    <th>Current Role</th>
-                    <th className="text-center">Promote To</th>
+              <table className="table table-zebra w-full">
+                {/* Table Head */}
+                <thead className="bg-base-300/50">
+                  <tr className="border-b border-base-300 text-base-content/60 uppercase text-[10px] tracking-widest">
+                    <th className="py-6 pl-8">User Details</th>
+                    <th>Current Access</th>
+                    <th className="text-center">Modify Role</th>
                     <th className="text-center">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-800/30">
+                <tbody className="divide-y divide-base-300/50">
                   {users.map((u) => (
-                    <tr key={u._id} className="hover:bg-white/2 transition-colors group">
+                    <tr key={u._id} className="hover:bg-base-300/30 transition-colors group">
                       <td className="py-5 pl-8">
                         <div className="flex items-center gap-4">
                           <div className="avatar">
-                            <div className="w-11 h-11 rounded-xl ring-1 ring-gray-800 group-hover:ring-blue-500/50 transition-all">
-                              <img src={u.photoURL || "https://i.ibb.co/mR79Y9t/user.png"} alt="User" />
+                            <div className="w-12 h-12 rounded-2xl ring-2 ring-base-300 group-hover:ring-primary/50 transition-all">
+                              <img src={u.photoURL || "https://i.ibb.co/mR79Y9t/user.png"} alt="avatar" />
                             </div>
                           </div>
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="font-bold text-gray-200">{u.displayName}</span>
+                              <span className="font-black text-sm uppercase italic tracking-tighter">
+                                {u.displayName}
+                              </span>
                               {u.status === "pending_creator" && (
-                                <span className="px-2 py-0.5 bg-amber-500/10 text-amber-500 text-[8px] font-black rounded-full border border-amber-500/20 animate-pulse">
+                                <span className="badge badge-primary badge-outline text-[8px] font-bold animate-pulse">
                                   REQUESTED
                                 </span>
                               )}
                             </div>
-                            <div className="text-[11px] text-gray-500">{u.email}</div>
+                            <div className="text-[11px] font-medium text-base-content/50">{u.email}</div>
                           </div>
                         </div>
                       </td>
                       <td>
-                        <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${
-                          u.role === "admin" ? "bg-purple-500/5 text-purple-400 border-purple-500/20" :
-                          u.role === "creator" ? "bg-blue-500/5 text-blue-400 border-blue-500/20" :
-                          "bg-gray-500/5 text-gray-400 border-gray-500/20"
+                        <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border transition-colors ${
+                          u.role === "admin" ? "bg-purple-500/10 text-purple-500 border-purple-500/20" :
+                          u.role === "creator" ? "bg-blue-500/10 text-blue-500 border-blue-500/20" :
+                          "bg-base-300 text-base-content/60 border-base-300"
                         }`}>
                           {u.role || "user"}
                         </span>
                       </td>
                       <td className="text-center">
                         <div className="flex justify-center gap-2">
-                          {/* Make User */}
-                          <button
+                          {/* Role Buttons with Tooltips */}
+                          <RoleButton 
+                            icon={<FaUser />} 
+                            active={u.role === "user" || !u.role} 
                             onClick={() => handleRoleUpdate(u, "user")}
-                            disabled={u.role === "user" || !u.role}
-                            className="p-2.5 rounded-lg border border-gray-800 bg-gray-500/10 text-gray-400 hover:bg-gray-500 hover:text-white transition-all disabled:opacity-10"
-                            title="Make User"
-                          >
-                            <FaUserTie size={14} />
-                          </button>
-                          
-                          {/* Make Creator */}
-                          <button
+                            color="gray"
+                          />
+                          <RoleButton 
+                            icon={<FaUserTie />} 
+                            active={u.role === "creator"} 
+                            isPending={u.status === "pending_creator"}
                             onClick={() => handleRoleUpdate(u, "creator")}
-                            disabled={u.role === "creator"}
-                            className={`p-2.5 rounded-lg border transition-all disabled:opacity-10 ${
-                              u.status === "pending_creator"
-                                ? "bg-amber-500 text-black border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
-                                : "bg-blue-500/10 text-blue-500 border-blue-500/10 hover:bg-blue-500 hover:text-white"
-                            }`}
-                            title="Make Creator"
-                          >
-                            <FaUserTie size={14} />
-                          </button>
-
-                          {/* Make Admin */}
-                          <button
+                            color="blue"
+                          />
+                          <RoleButton 
+                            icon={<FaUserShield />} 
+                            active={u.role === "admin"} 
                             onClick={() => handleRoleUpdate(u, "admin")}
-                            disabled={u.role === "admin"}
-                            className="p-2.5 rounded-lg bg-purple-500/10 hover:bg-purple-500 text-purple-500 hover:text-white transition-all border border-purple-500/10 disabled:opacity-10"
-                            title="Make Admin"
-                          >
-                            <FaUserShield size={14} />
-                          </button>
+                            color="purple"
+                          />
                         </div>
                       </td>
                       <td className="text-center">
                         <button
                           onClick={() => handleDeleteUser(u)}
-                          className="p-2.5 rounded-lg bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white transition-all border border-red-500/10"
+                          className="btn btn-ghost btn-sm text-error hover:bg-error hover:text-white rounded-xl"
                         >
-                          <FaTrashAlt size={14} />
+                          <FaTrashAlt />
                         </button>
                       </td>
                     </tr>
@@ -213,5 +194,21 @@ const ManageUsers = () => {
     </div>
   );
 };
+
+// Reusable Role Button Component for cleaner code
+const RoleButton = ({ icon, active, onClick, color, isPending }) => (
+  <button
+    onClick={onClick}
+    disabled={active}
+    className={`p-3 rounded-xl border transition-all duration-300 disabled:opacity-30 ${
+      isPending ? "bg-amber-500 text-white animate-bounce shadow-lg" : 
+      color === "purple" ? "hover:bg-purple-500 hover:text-white text-purple-500 border-purple-500/20 bg-purple-500/5" :
+      color === "blue" ? "hover:bg-blue-500 hover:text-white text-blue-500 border-blue-500/20 bg-blue-500/5" :
+      "hover:bg-gray-500 hover:text-white text-gray-500 border-gray-500/20 bg-gray-500/5"
+    }`}
+  >
+    {icon}
+  </button>
+);
 
 export default ManageUsers;

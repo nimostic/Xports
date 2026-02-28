@@ -71,24 +71,32 @@ const UserHome = () => {
     <div className="space-y-6 custom-fade-in">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[
-          { label: "Total Participated", val: totalParticipated, color: "text-white" },
+          {
+            label: "Total Participated",
+            val: totalParticipated,
+            color: "text-base-content",
+          },
           { label: "Contests Won", val: winCount, color: "text-blue-500" },
           {
             label: "Win Ratio",
             val: `${
-              totalParticipated > 0 ? ((winCount / totalParticipated) * 100).toFixed(0) : 0
+              totalParticipated > 0
+                ? ((winCount / totalParticipated) * 100).toFixed(0)
+                : 0
             }%`,
-            color: "text-white",
+            color: "text-base-content",
           },
         ].map((stat, i) => (
           <div
             key={i}
             className="bg-[#111] p-6 rounded-3xl border border-white/5 flex flex-col items-center md:items-start"
           >
-            <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">
+            <p className="text-[10px] text-gray-500 text-base-content uppercase tracking-widest">
               {stat.label}
             </p>
-            <h2 className={`text-4xl font-black italic mt-2 ${stat.color}`}>
+            <h2
+              className={`text-4xl text-base-content italic mt-2 ${stat.color}`}
+            >
               {stat.val}
             </h2>
           </div>
@@ -97,7 +105,7 @@ const UserHome = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Win Rate Donut */}
         <div className="bg-[#0b0b0b] p-6 rounded-4xl border border-white/5 h-80">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-4">
+          <h3 className="text-[10px] text-base-content uppercase tracking-widest text-gray-500 mb-4">
             Performance Ratio
           </h3>
           <ResponsiveContainer width="100%" height="100%">
@@ -139,7 +147,7 @@ const UserHome = () => {
 
         {/* Activity Line Chart */}
         <div className="bg-[#0b0b0b] p-6 rounded-4xl border border-white/5 h-80">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-4">
+          <h3 className="text-[10px] text-base-content uppercase tracking-widest text-gray-500 mb-4">
             Participation History
           </h3>
           <ResponsiveContainer width="100%" height="100%">

@@ -41,26 +41,25 @@ const Profile = () => {
     }
   };
 
-  const {data:wonData={}} = useQuery({
-    enabled:!!user?.email,
-    queryKey:["wonData",user?.email],
-    queryFn: async ()=>{
-      const res = await axiosSecure.get(`/winners?email=${user.email}`)
-      return res.data
-    }
-  })
-  const {data:participateData={}} = useQuery({
-    enabled:!!user?.email,
-    queryKey:["participateData",user.email],
-    queryFn: async ()=>{
-      const res = await axiosSecure.get(`/participate?email=${user.email}`)
-      return res.data
-    }
-  })
+  const { data: wonData = {} } = useQuery({
+    enabled: !!user?.email,
+    queryKey: ["wonData", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/winners?email=${user.email}`);
+      return res.data;
+    },
+  });
+  const { data: participateData = {} } = useQuery({
+    enabled: !!user?.email,
+    queryKey: ["participateData", user.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/participate?email=${user.email}`);
+      return res.data;
+    },
+  });
 
   // console.log(wonData.length);
   // console.log(participateData.length);
-
 
   const updatedDetails = async (data) => {
     setIsUpdating(true);
@@ -111,14 +110,14 @@ const Profile = () => {
   };
 
   if (loading || isRoleLoading) return <Loading />;
-<title>Profile</title>
+  <title>Profile</title>;
   return (
-    <div className="bg-[#0a0a0a] min-h-screen p-4 md:p-10 text-white selection:bg-blue-500/30">
+    <div className="bg-base-100 min-h-screen p-4 md:p-10 text-base-content selection:bg-blue-500/30">
       <div className="max-w-6xl mx-auto">
         {/* Header Section */}
         <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h1 className="text-5xl font-black italic uppercase tracking-tighter leading-none">
+            <h1 className="text-5xl text-base-content italic uppercase tracking-tighter leading-none">
               Account <span className="text-blue-600">Central</span>
             </h1>
             <p className="text-gray-500 text-[10px] uppercase tracking-[0.4em] font-bold mt-3 border-l-2 border-blue-600 pl-4">
@@ -127,7 +126,7 @@ const Profile = () => {
           </div>
           <button
             onClick={() => modalRef.current.showModal()}
-            className="group relative px-8 py-3 bg-white text-black font-black uppercase text-xs tracking-widest rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95"
+            className="group relative px-8 py-3 bg-base-300 text-base-content uppercase text-xs tracking-widest rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95"
           >
             <span className="relative z-10 flex items-center gap-2">
               <FaUser size={10} /> Edit Profile
@@ -138,7 +137,7 @@ const Profile = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Identity Card */}
           <div className="lg:col-span-4">
-            <div className="bg-[#111] rounded-4xl border border-white/5 p-8 relative overflow-hidden group">
+            <div className="bg-base-100 rounded-4xl border border-white/5 p-8 relative overflow-hidden group">
               <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-blue-600 to-purple-600"></div>
 
               <div className="relative flex flex-col items-center">
@@ -157,17 +156,17 @@ const Profile = () => {
                   </div>
                 </div>
 
-                <h2 className="text-3xl font-black italic uppercase tracking-tight text-white mb-1">
+                <h2 className="text-3xl  italic uppercase tracking-tight text-base-content mb-1">
                   {user?.displayName}
                 </h2>
                 <div className="flex items-center gap-2 mb-8">
                   <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400/80">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-blue-400/80">
                     {role} Level Account
                   </span>
                 </div>
 
-                <div className="w-full p-5 bg-black/40 rounded-2xl border border-white/5">
+                <div className="w-full p-5 bg-base-100/40 rounded-2xl border border-white/5">
                   <div className="flex items-center gap-4">
                     <div className="p-2 bg-blue-600/10 rounded-lg text-blue-500">
                       <FaEnvelope size={12} />
@@ -189,12 +188,12 @@ const Profile = () => {
           {/* Stats & Actions */}
           <div className="lg:col-span-8 space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-[#111] p-8 rounded-4xl border border-white/5 flex items-center justify-between group">
+              <div className="bg-base-300 p-8 rounded-4xl border border-white/5 flex items-center justify-between group shadow-2xl">
                 <div>
-                  <h3 className="text-5xl font-black italic mb-2 tracking-tighter">
+                  <h3 className="text-5xl text-base-content italic mb-2 tracking-tighter">
                     {wonData.length}
                   </h3>
-                  <p className="text-[10px] text-gray-500 uppercase font-black tracking-[0.2em]">
+                  <p className="text-[10px] text-gray-500 uppercase  tracking-[0.2em]">
                     Contests Won
                   </p>
                 </div>
@@ -203,12 +202,12 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className="bg-[#111] p-8 rounded-4xl border border-white/5 flex items-center justify-between group">
+              <div className="bg-base-300 p-8 rounded-4xl border border-white/5 flex items-center justify-between group shadow-2xl">
                 <div>
-                  <h3 className="text-5xl font-black italic mb-2 tracking-tighter">
+                  <h3 className="text-5xl text-base-content italic mb-2 tracking-tighter">
                     {participateData.length}
                   </h3>
-                  <p className="text-[10px] text-gray-500 uppercase font-black tracking-[0.2em]">
+                  <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em]">
                     Participated
                   </p>
                 </div>
@@ -225,7 +224,7 @@ const Profile = () => {
 
                 <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
                   <div className="text-center md:text-left flex-1">
-                    <h2 className="text-3xl font-black italic uppercase tracking-tighter mb-4">
+                    <h2 className="text-3xl text-base-content italic uppercase tracking-tighter mb-4">
                       Ascend to <span className="text-blue-500">Creator</span>
                     </h2>
 
@@ -236,19 +235,19 @@ const Profile = () => {
                   </div>
 
                   {status === "pending_creator" ? (
-                    <div className="px-10 py-5 bg-black/50 border border-white/5 rounded-4xl flex flex-col items-center">
+                    <div className="px-10 py-5 bg-base-100/50 border border-white/5 rounded-4xl flex flex-col items-center">
                       <div className="w-10 h-1 bg-amber-500/30 rounded-full mb-3 overflow-hidden">
                         <div className="w-1/2 h-full bg-amber-500 animate-slide"></div>
                       </div>
 
-                      <span className="text-[10px] font-black uppercase text-amber-500 tracking-widest anianimate-slide">
+                      <span className="text-[10px]  uppercase text-amber-500 tracking-widest anianimate-slide">
                         Approval Pending
                       </span>
                     </div>
                   ) : (
                     <button
                       onClick={handleApplyCreator}
-                      className="px-12 py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-black uppercase text-xs tracking-widest shadow-2xl shadow-blue-900/40 transition-all active:scale-95 flex items-center gap-4 group"
+                      className="px-12 py-5 bg-blue-600 hover:bg-blue-500 rounded-2xl uppercase text-xs tracking-widest shadow-2xl shadow-blue-900/40 transition-all active:scale-95 flex items-center gap-4 group"
                     >
                       Apply for Access
                       <FaRocket className="group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
@@ -265,7 +264,7 @@ const Profile = () => {
                 </div>
 
                 <div>
-                  <p className="text-xs font-black uppercase tracking-widest text-green-500">
+                  <p className="text-xs  uppercase tracking-widest text-green-500">
                     Privileged Access
                   </p>
 
@@ -275,7 +274,6 @@ const Profile = () => {
                 </div>
               </div>
             )}
-            
           </div>
         </div>
       </div>
@@ -287,7 +285,7 @@ const Profile = () => {
       >
         <div className="modal-box bg-[#0f0f0f] border border-white/10 rounded-[2.5rem] p-0 overflow-hidden max-w-md shadow-2xl">
           <div className="bg-blue-600 p-8 flex justify-between items-center relative">
-            <h3 className="text-2xl font-black italic uppercase text-white tracking-tighter">
+            <h3 className="text-2xl text-base-content italic uppercase tracking-tighter">
               Identity Settings
             </h3>
             <form method="dialog">
@@ -303,7 +301,7 @@ const Profile = () => {
           >
             {/* Name Input */}
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 ml-1">
+              <label className="block text-[10px] text-base-content uppercase tracking-widest  mb-2 ml-1">
                 Account Display Name
               </label>
               <div className="relative">
@@ -311,7 +309,7 @@ const Profile = () => {
                   type="text"
                   defaultValue={user?.displayName}
                   {...register("name", { required: "Name is required" })}
-                  className="w-full bg-black border border-white/10 rounded-2xl p-4 pl-12 text-sm focus:border-blue-500 outline-none transition-all placeholder:text-gray-700"
+                  className="w-full bg-base-100 border border-white/10 rounded-2xl p-4 pl-12 text-sm focus:border-blue-500 outline-none transition-all placeholder:text-gray-700"
                 />
                 <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" />
               </div>
@@ -324,25 +322,25 @@ const Profile = () => {
 
             {/* Photo Input & Preview */}
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-widest text-gray-500 mb-2 ml-1">
+              <label className="block text-[10px] text-base-content uppercase tracking-widest  mb-2 ml-1">
                 Profile Avatar
               </label>
-              <label className="group relative flex flex-col items-center justify-center w-full min-h-[140px] bg-black border-2 border-dashed border-white/10 rounded-2xl hover:border-blue-500/50 hover:bg-blue-500/5 transition-all cursor-pointer overflow-hidden">
+              <label className="group relative flex flex-col items-center justify-center w-full min-h-[140px] bg-base-100 border-2 border-dashed border-white/10 rounded-2xl hover:border-blue-500/50 hover:bg-blue-500/5 transition-all cursor-pointer overflow-hidden">
                 {imagePreview ? (
                   <div className="flex flex-col items-center p-4 animate-in fade-in zoom-in duration-300">
                     <img
                       src={imagePreview}
-                      className="w-20 h-20 object-cover rounded-2xl mb-2 ring-2 ring-blue-500 p-1 bg-black"
+                      className="w-20 h-20 object-cover rounded-2xl mb-2 ring-2 ring-blue-500 p-1 bg-base-100"
                       alt="Preview"
                     />
-                    <span className="text-[10px] font-black uppercase text-blue-500">
+                    <span className="text-[10px]  uppercase text-blue-500">
                       Replace Selected Photo
                     </span>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-6">
                     <FaCloudUploadAlt className="text-3xl text-gray-600 group-hover:text-blue-500 transition-colors mb-2" />
-                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">
+                    <p className="text-[10px]  text-base-content uppercase tracking-widest">
                       Select Image File
                     </p>
                   </div>
@@ -364,10 +362,10 @@ const Profile = () => {
             <button
               disabled={isUpdating}
               type="submit"
-              className={`w-full py-5 rounded-2xl font-black uppercase text-xs tracking-widest shadow-2xl transition-all flex items-center justify-center gap-2 ${
+              className={`w-full py-5 rounded-2xl text-base-content uppercase text-xs tracking-widest shadow-2xl transition-all flex items-center justify-center gap-2 ${
                 isUpdating
                   ? "bg-gray-800 text-gray-500"
-                  : "bg-blue-600 hover:bg-blue-500 text-white"
+                  : "bg-blue-600 hover:bg-blue-500 text-base-content"
               }`}
             >
               {isUpdating ? "Synchronizing..." : "Save Changes"}

@@ -6,9 +6,10 @@ const AngledButton = ({ text, onClick, className = "", type = "button" }) => {
       className={`
         btn btn-primary
         btn-angled
-        px-10 py-4
-        font-bold uppercase tracking-wide
+        btn-block
         text-white
+        px-10 py-4
+        font-black uppercase italic tracking-tighter
         hover:opacity-90
         transition-all duration-300
         ${className}

@@ -42,7 +42,7 @@ const CreatorHome = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Revenue Area Chart */}
         <div className="lg:col-span-2 bg-[#0b0b0b] p-6 rounded-4xl border border-white/5 h-80">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-6">
+          <h3 className="text-[10px] text-base-content uppercase tracking-widest text-gray-500 mb-6">
             Revenue Growth
           </h3>
           <ResponsiveContainer width="100%" height="100%">
@@ -85,7 +85,7 @@ const CreatorHome = () => {
 
         {/* Engagement Stats */}
         <div className="bg-[#0b0b0b] p-6 rounded-4xl border border-white/5 h-80">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-6">
+          <h3 className="text-[10px] text-base-content uppercase tracking-widest text-gray-500 mb-6">
             User Engagement
           </h3>
           <ResponsiveContainer width="100%" height="100%">

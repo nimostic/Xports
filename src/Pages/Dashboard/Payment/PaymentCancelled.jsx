@@ -6,7 +6,6 @@ import Payment from "./Payment";
 const PaymentCancel = () => {
   const { id } = useParams();
 
-
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-[#111] border border-gray-800 rounded-3xl p-8 text-center shadow-2xl">
@@ -18,7 +17,7 @@ const PaymentCancel = () => {
         </div>
 
         {/* Text Content */}
-        <h1 className="text-3xl font-black text-white uppercase italic tracking-tighter mb-2">
+        <h1 className="text-3xl text-base-content text-base-content uppercase italic tracking-tighter mb-2">
           Payment Cancelled
         </h1>
         <p className="text-gray-400 mb-8">
@@ -32,7 +31,7 @@ const PaymentCancel = () => {
 
           <Link
             to={`/contest-details/${id}`}
-            className="flex items-center justify-center gap-2 w-full py-4 bg-transparent border border-gray-700 hover:border-gray-500 text-gray-400 hover:text-white rounded-xl font-bold uppercase tracking-widest transition-all"
+            className="flex items-center justify-center gap-2 w-full py-4 bg-transparent border border-gray-700 hover:border-gray-500 text-gray-400 hover:text-base-content rounded-xl font-bold uppercase tracking-widest transition-all"
           >
             Back to Details
           </Link>

@@ -15,7 +15,7 @@ const PaymentSuccess = () => {
   const [paymentProcessed, setPaymentProcessed] = useState(false);
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-  const {user,loading} = use(AuthContext)
+  const { user, loading } = use(AuthContext);
   useEffect(() => {
     if (!sessionId || paymentProcessed) return;
 
@@ -28,7 +28,7 @@ const PaymentSuccess = () => {
             toast.success("Registration Successful!");
           }
           const sessionRes = await axiosSecure.get(
-            `/checkout-session/${sessionId}`
+            `/checkout-session/${sessionId}`,
           );
           setContestId(sessionRes.data.contestId);
           setTransactionId(sessionRes.data.transactionId);
@@ -55,7 +55,7 @@ const PaymentSuccess = () => {
         </div>
 
         {/* Text Content */}
-        <h1 className="text-3xl font-black text-white uppercase italic tracking-tighter mb-2">
+        <h1 className="text-3xl text-base-content text-base-content uppercase italic tracking-tighter mb-2">
           Registration Successful!
         </h1>
         <p className="text-gray-400 mb-8">
@@ -64,7 +64,7 @@ const PaymentSuccess = () => {
         </p>
 
         {/* Info Card */}
-        <div className="bg-black/50 border border-gray-800 rounded-2xl p-4 mb-8 flex items-center gap-4 text-left">
+        <div className="bg-base-100/50 border border-gray-800 rounded-2xl p-4 mb-8 flex items-center gap-4 text-left">
           <div className="bg-primary/20 p-2 rounded-lg">
             <Trophy className="text-primary w-6 h-6" />
           </div>
@@ -82,14 +82,14 @@ const PaymentSuccess = () => {
         <div className="space-y-4">
           <Link
             to={`/contest-details/${contestId}`}
-            className="flex items-center justify-center gap-2 w-full py-4 bg-primary hover:bg-red-700 text-white rounded-xl font-bold uppercase tracking-widest transition-all"
+            className="flex items-center justify-center gap-2 w-full py-4 bg-primary hover:bg-red-700 text-base-content rounded-xl font-bold uppercase tracking-widest transition-all"
           >
             Go to Submission <ArrowRight size={18} />
           </Link>
 
           <Link
             to="/dashboard/my-contests"
-            className="block w-full py-4 bg-transparent border border-gray-700 hover:border-gray-500 text-gray-400 hover:text-white rounded-xl font-bold uppercase tracking-widest transition-all"
+            className="block w-full py-4 bg-transparent border border-gray-700 hover:border-gray-500 text-gray-400 hover:text-base-content rounded-xl font-bold uppercase tracking-widest transition-all"
           >
             View My Contests
           </Link>

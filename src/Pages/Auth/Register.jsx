@@ -20,240 +20,164 @@ const Register = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
+
   const handleRegistration = (data) => {
     const profileImg = data.photo[0];
 
     registerUser(data.email, data.password)
       .then((result) => {
-
-        //1. store the image in form data
-
         const formData = new FormData();
         formData.append("image", profileImg);
-
-        //2. send the photo to store and get the url
 
         const image_API_URL = `https://api.imgbb.com/1/upload?key=${
           import.meta.env.VITE_image_host_key
         }`;
 
         axios.post(image_API_URL, formData).then((res) => {
-          //console.log("after image uploaded", res);
           const photoURL = res.data.data.url;
-          // create user in the database
           const userInfo = {
             email: data.email,
             displayName: data.name,
             photoURL: photoURL,
+            role: 'user', // Default role
           };
-          axiosSecure
-            .post(`${import.meta.env.VITE_API_URL}/users`, userInfo)
-            .then((res) => {
-              if (res.data.insertedId) {
-                //console.log("user created in the database");
-              }
-            });
+
+          axiosSecure.post("/users", userInfo).then((res) => {
+            // User created in DB
+          });
 
           const userProfile = {
             displayName: data.name,
-            photoURL: res.data.data.url,
+            photoURL: photoURL,
           };
 
           updateUserProfile(userProfile)
             .then(() => {
-              //console.log("user profile updated done");
+              toast.success("Registration Successful!");
               navigate(location.state || "/");
             })
-            .catch((error) => {
-              //console.log(error);
-              toast.error(error.message);
-            });
+            .catch((error) => toast.error(error.message));
         });
       })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  };
-
-  const handleShowPassword = (e) => {
-    e.preventDefault();
-    setShowPassword(!showPassword);
+      .catch((error) => toast.error(error.message));
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+    <div className="flex items-center justify-center bg-base-100 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+      <div className="max-w-md w-full space-y-8 bg-base-200 p-8 rounded-2xl shadow-2xl border border-base-300">
+        
         {/* Header Section */}
         <div className="text-center">
-          <h2 className="mt-2 text-3xl font-extrabold text-gray-900">
-            Create an Account
+          <h2 className="mt-2 text-3xl font-black italic uppercase tracking-tighter text-base-content">
+            Create <span className="text-red-600">Account</span>
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Sign up to get started with our platform
+          <p className="mt-2 text-xs font-bold uppercase tracking-widest text-base-content/60">
+            Join our platform to get started
           </p>
         </div>
 
-        <form
-          className="mt-8 space-y-6"
-          onSubmit={handleSubmit(handleRegistration)}
-        >
-          <div className="rounded-md space-y-5">
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(handleRegistration)}>
+          <div className="space-y-4">
             {/* Name Field */}
             <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label className="block text-xs font-bold uppercase tracking-widest text-base-content/70 mb-2">
                 Full Name
               </label>
               <input
-                id="name"
                 type="text"
                 {...register("name", { required: "Full Name is required" })}
-                className={`appearance-none relative block w-full px-3 py-2 border ${
-                  errors.name
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-gray-300 focus:ring-indigo-500"
-                } placeholder-gray-400 text-gray-900 rounded-md focus:outline-none focus:ring-1 focus:z-10 sm:text-sm transition-colors`}
+                className={`input input-bordered w-full bg-base-100 text-base-content focus:outline-red-600 ${errors.name ? "input-error" : ""}`}
                 placeholder="John Doe"
               />
-              {errors.name && (
-                <p className="mt-1 text-xs text-red-500">
-                  {errors.name.message}
-                </p>
-              )}
+              {errors.name && <p className="mt-1 text-[10px] text-error font-bold">{errors.name.message}</p>}
             </div>
 
             {/* Email Field */}
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label className="block text-xs font-bold uppercase tracking-widest text-base-content/70 mb-2">
                 Email Address
               </label>
               <input
-                id="email"
                 type="email"
                 {...register("email", {
                   required: "Email is required",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Please enter a valid email address",
-                  },
+                  pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email address" },
                 })}
-                className={`appearance-none relative block w-full px-3 py-2 border ${
-                  errors.email
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-gray-300 focus:ring-indigo-500"
-                } placeholder-gray-400 text-gray-900 rounded-md focus:outline-none focus:ring-1 focus:z-10 sm:text-sm transition-colors`}
+                className={`input input-bordered w-full bg-base-100 text-base-content focus:outline-red-600 ${errors.email ? "input-error" : ""}`}
                 placeholder="you@example.com"
               />
-              {errors.email && (
-                <p className="mt-1 text-xs text-red-500">
-                  {errors.email.message}
-                </p>
-              )}
+              {errors.email && <p className="mt-1 text-[10px] text-error font-bold">{errors.email.message}</p>}
             </div>
 
             {/* Password Field */}
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label className="block text-xs font-bold uppercase tracking-widest text-base-content/70 mb-2">
                 Password
               </label>
               <div className="relative">
                 <input
-                  id="password"
                   type={showPassword ? "text" : "password"}
                   {...register("password", {
                     required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters long",
-                    },
+                    minLength: { value: 6, message: "Min 6 characters" },
                     pattern: {
-                      // Safe Regex: Checks for Uppercase, Lowercase, Number & Special Char
-                      value:
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/,
-                      message:
-                        "Must contain at least 1 uppercase, 1 lowercase, 1 number & 1 special char",
+                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{6,}$/,
+                      message: "Needs Uppercase, Lowercase, Number & Special Char",
                     },
                   })}
-                  className={`appearance-none relative block w-full px-3 py-2 border ${
-                    errors.password
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-indigo-500"
-                  } placeholder-gray-400 text-gray-900 rounded-md focus:outline-none focus:ring-1 focus:z-10 sm:text-sm transition-colors`}
+                  className={`input input-bordered w-full bg-base-100 text-base-content focus:outline-red-600 ${errors.password ? "input-error" : ""}`}
                   placeholder="••••••••"
                 />
-                {errors.password && (
-                  <p className="mt-1 text-xs text-red-500">
-                    {errors.password.message}
-                  </p>
-                )}
                 <button
-                  onClick={handleShowPassword}
-                  className="absolute top-3 right-4"
+                  type="button"
+                  onClick={(e) => { e.preventDefault(); setShowPassword(!showPassword); }}
+                  className="absolute top-1/2 -translate-y-1/2 right-4 text-base-content/50 hover:text-red-600"
                 >
                   {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
                 </button>
               </div>
+              {errors.password && <p className="mt-1 text-[10px] text-error font-bold leading-tight">{errors.password.message}</p>}
             </div>
 
             {/* File Upload Field */}
             <div>
-              <label
-                htmlFor="photo"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label className="block text-xs font-bold uppercase tracking-widest text-base-content/70 mb-2">
                 Profile Picture
               </label>
               <input
-                id="photo"
                 type="file"
-                {...register("photo", {
-                  required: "Profile picture is required",
-                })}
-                className={`block w-full text-sm text-gray-500
-                  file:mr-4 file:py-2 file:px-4
-                  file:rounded-full file:border-0
-                  file:text-sm file:font-semibold
-                  file:bg-indigo-50 file:text-indigo-700
-                  hover:file:bg-indigo-100
-                  ${errors.photo ? "border-red-500 text-red-500" : ""}
-                `}
+                {...register("photo", { required: "Profile picture is required" })}
+                className="file-input file-input-bordered file-input-error w-full bg-base-100 text-base-content text-xs"
               />
-              {errors.photo && (
-                <p className="mt-1 text-xs text-red-500">
-                  {errors.photo.message}
-                </p>
-              )}
+              {errors.photo && <p className="mt-1 text-[10px] text-error font-bold">{errors.photo.message}</p>}
             </div>
           </div>
 
-          {/* Submit Button */}
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 shadow-md hover:shadow-lg"
-            >
-              Register
-            </button>
-          </div>
-        </form>
-        <h1 className="text-center">
-          Already Have an Account?
-          <span>
-            <Link to="/login" className="text-primary">
-              {" "}
+          <button
+            type="submit"
+            className="btn btn-block bg-red-600 border-none hover:bg-red-700 text-white font-black italic uppercase tracking-tighter"
+          >
+            Register
+          </button>
+
+          <p className="text-center text-xs font-medium text-base-content/60 uppercase tracking-wide">
+            Already Have an Account?{" "}
+            <Link to="/login" className="text-red-600 font-black hover:underline ml-1">
               Login
             </Link>
-          </span>
-        </h1>
-        <SocialLogin></SocialLogin>
+          </p>
+        </form>
+
+        <div className="relative my-8">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-base-300"></div>
+          </div>
+          <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-widest">
+            <span className="px-4 bg-base-200 text-base-content/40">Or register with</span>
+          </div>
+        </div>
+
+        <SocialLogin />
       </div>
     </div>
   );

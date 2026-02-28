@@ -36,7 +36,7 @@ const UpdateContest = ({ closeModal, refetch, selectedContest }) => {
     axiosSecure
       .patch(
         `/contests/${selectedContest._id}?email=${selectedContest.ownerEmail}`,
-        data
+        data,
       )
       .then((res) => {
         if (res.data.modifiedCount > 0) {
@@ -53,12 +53,15 @@ const UpdateContest = ({ closeModal, refetch, selectedContest }) => {
   return (
     <div className="modal modal-open modal-bottom sm:modal-middle overflow-y-auto">
       <div className="modal-box max-w-4xl bg-[#111111] border border-gray-800 p-6 md:p-10 shadow-2xl scrollbar-hide">
-          <button onClick={closeModal} className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-white hover:bg-primary">
-            ✕
-          </button>
+        <button
+          onClick={closeModal}
+          className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 text-base-content hover:bg-primary"
+        >
+          ✕
+        </button>
         <div className="mb-10 text-center md:text-left">
-          <h1 className="text-primary text-4xl font-black uppercase tracking-tighter italic">
-            Update <span className="text-white">Contest</span>
+          <h1 className="text-primary text-4xl text-base-content uppercase tracking-tighter italic">
+            Update <span className="text-base-content">Contest</span>
           </h1>
           <p className="text-gray-500 text-sm mt-2 uppercase tracking-widest">
             Fill in the details what you wanna update...
@@ -74,7 +77,7 @@ const UpdateContest = ({ closeModal, refetch, selectedContest }) => {
               </label>
               <input
                 type="text"
-                className={`input input-bordered w-full bg-[#0a0a0a] border-gray-700 text-white focus:border-primary ${
+                className={`input input-bordered w-full bg-[#0a0a0a] border-gray-700 text-base-content focus:border-primary ${
                   errors.contestName && "border-primary"
                 }`}
                 {...register("contestName", {
@@ -94,7 +97,7 @@ const UpdateContest = ({ closeModal, refetch, selectedContest }) => {
                 Contest Type
               </label>
               <select
-                className="select select-bordered w-full bg-[#0a0a0a] border-gray-700 text-white"
+                className="select select-bordered w-full bg-[#0a0a0a] border-gray-700 text-base-content"
                 {...register("contestType", { required: "Select a type" })}
               >
                 {contestTypes.map((type) => (
@@ -115,7 +118,7 @@ const UpdateContest = ({ closeModal, refetch, selectedContest }) => {
                 name="deadline"
                 render={({ field }) => (
                   <DatePicker
-                    className="input input-bordered bg-[#0a0a0a] border-gray-700 text-white w-full"
+                    className="input input-bordered bg-[#0a0a0a] border-gray-700 text-base-content w-full"
                     selected={field.value}
                     onChange={(date) => field.onChange(date)}
                     minDate={new Date()}
@@ -132,7 +135,7 @@ const UpdateContest = ({ closeModal, refetch, selectedContest }) => {
               <input
                 type="number"
                 step="any"
-                className="input input-bordered bg-[#0a0a0a] border-gray-700 text-white"
+                className="input input-bordered bg-[#0a0a0a] border-gray-700 text-base-content"
                 {...register("price", {
                   required: "Price is required",
                   valueAsNumber: true,
@@ -147,7 +150,7 @@ const UpdateContest = ({ closeModal, refetch, selectedContest }) => {
               </label>
               <input
                 type="number"
-                className="input input-bordered bg-[#0a0a0a] border-gray-700 text-white"
+                className="input input-bordered bg-[#0a0a0a] border-gray-700 text-base-content"
                 {...register("prizeMoney", {
                   required: "Prize is required",
                   valueAsNumber: true,
@@ -161,7 +164,7 @@ const UpdateContest = ({ closeModal, refetch, selectedContest }) => {
                 Instructions
               </label>
               <textarea
-                className="textarea textarea-bordered bg-[#0a0a0a] border-gray-700 text-white h-24"
+                className="textarea textarea-bordered bg-[#0a0a0a] border-gray-700 text-base-content h-24"
                 {...register("instruction", {
                   required: "Instruction is required",
                 })}
@@ -174,7 +177,7 @@ const UpdateContest = ({ closeModal, refetch, selectedContest }) => {
                 Overview
               </label>
               <textarea
-                className="textarea textarea-bordered bg-[#0a0a0a] border-gray-700 text-white h-20"
+                className="textarea textarea-bordered bg-[#0a0a0a] border-gray-700 text-base-content h-20"
                 {...register("description", {
                   required: "Description is required",
                 })}

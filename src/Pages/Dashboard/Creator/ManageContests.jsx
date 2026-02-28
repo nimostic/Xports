@@ -26,7 +26,7 @@ const ManageContests = () => {
     },
   });
   const confirmedCount = myContests.filter(
-    (c) => c.status === "confirmed"
+    (c) => c.status === "confirmed",
   ).length;
 
   const handleDeleteContest = (id) => {
@@ -75,7 +75,7 @@ const ManageContests = () => {
     setIsOpen(true);
   };
   return (
-    <div className="bg-[#0a0a0a] min-h-screen p-6 text-white">
+    <div className="bg-base-100 min-h-screen p-6 text-base-content">
       {isLoading ? (
         <Loading></Loading>
       ) : (
@@ -84,14 +84,14 @@ const ManageContests = () => {
             {/* Header Section */}
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
               <div>
-                <h1 className="text-4xl font-black italic uppercase tracking-tighter">
+                <h1 className="text-4xl text-base-content italic uppercase tracking-tighter">
                   My Created <span className="text-primary">Contests</span>
                 </h1>
                 <p className="text-gray-500 text-sm mt-1">
                   Manage and track your hosted competitions
                 </p>
               </div>
-              <div className="bg-[#111] border border-gray-800 px-6 py-3 rounded-2xl flex gap-8">
+              <div className="bg-base-100 border border-gray-800 px-6 py-3 rounded-2xl flex gap-8">
                 <div className="text-center">
                   <p className="text-xs text-gray-500 uppercase font-bold">
                     Total Hosted
@@ -137,7 +137,7 @@ const ManageContests = () => {
                         {/* Contest Name & Type */}
                         <td className="py-6 pl-8">
                           <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-black">
+                            <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
                               <img
                                 src={contest.bannerImage}
                                 alt={contest.contestName.charAt(0)}
@@ -161,8 +161,8 @@ const ManageContests = () => {
                               contest.status === "confirmed"
                                 ? "bg-green-500/10 text-green-500"
                                 : contest.status === "rejected"
-                                ? "bg-red-500/10 text-red-500"
-                                : "bg-yellow-500/10 text-yellow-500"
+                                  ? "bg-red-500/10 text-red-500"
+                                  : "bg-yellow-500/10 text-yellow-500"
                             }`}
                           >
                             {contest.status}
@@ -184,7 +184,7 @@ const ManageContests = () => {
                           <div className="space-y-1">
                             <div className="text-xs text-gray-500">
                               Fee:{" "}
-                              <span className="text-white">
+                              <span className="text-base-content">
                                 ${contest.price}
                               </span>
                             </div>
@@ -202,7 +202,7 @@ const ManageContests = () => {
                               <>
                                 <button
                                   onClick={() => handleEditContest(contest)}
-                                  className="btn btn-square btn-sm bg-blue-600/10 hover:bg-blue-600 border-none text-blue-500 hover:text-white transition-all"
+                                  className="btn btn-square btn-sm bg-blue-600/10 hover:bg-blue-600 border-none text-blue-500 hover:text-base-content transition-all"
                                 >
                                   {/* Edit button */}
                                   <FaEdit size={14} />
@@ -211,7 +211,7 @@ const ManageContests = () => {
                                   onClick={() =>
                                     handleDeleteContest(contest._id)
                                   }
-                                  className="btn btn-square btn-sm bg-red-600/10 hover:bg-red-700 border-none text-red-500 hover:text-white transition-all"
+                                  className="btn btn-square btn-sm bg-red-600/10 hover:bg-red-700 border-none text-red-500 hover:text-base-content transition-all"
                                 >
                                   {/* delete button  */}
                                   <FaTrash size={14} />
@@ -227,7 +227,10 @@ const ManageContests = () => {
 
                         {/* See Submissions Button */}
                         <td className="pr-8">
-                          <Link to={`/dashboard/submitted-tasks/${contest._id}`} className="btn btn-sm w-full bg-primary hover:bg-red-700 text-white border-none rounded-xl uppercase font-black text-[10px] tracking-tighter shadow-lg shadow-primary/20">
+                          <Link
+                            to={`/dashboard/submitted-tasks/${contest._id}`}
+                            className="btn btn-sm w-full bg-primary hover:bg-red-700 text-base-content border-none rounded-xl uppercase  text-[10px] tracking-tighter shadow-lg shadow-primary/20"
+                          >
                             <FaEye /> View Work
                           </Link>
                         </td>

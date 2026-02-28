@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { FaCheck, FaTimes, FaTrashAlt, FaSearch, FaGamepad, FaCode, FaPaintBrush } from "react-icons/fa";
+import {
+  FaCheck,
+  FaTimes,
+  FaTrashAlt,
+  FaSearch,
+  FaGamepad,
+  FaCode,
+  FaPaintBrush,
+} from "react-icons/fa";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
@@ -7,8 +15,7 @@ import Loading from "../../../Components/Loading";
 
 const PendingContests = () => {
   const axiosSecure = useAxiosSecure();
-  const [searchText, setSearchText] = useState('');
-
+  const [searchText, setSearchText] = useState("");
 
   const {
     data: { contests = [] } = {},
@@ -45,7 +52,7 @@ const PendingContests = () => {
                 background: "#111",
                 color: "#fff",
                 showConfirmButton: false,
-                timer: 1500
+                timer: 1500,
               });
             }
           });
@@ -73,7 +80,7 @@ const PendingContests = () => {
             background: "#111",
             color: "#fff",
             showConfirmButton: false,
-            timer: 1500
+            timer: 1500,
           });
         });
       }
@@ -81,19 +88,19 @@ const PendingContests = () => {
   };
 
   return (
-    <div className="bg-[#0a0a0a] min-h-screen p-4 md:p-10 text-white font-sans">
+    <div className="bg-base-100 min-h-screen p-4 md:p-10 text-base-content font-sans">
       <div className="max-w-7xl mx-auto">
-        
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
           <div className="text-center md:text-left">
-            <h1 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter leading-none">
+            <h1 className="text-3xl md:text-4xl text-base-content italic uppercase tracking-tighter leading-none">
               Manage <span className="text-primary text-stroke">Contests</span>
             </h1>
             <div className="flex items-center gap-3 mt-2 justify-center md:justify-start">
               <span className="h-0.5 w-10 bg-primary"></span>
               <p className="text-gray-500 text-xs uppercase tracking-[0.3em] font-bold">
-                Total Requests: <span className="text-white">{contests.length}</span>
+                Total Requests:{" "}
+                <span className="text-base-content">{contests.length}</span>
               </p>
             </div>
           </div>
@@ -104,7 +111,7 @@ const PendingContests = () => {
               type="text"
               onChange={(e) => setSearchText(e.target.value)}
               placeholder="Search by title..."
-              className="input w-full bg-[#111] border-gray-800 focus:border-primary pl-12 text-sm rounded-xl h-14 transition-all focus:ring-1 focus:ring-primary/20 outline-none"
+              className="input w-full bg-base-200 border-base-300 focus:border-primary pl-12 h-14 rounded-2xl outline-none shadow-2xl"
             />
           </div>
         </div>
@@ -113,11 +120,11 @@ const PendingContests = () => {
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="bg-[#111] rounded-2xl border border-gray-800/50 shadow-2xl overflow-hidden">
+          <div className="bg-base-200 rounded-2xl border-gray-800/50 shadow-2xl overflow-hidden ">
             <div className="overflow-x-auto">
               <table className="table w-full border-collapse">
                 <thead>
-                  <tr className="bg-[#161616] border-b border-gray-800 text-gray-400 uppercase text-[10px] tracking-[0.2em]">
+                  <tr className="bg-base-300 border-b border-gray-800 uppercase text-[10px] tracking-[0.2em] text-base-content/60">
                     <th className="py-6 pl-8">Information</th>
                     <th>Creator</th>
                     <th>Status</th>
@@ -126,18 +133,28 @@ const PendingContests = () => {
                 </thead>
                 <tbody className="divide-y divide-gray-800/30">
                   {contests.map((contest) => (
-                    <tr key={contest._id} className="hover:bg-white/3 transition-colors group">
+                    <tr
+                      key={contest._id}
+                      className="hover:bg-white/3 transition-colors group"
+                    >
                       <td className="py-6 pl-8">
                         <div className="flex items-center gap-4">
                           <div className="hidden sm:flex w-12 h-12 rounded-lg bg-[#1a1a1a] border border-gray-800 items-center justify-center group-hover:border-primary/50 transition-colors text-primary">
-                             <img src={contest.bannerImage} alt="" className="w-full object-cover h-full rounded-lg"/>
+                            <img
+                              src={contest.bannerImage}
+                              alt=""
+                              className="w-full object-cover h-full rounded-lg"
+                            />
                           </div>
                           <div>
-                            <div className="font-bold text-gray-200 group-hover:text-white transition-colors">
+                            <div className="font-bold text-base-content group-hover:text-primary transition-colors">
                               {contest.contestName}
                             </div>
                             <div className="text-[11px] text-gray-500 mt-1 font-semibold uppercase tracking-wider">
-                              {contest.contestType} • <span className="text-primary/80">${contest.price} FEE</span>
+                              {contest.contestType} •{" "}
+                              <span className="text-primary/80">
+                                ${contest.price} FEE
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -146,28 +163,36 @@ const PendingContests = () => {
                         {contest.ownerEmail}
                       </td>
                       <td>
-                        <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${
-                          contest.status === "confirmed" ? "bg-green-500/5 text-green-500 border-green-500/20" :
-                          contest.status === "rejected" ? "bg-red-500/5 text-red-500 border-red-500/20" :
-                          "bg-yellow-500/5 text-yellow-500 border-yellow-500/20 shadow-[0_0_10px_rgba(234,179,8,0.05)]"
-                        }`}>
+                        <span
+                          className={`px-3 py-1 rounded-full text-[9px] text-base-content uppercase tracking-widest border ${
+                            contest.status === "confirmed"
+                              ? "bg-green-500/5 text-green-500 border-green-500/20"
+                              : contest.status === "rejected"
+                                ? "bg-red-500/5 text-red-500 border-red-500/20"
+                                : "bg-yellow-500/5 text-yellow-500 border-yellow-500/20 shadow-[0_0_10px_rgba(234,179,8,0.05)]"
+                          }`}
+                        >
                           {contest.status}
                         </span>
                       </td>
                       <td className="text-center">
                         <div className="flex justify-center gap-3">
                           <button
-                            onClick={() => handleStatusUpdate(contest._id, "confirmed")}
+                            onClick={() =>
+                              handleStatusUpdate(contest._id, "confirmed")
+                            }
                             disabled={contest.status === "confirmed"}
-                            className="p-3 rounded-lg bg-green-500/10 hover:bg-green-500 text-green-500 hover:text-white transition-all disabled:opacity-10 border border-green-500/20 hover:border-transparent shadow-lg hover:shadow-green-500/20"
+                            className="p-3 rounded-lg bg-green-500/10 hover:bg-green-500 text-green-500 hover:text-base-content transition-all disabled:opacity-10 border border-green-500/20 hover:border-transparent shadow-lg hover:shadow-green-500/20"
                             title="Approve"
                           >
                             <FaCheck size={14} />
                           </button>
 
                           <button
-                            onClick={() => handleStatusUpdate(contest._id, "rejected")}
-                            className="p-3 rounded-lg bg-yellow-500/10 hover:bg-yellow-500 text-yellow-500 hover:text-white transition-all border border-yellow-500/20 hover:border-transparent"
+                            onClick={() =>
+                              handleStatusUpdate(contest._id, "rejected")
+                            }
+                            className="p-3 rounded-lg bg-yellow-500/10 hover:bg-yellow-500 text-yellow-500 hover:text-base-content transition-all border border-yellow-500/20 hover:border-transparent"
                             title="Reject"
                           >
                             <FaTimes size={14} />
@@ -175,7 +200,7 @@ const PendingContests = () => {
 
                           <button
                             onClick={() => handleDelete(contest._id)}
-                            className="p-3 rounded-lg bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white transition-all border border-red-500/20 hover:border-transparent"
+                            className="p-3 rounded-lg bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-base-content transition-all border border-red-500/20 hover:border-transparent"
                             title="Delete"
                           >
                             <FaTrashAlt size={14} />

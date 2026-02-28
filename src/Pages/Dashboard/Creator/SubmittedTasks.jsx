@@ -36,7 +36,7 @@ const SubmittedTasks = () => {
       .patch(`/declare-winner/${id}`, data)
       .then((res) => {
         toast.success(
-          `${data.participantName} has been declared as WINNER🥳🎉🎊`
+          `${data.participantName} has been declared as WINNER🥳🎉🎊`,
         );
         refetch();
       })
@@ -45,11 +45,10 @@ const SubmittedTasks = () => {
       });
   };
 
-    const hasWinner = submissions.some((s) => s.isWinner);
- 
+  const hasWinner = submissions.some((s) => s.isWinner);
 
   return (
-    <div className="bg-[#0a0a0a] min-h-screen p-6 text-white font-sans">
+    <div className="bg-[#0a0a0a] min-h-screen p-6 text-base-content font-sans">
       {isLoading ? (
         <Loading></Loading>
       ) : (
@@ -62,7 +61,7 @@ const SubmittedTasks = () => {
               >
                 <FaArrowLeft /> Back to Contests
               </Link>
-              <h1 className="text-5xl font-black italic uppercase tracking-tighter">
+              <h1 className="text-5xl text-base-content italic uppercase tracking-tighter">
                 Submitted <span className="text-primary">Tasks</span>
               </h1>
               <p className="text-gray-500 text-sm mt-2 uppercase tracking-widest">
@@ -77,7 +76,7 @@ const SubmittedTasks = () => {
               <p className="text-[10px] text-gray-500 uppercase font-bold mb-1 tracking-widest">
                 Total Submissions
               </p>
-              <p className="text-3xl font-mono font-black text-primary">
+              <p className="text-3xl font-mono text-base-content text-primary">
                 {submissions.length}
               </p>
             </div>
@@ -103,8 +102,11 @@ const SubmittedTasks = () => {
                     >
                       <td className="py-6 pl-8">
                         <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full bg-linear-to-tr from-primary to-red-800 flex items-center justify-center font-bold text-white">
-                            <img src={sub.participantPhoto} alt="Participant Photo" />
+                          <div className="w-10 h-10 rounded-full bg-linear-to-tr from-primary to-red-800 flex items-center justify-center font-bold text-base-content">
+                            <img
+                              src={sub.participantPhoto}
+                              alt="Participant Photo"
+                            />
                           </div>
                           <div>
                             <div className="font-bold text-base group-hover:text-primary transition-colors">
@@ -122,7 +124,7 @@ const SubmittedTasks = () => {
                         <a
                           href={sub.submissionLink}
                           target="_blank"
-                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1a1a1a] border border-gray-800 text-blue-400 hover:bg-blue-600 hover:text-white transition-all text-xs font-bold uppercase tracking-tighter"
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1a1a1a] border border-gray-800 text-blue-400 hover:bg-blue-600 hover:text-base-content transition-all text-xs font-bold uppercase tracking-tighter"
                         >
                           <FaExternalLinkAlt size={10} /> Preview Work
                         </a>
@@ -131,17 +133,17 @@ const SubmittedTasks = () => {
                       {/* declare winner */}
                       <td className="text-center">
                         {sub.isWinner ? (
-                          <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-500 border border-green-500/20 py-2 px-5 rounded-full font-black uppercase text-[10px] shadow-[0_0_15px_rgba(34,197,94,0.1)]">
+                          <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-500 border border-green-500/20 py-2 px-5 rounded-full text-base-content uppercase text-[10px] shadow-[0_0_15px_rgba(34,197,94,0.1)]">
                             <FaTrophy /> Champion Selected
                           </div>
                         ) : (
                           <button
                             disabled={hasWinner}
                             onClick={() => handleWinner(sub)}
-                            className={`btn btn-sm px-6 rounded-xl font-black uppercase text-[10px] tracking-tighter transition-all ${
+                            className={`btn btn-sm px-6 rounded-xl text-base-content uppercase text-[10px] tracking-tighter transition-all ${
                               hasWinner
                                 ? "btn-disabled bg-gray-900 text-gray-700 border-none"
-                                : "bg-primary text-white border-none hover:bg-red-700 shadow-lg shadow-primary/20"
+                                : "bg-primary text-base-content border-none hover:bg-red-700 shadow-lg shadow-primary/20"
                             }`}
                           >
                             Declare Winner

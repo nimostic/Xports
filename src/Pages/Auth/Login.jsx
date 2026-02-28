@@ -31,7 +31,7 @@ const Login = () => {
       });
   };
 
-  // Forget Password Logic 
+  // Forget Password Logic
   const handlePasswordReset = async () => {
     const { value: email } = await Swal.fire({
       title: "Reset Password",
@@ -40,14 +40,12 @@ const Login = () => {
       inputPlaceholder: "you@example.com",
       showCancelButton: true,
       confirmButtonText: "Send Link",
-      confirmButtonColor: "#dc2626", 
+      confirmButtonColor: "#dc2626",
       background: "#fff",
       color: "#000",
       inputValidator: (value) => {
-        if (!value) {
-          return "You need to write your email!";
-        }
-      }
+        if (!value) return "You need to write your email!";
+      },
     });
 
     if (email) {
@@ -55,126 +53,131 @@ const Login = () => {
         .then(() => {
           Swal.fire({
             title: "Success!",
-            text: "Password reset email sent! Check your inbox.",
+            text: "Password reset email sent!",
             icon: "success",
             confirmButtonColor: "#dc2626",
+            background: "oklch(var(--b1))",
+            color: "oklch(var(--bc))",
           });
         })
-        .catch((error) => {
-          toast.error(error.message);
-        });
+        .catch((error) => toast.error(error.message));
     }
   };
 
-  const handleShowPassword = (e) => {
-    e.preventDefault();
-    setShowPassword(!showPassword);
-  };
-
   return (
-    <div className="flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-        
+    <div className="flex items-center justify-center bg-base-100 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+      <div className="max-w-md w-full space-y-8 bg-base-200 p-8 rounded-2xl shadow-2xl border border-base-300">
         {/* Header Section */}
         <div className="text-center">
-          <h2 className="mt-2 text-3xl font-extrabold text-gray-900">
-            Welcome Back
+          <h2 className="mt-2 text-3xl font-black italic uppercase tracking-tighter text-base-content">
+            Welcome <span className="text-red-600">Back</span>
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-xs font-bold uppercase tracking-widest text-base-content/60">
             Login to access your dashboard
           </p>
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(handleSignUp)}>
-          <div className="rounded-md space-y-5">
+          <div className="space-y-5">
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-widest text-base-content/70 mb-2">
                 Email Address
               </label>
               <input
-                id="email"
                 type="email"
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Please enter a valid email address",
+                    message: "Invalid email",
                   },
                 })}
-                className={`appearance-none relative block w-full px-3 py-2 border ${
-                  errors.email ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-indigo-500"
-                } placeholder-gray-400 text-gray-900 rounded-md focus:outline-none focus:ring-1 focus:z-10 sm:text-sm transition-colors`}
+                className={`input input-bordered w-full bg-base-100 text-base-content focus:outline-red-600 ${
+                  errors.email ? "input-error" : ""
+                }`}
                 placeholder="you@example.com"
               />
-              {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="mt-1 text-[10px] text-error font-bold">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-widest text-base-content/70 mb-2">
                 Password
               </label>
               <div className="relative">
                 <input
-                  id="password"
                   type={showPassword ? "text" : "password"}
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: { value: 6, message: "At least 6 characters" },
-                  })}
-                  className={`appearance-none relative block w-full px-3 py-2 border ${
-                    errors.password ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-indigo-500"
-                  } placeholder-gray-400 text-gray-900 rounded-md focus:outline-none focus:ring-1 focus:z-10 sm:text-sm transition-colors`}
+                  {...register("password", { required: "Password required" })}
+                  className={`input input-bordered w-full bg-base-100 text-base-content focus:outline-red-600 ${
+                    errors.password ? "input-error" : ""
+                  }`}
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  onClick={handleShowPassword}
-                  className="absolute top-3 right-4 text-gray-500"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute top-1/2 -translate-y-1/2 right-4 text-base-content/50 hover:text-red-600"
                 >
                   {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
                 </button>
               </div>
-              {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
+              {errors.password && (
+                <p className="mt-1 text-[10px] text-error font-bold">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
           </div>
 
-          {/* Forget Password Link */}
           <div className="flex items-center justify-end">
             <button
               type="button"
               onClick={handlePasswordReset}
-              className="text-sm font-medium text-red-600 hover:text-red-500 transition-colors underline decoration-dotted"
+              className="text-xs font-bold uppercase tracking-tight text-red-600 hover:text-red-500 transition-colors underline decoration-dotted"
             >
               Forgot password?
             </button>
           </div>
 
           {/* Submit Button */}
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 shadow-md hover:shadow-lg"
-            >
-              Login
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="btn btn-block bg-red-600 border-none hover:bg-red-700 text-white font-black italic uppercase tracking-tighter"
+          >
+            Login
+          </button>
 
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-xs font-medium text-base-content/60 uppercase tracking-wide">
             New to Platform?{" "}
-            <Link to="/register" state={location?.state} className="text-red-600 font-bold hover:underline">
+            <Link
+              to="/register"
+              state={location?.state}
+              className="text-red-600 font-black hover:underline ml-1"
+            >
               Register Now
             </Link>
           </p>
         </form>
 
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
-          <div className="relative flex justify-center text-sm"><span className="px-2 bg-white text-gray-500">Or continue with</span></div>
+        {/* Divider */}
+        <div className="relative my-8">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-base-300"></div>
+          </div>
+          <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-widest">
+            <span className="px-4 bg-base-200 text-base-content/40">
+              Or continue with
+            </span>
+          </div>
         </div>
 
-        <SocialLogin from={location?.state}></SocialLogin>
+        <SocialLogin from={location?.state} />
       </div>
     </div>
   );

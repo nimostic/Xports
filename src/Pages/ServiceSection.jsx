@@ -26,12 +26,12 @@ const services = [
 ];
 
 const ServiceSection = () => {
-  Aos.init()
+  Aos.init();
   return (
-    <section className="py-22 bg-[#0a0a0a]">
+    <section className="py-22 bg-base-100">
       <div data-aos="fade-right" className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white">
+          <h2 className="text-4xl text-base-content italic uppercase tracking-tighter">
             Our <span className="text-red-600">Services</span>
           </h2>
           <p className="text-gray-500 mt-4 max-w-xl mx-auto uppercase text-xs font-bold tracking-[0.2em]">
@@ -43,12 +43,12 @@ const ServiceSection = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              className="bg-[#111] border border-gray-800 p-8 rounded-3xl hover:border-red-600/50 transition-all group"
+              className="bg-base-100 border border-gray-800 p-8 rounded-3xl hover:border-red-600/50 transition-all group"
             >
               <div className="text-3xl mb-6 group-hover:scale-110 transition-transform">
                 {service.icon}
               </div>
-              <h3 className="text-xl font-bold text-white mb-3 italic">
+              <h3 className="text-xl font-bold text-base-content mb-3 italic">
                 {service.title}
               </h3>
               <p className="text-gray-500 text-sm leading-relaxed">
