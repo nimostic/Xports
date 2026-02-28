@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import useRole from "../Hooks/useRole";
 import AngledButton from "../Components/AngledButton";
+import { Clock, Users, Trophy, Info, ClipboardList } from "lucide-react";
+
 const ContestDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -20,21 +22,21 @@ const ContestDetails = () => {
   const axiosSecure = useAxiosSecure();
   const { register, handleSubmit, reset } = useForm();
   const [role] = useRole();
+
   const { data: registeredData = {} } = useQuery({
     queryKey: ["isRegistered", id, user?.email],
     enabled: !!user?.email && !!id,
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/submissions/check-registration?email=${user?.email}&contestId=${id}`,
+        `/submissions/check-registration?email=${user?.email}&contestId=${id}`
       );
       return res.data;
     },
   });
+
   const isRegistered = registeredData?.registered;
   const submitted = registeredData?.status === "submitted";
-  // console.log(role);
 
-  // details api
   const { data: contest = {}, isLoading } = useQuery({
     queryKey: ["contest", id],
     enabled: !!id,
@@ -43,7 +45,9 @@ const ContestDetails = () => {
       return res.data[0] || res.data;
     },
   });
+
   const isAdminOrCreator = role === "admin" || role === "creator";
+
   const handlePayment = async () => {
     if (!user) return navigate("/login");
     if (isAdminOrCreator) {
@@ -61,14 +65,10 @@ const ContestDetails = () => {
     };
 
     try {
-      const res = await axiosSecure.post(
-        "/create-checkout-session",
-        submitInfo,
-      );
+      const res = await axiosSecure.post("/create-checkout-session", submitInfo);
       if (res.data?.url) {
         window.location.assign(res.data.url);
       }
-      // eslint-disable-next-line no-unused-vars
     } catch (error) {
       toast.error("Payment initiation failed!");
     }
@@ -82,18 +82,16 @@ const ContestDetails = () => {
       submissionLink: data.submissionLink,
       submittedAt: new Date(),
     };
-    // console.log(submissionInfo);
 
     try {
       const res = await axiosSecure.post("submissions/task", submissionInfo);
-      //console.log(res);
       if (res.data.modifiedCount > 0) {
         Swal.fire({
           title: "Submitted!",
           text: "Task submitted successfully.",
           icon: "success",
-          background: "#161616",
-          color: "#fff",
+          background: "var(--fallback-b1,oklch(var(--b1)))",
+          color: "var(--fallback-bc,oklch(var(--bc)))",
         });
         setIsModalOpen(false);
         setTaskSubmitted(true);
@@ -104,7 +102,6 @@ const ContestDetails = () => {
     }
   };
 
-  // Timer Logic
   useEffect(() => {
     if (!contest?.deadline) return;
 
@@ -119,9 +116,7 @@ const ContestDetails = () => {
         clearInterval(interval);
       } else {
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-        );
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
         setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
@@ -134,217 +129,198 @@ const ContestDetails = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="bg-[#0a0a0a] min-h-screen py-12 text-base-content">
+    <div className="bg-base-100 min-h-screen py-12 text-base-content transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4">
-        {/* Banner */}
-        <div className="relative h-[400px] rounded-3xl overflow-hidden border border-gray-800 mb-10">
+        {/* Banner Section */}
+        <div className="relative h-[300px] md:h-[450px] rounded-[2.5rem] overflow-hidden border border-base-300 dark:border-white/10 mb-12 shadow-2xl">
           <img
             src={contest.bannerImage}
             className="w-full h-full object-cover"
-            alt=""
+            alt={contest.contestName}
           />
-          <div className="absolute inset-0 bg-linear-to-t from-black to-transparent"></div>
-          <div className="absolute bottom-8 left-8">
-            <span className="bg-primary px-4 py-1 rounded-full text-xs font-bold mb-4 inline-block tracking-widest uppercase">
-              {contest.contestType}
-            </span>
-            <h1 className="text-5xl text-base-content uppercase italic tracking-tighter">
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+          <div className="absolute bottom-10 left-10 right-10">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="bg-primary text-primary-content px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] italic">
+                {contest.contestType}
+              </span>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter leading-none">
               {contest.contestName}
             </h1>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          {/* Left Side: Content */}
           <div className="lg:col-span-2 space-y-8">
-            <section className="bg-[#111] p-8 rounded-2xl border border-gray-800">
-              <h2 className="text-2xl font-bold mb-4 text-primary uppercase">
-                Description
-              </h2>
-              <p className="text-gray-400 leading-relaxed">
+            {/* Description Card */}
+            <section className="bg-base-200/50 dark:bg-white/[0.02] p-8 rounded-3xl border border-base-300 dark:border-white/5">
+              <div className="flex items-center gap-2 mb-6 text-primary">
+                <Info size={20} />
+                <h2 className="text-xl font-black uppercase italic tracking-tight">Description</h2>
+              </div>
+              <p className="text-base-content/70 leading-relaxed font-medium">
                 {contest.description}
               </p>
             </section>
 
-            <section className="bg-[#111] p-8 rounded-2xl border border-gray-800">
-              <h2 className="text-2xl font-bold mb-4 text-primary uppercase">
-                Task Instructions
-              </h2>
-              <p className="text-gray-300 bg-base-100/50 p-6 rounded-xl border border-dashed border-gray-700">
+            {/* Instruction Card */}
+            <section className="bg-base-200/50 dark:bg-white/[0.02] p-8 rounded-3xl border border-base-300 dark:border-white/5">
+              <div className="flex items-center gap-2 mb-6 text-primary">
+                <ClipboardList size={20} />
+                <h2 className="text-xl font-black uppercase italic tracking-tight">Task Instructions</h2>
+              </div>
+              <div className="text-base-content/80 bg-base-300/30 dark:bg-black/20 p-6 rounded-2xl border border-dashed border-base-300 dark:border-white/10 italic font-medium">
                 {contest.instruction}
-              </p>
+              </div>
             </section>
-            {isEnded && (
-              <section className="bg-[#111] p-8 rounded-2xl border border-gray-800">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl text-base-content uppercase text-primary tracking-wider">
-                    Winner
-                  </h2>
 
+            {/* Winner Section */}
+            {isEnded && (
+              <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-transparent to-transparent p-8 rounded-[2rem] border border-primary/20 shadow-xl">
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center gap-2 text-primary">
+                    <Trophy size={24} />
+                    <h2 className="text-2xl font-black uppercase italic tracking-tighter">Winner</h2>
+                  </div>
                   {contest?.winnerName && (
-                    <span className="px-3 py-1 text-[10px] font-bold uppercase rounded-full bg-green-500/10 text-green-500 tracking-widest">
-                      Contest Winner
+                    <span className="px-4 py-1 text-[10px] font-black uppercase rounded-full bg-green-500/10 text-green-500 tracking-[0.2em] italic">
+                      Finalized
                     </span>
                   )}
                 </div>
 
                 {contest?.winnerName ? (
-                  <div className="flex flex-col sm:flex-row items-center gap-6 bg-base-100/40 p-6 rounded-xl border border-gray-700">
-                    {/* Winner Image */}
+                  <div className="flex flex-col sm:flex-row items-center gap-8 bg-white/5 dark:bg-black/40 p-8 rounded-3xl border border-white/10 backdrop-blur-sm">
                     <div className="relative shrink-0">
-                      <img
-                        src={contest.winnerPhoto}
-                        alt={contest.winnerName}
-                        className="w-24 h-24 rounded-full object-cover border-2 border-primary"
-                      />
-                      <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-primary rounded-full flex items-center justify-center text-xs text-base-content text-base-content">
-                        🏆
+                      <div className="w-28 h-28 rounded-2xl overflow-hidden border-4 border-primary shadow-2xl rotate-3">
+                        <img
+                          src={contest.winnerPhoto}
+                          alt={contest.winnerName}
+                          className="w-full h-full object-cover -rotate-3 scale-110"
+                        />
+                      </div>
+                      <div className="absolute -bottom-4 -right-4 bg-primary text-primary-content p-2 rounded-xl shadow-xl">
+                         🏆
                       </div>
                     </div>
 
-                    {/* Winner Info */}
                     <div className="text-center sm:text-left">
-                      <h3 className="text-xl font-bold text-base-content">
+                      <h3 className="text-3xl font-black italic uppercase text-base-content tracking-tighter">
                         {contest.winnerName}
                       </h3>
-
-                      <p className="text-gray-400 text-sm mt-1">
-                        Champion of{" "}
-                        <span className="text-primary font-semibold">
-                          {contest.contestName}
-                        </span>
+                      <p className="text-base-content/50 font-bold text-xs uppercase tracking-widest mt-2">
+                        Contest Champion
                       </p>
-
-                      <div className="mt-4 flex flex-wrap justify-center sm:justify-start gap-6 text-xs uppercase tracking-widest">
-                        <span className="text-gray-400">
-                          Prize:
-                          <span className="ml-1 text-green-500 font-bold">
-                            ${contest.prizeMoney}
-                          </span>
-                        </span>
-
-                        <span className="text-gray-400">
-                          Status:
-                          <span className="ml-1 text-primary font-bold">
-                            Finalized
-                          </span>
-                        </span>
+                      <div className="mt-6 flex flex-wrap justify-center sm:justify-start gap-4 text-xs font-black uppercase tracking-widest">
+                        <div className="bg-green-500/10 px-4 py-2 rounded-xl border border-green-500/20">
+                           <span className="text-green-500">Prize: ${contest.prizeMoney}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center py-12 text-gray-500 italic uppercase tracking-widest border border-dashed border-gray-700 rounded-xl">
-                    Winner not announced yet
+                  <div className="text-center py-16 text-base-content/30 font-black uppercase tracking-[0.3em] italic border-2 border-dashed border-base-300 dark:border-white/5 rounded-3xl">
+                    Results Pending
                   </div>
                 )}
               </section>
             )}
           </div>
 
+          {/* Right Side: Sidebar */}
           <div className="space-y-6">
-            <div className="bg-[#111] p-8 rounded-2xl border border-gray-800 sticky top-24">
-              <div className="mb-6">
-                <p className="text-gray-500 uppercase text-xs font-bold mb-1">
-                  Time Remaining
+            <div className="bg-base-200 dark:bg-[#111] p-8 rounded-[2.5rem] border border-base-300 dark:border-white/5 sticky top-24 shadow-xl">
+              <div className="mb-8">
+                <p className="text-base-content/40 uppercase text-[10px] font-black tracking-[0.2em] mb-3 flex items-center gap-2 italic">
+                  <Clock size={14} className="text-primary" /> Time Remaining
                 </p>
-                <p
-                  className={`text-2xl font-mono font-bold ${
-                    isEnded ? "text-red-500" : "text-primary"
-                  }`}
-                >
+                <p className={`text-4xl font-black italic tracking-tighter leading-none ${isEnded ? "text-red-600" : "text-primary"}`}>
                   {timeLeft}
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="bg-base-100 p-4 rounded-xl border border-gray-800 text-center">
-                  <p className="text-gray-500 text-[10px] uppercase font-bold">
-                    Prize
-                  </p>
-                  <p className="text-xl font-bold">${contest.prizeMoney}</p>
+              <div className="grid grid-cols-2 gap-4 mb-10">
+                <div className="bg-base-300/50 dark:bg-white/5 p-4 rounded-2xl border border-base-300 dark:border-white/5 text-center transition-transform hover:scale-105">
+                  <p className="text-base-content/40 text-[9px] uppercase font-black tracking-widest mb-1">Prize</p>
+                  <p className="text-xl font-black italic text-base-content">${contest.prizeMoney}</p>
                 </div>
-                <div className="bg-base-100 p-4 rounded-xl border border-gray-800 text-center">
-                  <p className="text-gray-500 text-[10px] uppercase font-bold">
-                    Participants
-                  </p>
-                  <p className="text-xl font-bold">
-                    {contest.participantsCount || 0}
-                  </p>
+                <div className="bg-base-300/50 dark:bg-white/5 p-4 rounded-2xl border border-base-300 dark:border-white/5 text-center transition-transform hover:scale-105">
+                  <p className="text-base-content/40 text-[9px] uppercase font-black tracking-widest mb-1 italic flex items-center justify-center gap-1"> <Users size={10}/> Join</p>
+                  <p className="text-xl font-black italic text-base-content">{contest.participantsCount || 0}</p>
                 </div>
               </div>
 
               {user?.email === contest?.ownerEmail ? (
                 <Link to={`/dashboard/submitted-tasks/${id}`}>
-                  <AngledButton
-                    text="View Work"
-                    className="w-full"
-                  ></AngledButton>
+                  <AngledButton text="View Submissions" className="w-full h-14" />
                 </Link>
               ) : (
-                <>
-                  {/* Registration Button Logic */}
+                <div className="space-y-4">
                   {!isRegistered ? (
                     <button
                       disabled={isEnded || isAdminOrCreator}
                       onClick={handlePayment}
-                      className={`w-full py-4 rounded-xl text-base-content uppercase tracking-widest transition-all ${
+                      className={`w-full h-16 rounded-2xl font-black uppercase tracking-widest text-xs transition-all italic ${
                         isEnded || isAdminOrCreator
-                          ? "bg-gray-800 text-gray-600 cursor-not-allowed"
-                          : "bg-primary hover:bg-red-700 text-base-content shadow-lg"
+                          ? "bg-base-300 text-base-content/20 cursor-not-allowed"
+                          : "bg-primary text-primary-content hover:bg-red-700 shadow-[0_10px_20px_-10px_rgba(239,68,68,0.5)] active:scale-95"
                       }`}
                     >
-                      {isEnded
-                        ? "Registration Closed"
-                        : isAdminOrCreator
-                          ? "Participation Not Allowed"
-                          : `Register Now ($${contest.price})`}
+                      {isEnded ? "Entry Closed" : isAdminOrCreator ? "Limited Access" : `Enroll now $${contest.price}`}
                     </button>
                   ) : (
                     <button
                       onClick={() => setIsModalOpen(true)}
                       disabled={taskSubmitted || submitted}
-                      className={`w-full py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-base-content text-base-content uppercase tracking-widest transition-all shadow-lg shadow-blue-900/20`}
+                      className={`w-full h-16 rounded-2xl font-black uppercase tracking-widest text-xs transition-all italic shadow-lg ${
+                        taskSubmitted || submitted
+                          ? "bg-green-600/20 text-green-500 border border-green-500/30"
+                          : "bg-blue-600 text-white hover:bg-blue-700 active:scale-95"
+                      }`}
                     >
-                      {taskSubmitted || submitted ? "Submitted" : "Submit Task"}
+                      {taskSubmitted || submitted ? "Work Submitted" : "Upload Task"}
                     </button>
                   )}
-                </>
+                </div>
               )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Modal - Theme Compatible */}
       {isModalOpen && (
-        <dialog className="modal modal-open">
-          <div className="modal-box bg-[#111] border border-gray-700">
-            <h3 className="text-base-content text-2xl uppercase italic text-primary">
-              Submit Your Work
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+          <div className="bg-base-200 dark:bg-[#111] border border-base-300 dark:border-white/10 p-10 rounded-[2.5rem] w-full max-w-lg shadow-2xl">
+            <h3 className="text-3xl font-black uppercase italic text-primary tracking-tighter mb-6">
+              Submit Task
             </h3>
-            <form onSubmit={handleSubmit(onTaskSubmit)} className="mt-4">
+            <form onSubmit={handleSubmit(onTaskSubmit)} className="space-y-6">
               <textarea
                 {...register("submissionLink", { required: true })}
-                className="textarea textarea-bordered w-full h-32 bg-base-100 border-gray-700 text-base-content focus:border-primary"
-                placeholder="Paste your links (Drive/GitHub) here..."
+                className="textarea textarea-bordered w-full h-40 bg-base-100 dark:bg-black/20 border-base-300 dark:border-white/10 text-base-content focus:border-primary rounded-2xl p-4 font-medium"
+                placeholder="Paste your Drive link, GitHub Repo, or Portfolio link here..."
               ></textarea>
-              <div className="modal-action">
+              <div className="flex gap-4">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="btn btn-ghost"
+                  className="flex-1 h-14 rounded-2xl font-black uppercase text-xs text-base-content/40 hover:text-base-content transition-all"
                 >
-                  Cancel
+                  Close
                 </button>
                 <button
                   type="submit"
-                  className="btn bg-primary hover:bg-red-700 text-base-content border-none uppercase"
+                  className="flex-[2] h-14 rounded-2xl bg-primary text-primary-content font-black uppercase tracking-widest text-xs hover:bg-red-700 transition-all shadow-lg"
                 >
-                  Submit Task
+                  Confirm Submission
                 </button>
               </div>
             </form>
           </div>
-        </dialog>
+        </div>
       )}
     </div>
   );

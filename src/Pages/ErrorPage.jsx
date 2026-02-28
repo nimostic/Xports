@@ -8,7 +8,7 @@ const ErrorPage = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4 py-20 overflow-hidden relative">
+    <section className="min-h-screen bg-base-100 flex items-center justify-center px-4 py-20 overflow-hidden relative">
       {/* Background Glows */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px] -z-10"></div>
 
@@ -20,7 +20,7 @@ const ErrorPage = () => {
 
         {/* Text Content */}
         <div className="space-y-6">
-          <h2 className="text-5xl md:text-7xl text-base-content uppercase italic tracking-tighter text-base-content">
+          <h2 className="text-5xl font-black md:text-7xl text-base-content uppercase italic tracking-tighter">
             Lost in the <span className="text-primary">Arena?</span>
           </h2>
           <p className="text-gray-500 text-lg max-w-lg mx-auto font-medium">
@@ -39,7 +39,7 @@ const ErrorPage = () => {
 
             <button
               onClick={() => navigate("/")}
-              className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-primary text-base-content text-base-content hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(244,14,8,0.3)] uppercase text-sm tracking-widest italic"
+              className="flex items-center gap-2 px-8 py-4 rounded-2xl bg-primary text-base-content hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(244,14,8,0.3)] uppercase text-sm tracking-widest italic"
             >
               <FaHome /> Return Home
             </button>
@@ -49,7 +49,7 @@ const ErrorPage = () => {
 
       {/* Decorative Element */}
       <div className="absolute bottom-10 left-10 opacity-10 hidden lg:block">
-        <h1 className="text-[150px] text-base-content text-base-content leading-none">
+        <h1 className="text-[150px] text-base-content leading-none">
           404
         </h1>
       </div>
